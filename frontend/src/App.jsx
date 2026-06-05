@@ -31,25 +31,35 @@ const formulaShapeOptions = [
 
 function buildQuery(params) {
   const query = new URLSearchParams();
-  query.set('count', '4');
+  // For CUSTOM style, don't set a fixed count - let backend calculate combinations
+  if (params.style !== 'CUSTOM') {
+    query.set('count', '4');
+  }
   if (params.style) query.set('style', params.style);
   if (params.gender) query.set('gender', params.gender);
   if (params.formulaMode) query.set('formulaMode', params.formulaMode);
   if (params.formula) query.set('formula', params.formula);
+  
+  // Support both single values and arrays
   if (params.root) {
-    query.set('root', params.root);
+    const rootValue = Array.isArray(params.root) ? params.root.join(',') : params.root;
+    if (rootValue) query.set('root', rootValue);
   }
   if (params.suffix) {
-    query.set('suffix', params.suffix);
+    const suffixValue = Array.isArray(params.suffix) ? params.suffix.join(',') : params.suffix;
+    if (suffixValue) query.set('suffix', suffixValue);
   }
   if (params.connector1) {
-    query.set('connector1', params.connector1);
+    const connector1Value = Array.isArray(params.connector1) ? params.connector1.join(',') : params.connector1;
+    if (connector1Value) query.set('connector1', connector1Value);
   }
   if (params.infix) {
-    query.set('infix', params.infix);
+    const infixValue = Array.isArray(params.infix) ? params.infix.join(',') : params.infix;
+    if (infixValue) query.set('infix', infixValue);
   }
   if (params.connector2) {
-    query.set('connector2', params.connector2);
+    const connector2Value = Array.isArray(params.connector2) ? params.connector2.join(',') : params.connector2;
+    if (connector2Value) query.set('connector2', connector2Value);
   }
   return query.toString();
 }
@@ -89,13 +99,6 @@ function App() {
     () => styleOptions.find((option) => option.value === style)?.label ?? 'Griego',
     [style]
   );
-
-  // Helper to pick random item from array, or empty string if none
-  const pickRandom = (arr) => {
-    if (!arr || arr.length === 0) return '';
-    return arr[Math.floor(Math.random() * arr.length)];
-  };
-
 
   const normalizeNames = (data) => {
     if (!Array.isArray(data)) return [];
@@ -147,32 +150,30 @@ function App() {
     setStatus('');
     setComponents(null);
     try {
-      // When in custom style, pick random components from the lists
-      let finalRoot = root;
-      let finalConnector1 = connector1;
-      let finalInfix = infix;
-      let finalConnector2 = connector2;
-      let finalSuffix = suffix;
-      
-      if (style === 'CUSTOM') {
-        finalRoot = pickRandom(customRoots);
-        finalConnector1 = pickRandom(customConnectors1);
-        finalInfix = pickRandom(customInfixes);
-        finalConnector2 = pickRandom(customConnectors2);
-        finalSuffix = pickRandom(customSuffixes);
-      }
-      
-      const query = buildQuery({ 
+      let queryParams = { 
         style, 
         gender, 
         formulaMode, 
-        formula, 
-        root: finalRoot, 
-        suffix: finalSuffix, 
-        connector1: finalConnector1, 
-        infix: finalInfix, 
-        connector2: finalConnector2 
-      });
+        formula
+      };
+      
+      if (style === 'CUSTOM') {
+        // In custom mode, pass ALL components as arrays for backend to generate combinations
+        if (customRoots.length > 0) queryParams.root = customRoots;
+        if (customConnectors1.length > 0) queryParams.connector1 = customConnectors1;
+        if (customInfixes.length > 0) queryParams.infix = customInfixes;
+        if (customConnectors2.length > 0) queryParams.connector2 = customConnectors2;
+        if (customSuffixes.length > 0) queryParams.suffix = customSuffixes;
+      } else {
+        // In normal modes, pass individual selected values
+        if (root) queryParams.root = root;
+        if (suffix) queryParams.suffix = suffix;
+        if (connector1) queryParams.connector1 = connector1;
+        if (infix) queryParams.infix = infix;
+        if (connector2) queryParams.connector2 = connector2;
+      }
+      
+      const query = buildQuery(queryParams);
       const response = await fetch(`/api/names/generate?${query}`);
       if (!response.ok) {
         throw new Error(`${response.status} ${response.statusText}`);

@@ -268,6 +268,20 @@ public class NameService {
                                          String connector1Param, String infixParam, String connector2Param,
                                          String rootParam, String suffixParam) {
         List<GreekName> results = new ArrayList<>();
+
+        Style fixedStyle = resolveStyle(styleParam);
+        Gender fixedGender = resolveGender(genderParam);
+        
+        // Handle custom mode separately - generate all combinations
+        if (fixedStyle == Style.CUSTOM) {
+            return generateCustomCombinations(
+                fixedGender, 
+                resolveFormulaShape(formulaShapeParam),
+                rootParam, connector1Param, infixParam, connector2Param, suffixParam
+            );
+        }
+        
+        // Normal modes (GREEK, NORDIC, RANDOM)
         int limit = Math.min(Math.max(count, 1), 50);
 
         boolean randomStyle = styleParam != null && styleParam.equalsIgnoreCase("RANDOM");
@@ -275,28 +289,12 @@ public class NameService {
         boolean autoFormula = formulaModeParam == null || formulaModeParam.isBlank() || formulaModeParam.equalsIgnoreCase("AUTO");
         String selectedShape = autoFormula ? getRandomFormulaShape() : resolveFormulaShape(formulaShapeParam);
 
-        Style fixedStyle = resolveStyle(styleParam);
-        Gender fixedGender = resolveGender(genderParam);
-        
-        // Handle custom components differently
-        Root fixedRoot;
-        Suffix fixedSuffix;
-        
-        if (fixedStyle == Style.CUSTOM) {
-            // In custom mode, create custom components from parameters
-            fixedRoot = rootParam != null && !rootParam.isBlank() ? createCustomRoot(rootParam) : null;
-            fixedSuffix = suffixParam != null && !suffixParam.isBlank() ? createCustomSuffix(suffixParam) : null;
-        } else {
-            // In normal modes, resolve from database
-            fixedRoot = resolveRoot(rootParam);
-            fixedSuffix = resolveSuffix(suffixParam);
-        }
+        Root fixedRoot = resolveRoot(rootParam);
+        Suffix fixedSuffix = resolveSuffix(suffixParam);
 
         for (int i = 0; i < limit; i++) {
             Style currentStyle;
-            if (fixedStyle == Style.CUSTOM) {
-                currentStyle = Style.CUSTOM;
-            } else if (fixedRoot != null) {
+            if (fixedRoot != null) {
                 currentStyle = fixedRoot.style();
             } else if (!randomStyle && fixedStyle != null) {
                 currentStyle = fixedStyle;
@@ -313,27 +311,11 @@ public class NameService {
             List<Connector> styleSimple = simpleConnectors.stream().filter(c -> c.style() == currentStyle).toList();
             List<Connector> styleComplex = complexInfixes.stream().filter(c -> c.style() == currentStyle).toList();
 
-            Root selectedRoot;
-            Suffix selectedSuffix;
-            Connector selectedConnector1;
-            Connector selectedConnector2;
-            Connector selectedInfix;
-
-            if (currentStyle == Style.CUSTOM) {
-                // In custom mode, use custom components only
-                selectedRoot = fixedRoot;
-                selectedSuffix = fixedSuffix;
-                selectedConnector1 = connector1Param != null && !connector1Param.isBlank() ? createCustomConnector(connector1Param) : null;
-                selectedConnector2 = connector2Param != null && !connector2Param.isBlank() ? createCustomConnector(connector2Param) : null;
-                selectedInfix = infixParam != null && !infixParam.isBlank() ? createCustomConnector(infixParam) : null;
-            } else {
-                // In normal modes, use database components
-                selectedRoot = chooseRoot(styleRoots, fixedRoot);
-                selectedSuffix = chooseSuffix(styleSuffixes, fixedSuffix, currentGender);
-                selectedConnector1 = chooseConnector(styleSimple, connector1Param);
-                selectedConnector2 = chooseConnector(styleSimple, connector2Param);
-                selectedInfix = chooseConnector(styleComplex, infixParam);
-            }
+            Root selectedRoot = chooseRoot(styleRoots, fixedRoot);
+            Suffix selectedSuffix = chooseSuffix(styleSuffixes, fixedSuffix, currentGender);
+            Connector selectedConnector1 = chooseConnector(styleSimple, connector1Param);
+            Connector selectedConnector2 = chooseConnector(styleSimple, connector2Param);
+            Connector selectedInfix = chooseConnector(styleComplex, infixParam);
 
             switch (selectedShape) {
                 case "F1" -> results.add(generateFormula1(currentStyle, currentGender, selectedRoot, selectedSuffix));
@@ -347,6 +329,138 @@ public class NameService {
         }
 
         return results;
+    }
+
+    private List<GreekName> generateCustomCombinations(Gender fixedGender, String formulaShape,
+                                                       String rootParam, String connector1Param, 
+                                                       String infixParam, String connector2Param, 
+                                                       String suffixParam) {
+        List<GreekName> results = new ArrayList<>();
+        
+        // Parse parameters as comma-separated lists
+        List<String> rootList = parseComponentList(rootParam);
+        List<String> connector1List = parseComponentList(connector1Param);
+        List<String> infixList = parseComponentList(infixParam);
+        List<String> connector2List = parseComponentList(connector2Param);
+        List<String> suffixList = parseComponentList(suffixParam);
+        
+        // Check if we have necessary components for the formula
+        if (rootList.isEmpty() || suffixList.isEmpty()) {
+            return results;
+        }
+        
+        // Generate all combinations based on formula
+        switch (formulaShape) {
+            case "F1" -> {
+                for (String root : rootList) {
+                    for (String suffix : suffixList) {
+                        Root r = createCustomRoot(root);
+                        Suffix s = createCustomSuffix(suffix);
+                        results.add(generateFormula1(Style.CUSTOM, fixedGender, r, s));
+                        if (results.size() >= 50) return results;
+                    }
+                }
+            }
+            case "F2" -> {
+                if (connector1List.isEmpty()) return results;
+                for (String root : rootList) {
+                    for (String conn1 : connector1List) {
+                        for (String suffix : suffixList) {
+                            Root r = createCustomRoot(root);
+                            Connector c1 = createCustomConnector(conn1);
+                            Suffix s = createCustomSuffix(suffix);
+                            results.add(generateFormula2(Style.CUSTOM, fixedGender, r, s, c1));
+                            if (results.size() >= 50) return results;
+                        }
+                    }
+                }
+            }
+            case "F3" -> {
+                if (infixList.isEmpty()) return results;
+                for (String root : rootList) {
+                    for (String infix : infixList) {
+                        for (String suffix : suffixList) {
+                            Root r = createCustomRoot(root);
+                            Connector inf = createCustomConnector(infix);
+                            Suffix s = createCustomSuffix(suffix);
+                            results.add(generateFormula3(Style.CUSTOM, fixedGender, r, s, inf));
+                            if (results.size() >= 50) return results;
+                        }
+                    }
+                }
+            }
+            case "F4" -> {
+                if (connector1List.isEmpty() || infixList.isEmpty()) return results;
+                for (String root : rootList) {
+                    for (String conn1 : connector1List) {
+                        for (String infix : infixList) {
+                            for (String suffix : suffixList) {
+                                Root r = createCustomRoot(root);
+                                Connector c1 = createCustomConnector(conn1);
+                                Connector inf = createCustomConnector(infix);
+                                Suffix s = createCustomSuffix(suffix);
+                                results.add(generateFormula4(Style.CUSTOM, fixedGender, r, s, c1, inf));
+                                if (results.size() >= 50) return results;
+                            }
+                        }
+                    }
+                }
+            }
+            case "F5" -> {
+                if (connector1List.isEmpty() || infixList.isEmpty()) return results;
+                for (String root : rootList) {
+                    for (String infix : infixList) {
+                        for (String conn1 : connector1List) {
+                            for (String suffix : suffixList) {
+                                Root r = createCustomRoot(root);
+                                Connector inf = createCustomConnector(infix);
+                                Connector c1 = createCustomConnector(conn1);
+                                Suffix s = createCustomSuffix(suffix);
+                                results.add(generateFormula5(Style.CUSTOM, fixedGender, r, s, inf, c1));
+                                if (results.size() >= 50) return results;
+                            }
+                        }
+                    }
+                }
+            }
+            case "F6" -> {
+                if (connector1List.isEmpty() || infixList.isEmpty() || connector2List.isEmpty()) return results;
+                for (String root : rootList) {
+                    for (String conn1 : connector1List) {
+                        for (String infix : infixList) {
+                            for (String conn2 : connector2List) {
+                                for (String suffix : suffixList) {
+                                    Root r = createCustomRoot(root);
+                                    Connector c1 = createCustomConnector(conn1);
+                                    Connector inf = createCustomConnector(infix);
+                                    Connector c2 = createCustomConnector(conn2);
+                                    Suffix s = createCustomSuffix(suffix);
+                                    results.add(generateFormula6(Style.CUSTOM, fixedGender, r, s, c1, inf, c2));
+                                    if (results.size() >= 50) return results;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        return results;
+    }
+
+    private List<String> parseComponentList(String param) {
+        if (param == null || param.isBlank()) {
+            return new ArrayList<>();
+        }
+        String[] parts = param.split(",");
+        List<String> result = new ArrayList<>();
+        for (String part : parts) {
+            String trimmed = part.trim();
+            if (!trimmed.isBlank()) {
+                result.add(trimmed);
+            }
+        }
+        return result;
     }
 
     private Style resolveStyle(String styleParam) {
