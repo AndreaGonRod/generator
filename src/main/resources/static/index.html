@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador de Nombres</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <h1>Generador de Nombres</h1>
+      <p>Crea nombres míticos usando estilos griego o nórdico. Ajusta el género y la cantidad.</p>
+    </header>
+
+    <section class="panel panel--controls">
+      <div class="field">
+        <label for="style">Estilo</label>
+        <select id="style">
+          <option value="GREEK">Griego</option>
+          <option value="NORDIC">Nórdico</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="gender">Género</label>
+        <select id="gender">
+          <option value="">Azar</option>
+          <option value="MALE">Masculino</option>
+          <option value="FEMALE">Femenino</option>
+          <option value="NEUTER">Neutro</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="count">Cantidad</label>
+        <input id="count" type="number" min="1" max="50" value="5">
+      </div>
+
+      <div class="actions">
+        <button id="generate">Generar nombres</button>
+        <button id="components">Ver componentes</button>
+      </div>
+    </section>
+
+    <section class="panel panel--output">
+      <div id="status" class="status">Pulsa "Generar nombres" para comenzar.</div>
+      <div id="results" class="results"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
