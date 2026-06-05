@@ -277,12 +277,26 @@ public class NameService {
 
         Style fixedStyle = resolveStyle(styleParam);
         Gender fixedGender = resolveGender(genderParam);
-        Root fixedRoot = resolveRoot(rootParam);
-        Suffix fixedSuffix = resolveSuffix(suffixParam);
+        
+        // Handle custom components differently
+        Root fixedRoot;
+        Suffix fixedSuffix;
+        
+        if (fixedStyle == Style.CUSTOM) {
+            // In custom mode, create custom components from parameters
+            fixedRoot = rootParam != null && !rootParam.isBlank() ? createCustomRoot(rootParam) : null;
+            fixedSuffix = suffixParam != null && !suffixParam.isBlank() ? createCustomSuffix(suffixParam) : null;
+        } else {
+            // In normal modes, resolve from database
+            fixedRoot = resolveRoot(rootParam);
+            fixedSuffix = resolveSuffix(suffixParam);
+        }
 
         for (int i = 0; i < limit; i++) {
             Style currentStyle;
-            if (fixedRoot != null) {
+            if (fixedStyle == Style.CUSTOM) {
+                currentStyle = Style.CUSTOM;
+            } else if (fixedRoot != null) {
                 currentStyle = fixedRoot.style();
             } else if (!randomStyle && fixedStyle != null) {
                 currentStyle = fixedStyle;
@@ -292,25 +306,34 @@ public class NameService {
                 currentStyle = getRandomStyle();
             }
 
-            Gender currentGender;
-            if (fixedSuffix != null) {
-                currentGender = fixedSuffix.gender();
-            } else if (!randomGender && fixedGender != null) {
-                currentGender = fixedGender;
-            } else {
-                currentGender = getRandomGender();
-            }
+            Gender currentGender = fixedGender;
 
             List<Root> styleRoots = roots.stream().filter(r -> r.style() == currentStyle).toList();
             List<Suffix> styleSuffixes = suffixes.stream().filter(s -> s.style() == currentStyle).toList();
             List<Connector> styleSimple = simpleConnectors.stream().filter(c -> c.style() == currentStyle).toList();
             List<Connector> styleComplex = complexInfixes.stream().filter(c -> c.style() == currentStyle).toList();
 
-            Root selectedRoot = chooseRoot(styleRoots, fixedRoot);
-            Suffix selectedSuffix = chooseSuffix(styleSuffixes, fixedSuffix, currentGender);
-            Connector selectedConnector1 = chooseConnector(styleSimple, connector1Param);
-            Connector selectedConnector2 = chooseConnector(styleSimple, connector2Param);
-            Connector selectedInfix = chooseConnector(styleComplex, infixParam);
+            Root selectedRoot;
+            Suffix selectedSuffix;
+            Connector selectedConnector1;
+            Connector selectedConnector2;
+            Connector selectedInfix;
+
+            if (currentStyle == Style.CUSTOM) {
+                // In custom mode, use custom components only
+                selectedRoot = fixedRoot;
+                selectedSuffix = fixedSuffix;
+                selectedConnector1 = connector1Param != null && !connector1Param.isBlank() ? createCustomConnector(connector1Param) : null;
+                selectedConnector2 = connector2Param != null && !connector2Param.isBlank() ? createCustomConnector(connector2Param) : null;
+                selectedInfix = infixParam != null && !infixParam.isBlank() ? createCustomConnector(infixParam) : null;
+            } else {
+                // In normal modes, use database components
+                selectedRoot = chooseRoot(styleRoots, fixedRoot);
+                selectedSuffix = chooseSuffix(styleSuffixes, fixedSuffix, currentGender);
+                selectedConnector1 = chooseConnector(styleSimple, connector1Param);
+                selectedConnector2 = chooseConnector(styleSimple, connector2Param);
+                selectedInfix = chooseConnector(styleComplex, infixParam);
+            }
 
             switch (selectedShape) {
                 case "F1" -> results.add(generateFormula1(currentStyle, currentGender, selectedRoot, selectedSuffix));
@@ -333,6 +356,9 @@ public class NameService {
         if (styleParam.equalsIgnoreCase("NORDIC")) {
             return Style.NORDIC;
         }
+        if (styleParam.equalsIgnoreCase("CUSTOM")) {
+            return Style.CUSTOM;
+        }
         return Style.GREEK;
     }
 
@@ -348,8 +374,8 @@ public class NameService {
     }
 
     private Style getRandomStyle() {
-        Style[] styles = Style.values();
-        return styles[random.nextInt(styles.length)];
+        // Return only GREEK or NORDIC, not CUSTOM
+        return random.nextBoolean() ? Style.GREEK : Style.NORDIC;
     }
 
     private Gender getRandomGender() {
@@ -637,6 +663,27 @@ public class NameService {
                 .filter(c -> c.text().equalsIgnoreCase(connectorParam))
                 .findFirst()
                 .orElse(null);
+    }
+
+    private Root createCustomRoot(String text) {
+        if (text == null || text.isBlank()) {
+            return null;
+        }
+        return new Root(text, "", Style.CUSTOM);
+    }
+
+    private Suffix createCustomSuffix(String text) {
+        if (text == null || text.isBlank()) {
+            return null;
+        }
+        return new Suffix(text, Gender.NEUTER, "", Style.CUSTOM);
+    }
+
+    private Connector createCustomConnector(String text) {
+        if (text == null || text.isBlank()) {
+            return null;
+        }
+        return new Connector(text, "custom", "", Style.CUSTOM);
     }
 
     private String capitalize(String str) {

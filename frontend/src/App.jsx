@@ -147,7 +147,32 @@ function App() {
     setStatus('');
     setComponents(null);
     try {
-      const query = buildQuery({ style, gender, formulaMode, formula, root, suffix, connector1, infix, connector2 });
+      // When in custom style, pick random components from the lists
+      let finalRoot = root;
+      let finalConnector1 = connector1;
+      let finalInfix = infix;
+      let finalConnector2 = connector2;
+      let finalSuffix = suffix;
+      
+      if (style === 'CUSTOM') {
+        finalRoot = pickRandom(customRoots);
+        finalConnector1 = pickRandom(customConnectors1);
+        finalInfix = pickRandom(customInfixes);
+        finalConnector2 = pickRandom(customConnectors2);
+        finalSuffix = pickRandom(customSuffixes);
+      }
+      
+      const query = buildQuery({ 
+        style, 
+        gender, 
+        formulaMode, 
+        formula, 
+        root: finalRoot, 
+        suffix: finalSuffix, 
+        connector1: finalConnector1, 
+        infix: finalInfix, 
+        connector2: finalConnector2 
+      });
       const response = await fetch(`/api/names/generate?${query}`);
       if (!response.ok) {
         throw new Error(`${response.status} ${response.statusText}`);
@@ -212,40 +237,55 @@ function App() {
                 setConnector2('');
                 setRoot('');
                 setSuffix('');
+                // Reset custom components
+                setCustomRoots([]);
+                setCustomConnectors1([]);
+                setCustomInfixes([]);
+                setCustomConnectors2([]);
+                setCustomSuffixes([]);
+                setTempRoot('');
+                setTempConnector1('');
+                setTempInfix('');
+                setTempConnector2('');
+                setTempSuffix('');
               }}>
                 {styleOptions.map((option) => (
                   <option key={option.value} value={option.value}>{option.label}</option>
                 ))}
               </select>
             </label>
-            <label>
-              Género
-              <select value={gender} onChange={(e) => {
-                setGender(e.target.value);
-                setSuffix('');
-              }}>
-                {genderOptions.map((option) => (
-                  <option key={option.value} value={option.value}>{option.label}</option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Modo de fórmula
-              <select value={formulaMode} disabled={style === 'CUSTOM'} onChange={(e) => {
-                setFormulaMode(e.target.value);
-                if (e.target.value === 'AUTO') {
-                  setConnector1('');
-                  setInfix('');
-                  setConnector2('');
-                  setRoot('');
-                  setSuffix('');
-                }
-              }}>
-                {formulaModeOptions.map((option) => (
-                  <option key={option.value} value={option.value}>{option.label}</option>
-                ))}
-              </select>
-            </label>
+            {style !== 'CUSTOM' && (
+              <>
+                <label>
+                  Género
+                  <select value={gender} onChange={(e) => {
+                    setGender(e.target.value);
+                    setSuffix('');
+                  }}>
+                    {genderOptions.map((option) => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Modo de fórmula
+                  <select value={formulaMode} onChange={(e) => {
+                    setFormulaMode(e.target.value);
+                    if (e.target.value === 'AUTO') {
+                      setConnector1('');
+                      setInfix('');
+                      setConnector2('');
+                      setRoot('');
+                      setSuffix('');
+                    }
+                  }}>
+                    {formulaModeOptions.map((option) => (
+                      <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
+                  </select>
+                </label>
+              </>
+            )}
             {(formulaMode === 'CUSTOM' || style === 'CUSTOM') && (
               <label>
                 Tipo de fórmula
@@ -254,6 +294,19 @@ function App() {
                   setConnector1('');
                   setInfix('');
                   setConnector2('');
+                  // Reset custom components that are no longer needed
+                  if (!['F2', 'F4', 'F5', 'F6'].includes(e.target.value)) {
+                    setCustomConnectors1([]);
+                    setTempConnector1('');
+                  }
+                  if (!['F3', 'F4', 'F5', 'F6'].includes(e.target.value)) {
+                    setCustomInfixes([]);
+                    setTempInfix('');
+                  }
+                  if (e.target.value !== 'F6') {
+                    setCustomConnectors2([]);
+                    setTempConnector2('');
+                  }
                 }}>
                   {formulaShapeOptions.map((option) => (
                     <option key={option.value} value={option.value}>{option.label}</option>
@@ -263,65 +316,362 @@ function App() {
             )}
           </div>
 
-          {style === 'CUSTOM' ? (
-            <div className="controls-row">
-              <label>
-                Raíz
-                <input
-                  type="text"
-                  placeholder="Escribe tu propia raíz"
-                  value={root}
-                  onChange={(e) => setRoot(e.target.value)}
-                />
-              </label>
-
-              {['F2', 'F4', 'F5', 'F6'].includes(formula) && (
-                <label>
-                  Conector 1
-                  <input
-                    type="text"
-                    placeholder="Escribe tu propio conector"
-                    value={connector1}
-                    onChange={(e) => setConnector1(e.target.value)}
-                  />
-                </label>
+          {style === 'CUSTOM' && (
+            <>
+              {(customRoots.length > 0 || customConnectors1.length > 0 || customInfixes.length > 0 || customConnectors2.length > 0 || customSuffixes.length > 0) && (
+                <div className="saved-components-panel">
+                  <h3>Componentes personalizados guardados</h3>
+                  <div className="saved-components-row">
+                    {customRoots.length > 0 && (
+                      <div className="saved-component-group">
+                        <span className="component-label">Raíces</span>
+                        <div className="saved-chips">
+                          {customRoots.map((item, idx) => (
+                            <span key={`saved-root-${idx}`} className="saved-chip">
+                              {item}
+                              <button
+                                type="button"
+                                className="chip-remove"
+                                onClick={() => setCustomRoots(customRoots.filter((_, i) => i !== idx))}
+                              >
+                                ×
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {customConnectors1.length > 0 && (
+                      <div className="saved-component-group">
+                        <span className="component-label">Conectores 1</span>
+                        <div className="saved-chips">
+                          {customConnectors1.map((item, idx) => (
+                            <span key={`saved-conn1-${idx}`} className="saved-chip">
+                              {item}
+                              <button
+                                type="button"
+                                className="chip-remove"
+                                onClick={() => setCustomConnectors1(customConnectors1.filter((_, i) => i !== idx))}
+                              >
+                                ×
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {customInfixes.length > 0 && (
+                      <div className="saved-component-group">
+                        <span className="component-label">Infijos</span>
+                        <div className="saved-chips">
+                          {customInfixes.map((item, idx) => (
+                            <span key={`saved-infix-${idx}`} className="saved-chip">
+                              {item}
+                              <button
+                                type="button"
+                                className="chip-remove"
+                                onClick={() => setCustomInfixes(customInfixes.filter((_, i) => i !== idx))}
+                              >
+                                ×
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {customConnectors2.length > 0 && (
+                      <div className="saved-component-group">
+                        <span className="component-label">Conectores 2</span>
+                        <div className="saved-chips">
+                          {customConnectors2.map((item, idx) => (
+                            <span key={`saved-conn2-${idx}`} className="saved-chip">
+                              {item}
+                              <button
+                                type="button"
+                                className="chip-remove"
+                                onClick={() => setCustomConnectors2(customConnectors2.filter((_, i) => i !== idx))}
+                              >
+                                ×
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {customSuffixes.length > 0 && (
+                      <div className="saved-component-group">
+                        <span className="component-label">Sufijos</span>
+                        <div className="saved-chips">
+                          {customSuffixes.map((item, idx) => (
+                            <span key={`saved-suffix-${idx}`} className="saved-chip">
+                              {item}
+                              <button
+                                type="button"
+                                className="chip-remove"
+                                onClick={() => setCustomSuffixes(customSuffixes.filter((_, i) => i !== idx))}
+                              >
+                                ×
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
               )}
+              <div className="custom-panel">
+                <div className="custom-row">
+                <div className="custom-input-group">
+                  <label>
+                    Raíz
+                    <div className="input-with-button">
+                      <input
+                        type="text"
+                        placeholder="Escribe una raíz"
+                        value={tempRoot}
+                        onChange={(e) => setTempRoot(e.target.value)}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter' && tempRoot.trim()) {
+                            setCustomRoots([...customRoots, tempRoot.trim()]);
+                            setTempRoot('');
+                          }
+                        }}
+                      />
+                      <button
+                        type="button"
+                        className="small-btn"
+                        onClick={() => {
+                          if (tempRoot.trim()) {
+                            setCustomRoots([...customRoots, tempRoot.trim()]);
+                            setTempRoot('');
+                          }
+                        }}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </label>
+                  {customRoots.length > 0 && (
+                    <div className="chips-container">
+                      {customRoots.map((item, idx) => (
+                        <span key={`root-chip-${idx}`} className="chip">
+                          {item}
+                          <button
+                            type="button"
+                            className="chip-remove"
+                            onClick={() => setCustomRoots(customRoots.filter((_, i) => i !== idx))}
+                          >
+                            ×
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
-              {['F3', 'F4', 'F5', 'F6'].includes(formula) && (
-                <label>
-                  Infijo
-                  <input
-                    type="text"
-                    placeholder="Escribe tu propio infijo"
-                    value={infix}
-                    onChange={(e) => setInfix(e.target.value)}
-                  />
-                </label>
-              )}
+                {['F2', 'F4', 'F5', 'F6'].includes(formula) && (
+                  <div className="custom-input-group">
+                    <label>
+                      Conector 1
+                      <div className="input-with-button">
+                        <input
+                          type="text"
+                          placeholder="Escribe un conector"
+                          value={tempConnector1}
+                          onChange={(e) => setTempConnector1(e.target.value)}
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter' && tempConnector1.trim()) {
+                              setCustomConnectors1([...customConnectors1, tempConnector1.trim()]);
+                              setTempConnector1('');
+                            }
+                          }}
+                        />
+                        <button
+                          type="button"
+                          className="small-btn"
+                          onClick={() => {
+                            if (tempConnector1.trim()) {
+                              setCustomConnectors1([...customConnectors1, tempConnector1.trim()]);
+                              setTempConnector1('');
+                            }
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </label>
+                    {customConnectors1.length > 0 && (
+                      <div className="chips-container">
+                        {customConnectors1.map((item, idx) => (
+                          <span key={`conn1-chip-${idx}`} className="chip">
+                            {item}
+                            <button
+                              type="button"
+                              className="chip-remove"
+                              onClick={() => setCustomConnectors1(customConnectors1.filter((_, i) => i !== idx))}
+                            >
+                              ×
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
 
-              {formula === 'F6' && (
-                <label>
-                  Conector 2
-                  <input
-                    type="text"
-                    placeholder="Escribe tu propio conector"
-                    value={connector2}
-                    onChange={(e) => setConnector2(e.target.value)}
-                  />
-                </label>
-              )}
+                {['F3', 'F4', 'F5', 'F6'].includes(formula) && (
+                  <div className="custom-input-group">
+                    <label>
+                      Infijo
+                      <div className="input-with-button">
+                        <input
+                          type="text"
+                          placeholder="Escribe un infijo"
+                          value={tempInfix}
+                          onChange={(e) => setTempInfix(e.target.value)}
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter' && tempInfix.trim()) {
+                              setCustomInfixes([...customInfixes, tempInfix.trim()]);
+                              setTempInfix('');
+                            }
+                          }}
+                        />
+                        <button
+                          type="button"
+                          className="small-btn"
+                          onClick={() => {
+                            if (tempInfix.trim()) {
+                              setCustomInfixes([...customInfixes, tempInfix.trim()]);
+                              setTempInfix('');
+                            }
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </label>
+                    {customInfixes.length > 0 && (
+                      <div className="chips-container">
+                        {customInfixes.map((item, idx) => (
+                          <span key={`infix-chip-${idx}`} className="chip">
+                            {item}
+                            <button
+                              type="button"
+                              className="chip-remove"
+                              onClick={() => setCustomInfixes(customInfixes.filter((_, i) => i !== idx))}
+                            >
+                              ×
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
 
-              <label>
-                Sufijo
-                <input
-                  type="text"
-                  placeholder="Escribe tu propio sufijo"
-                  value={suffix}
-                  onChange={(e) => setSuffix(e.target.value)}
-                />
-              </label>
+                {formula === 'F6' && (
+                  <div className="custom-input-group">
+                    <label>
+                      Conector 2
+                      <div className="input-with-button">
+                        <input
+                          type="text"
+                          placeholder="Escribe un conector"
+                          value={tempConnector2}
+                          onChange={(e) => setTempConnector2(e.target.value)}
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter' && tempConnector2.trim()) {
+                              setCustomConnectors2([...customConnectors2, tempConnector2.trim()]);
+                              setTempConnector2('');
+                            }
+                          }}
+                        />
+                        <button
+                          type="button"
+                          className="small-btn"
+                          onClick={() => {
+                            if (tempConnector2.trim()) {
+                              setCustomConnectors2([...customConnectors2, tempConnector2.trim()]);
+                              setTempConnector2('');
+                            }
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </label>
+                    {customConnectors2.length > 0 && (
+                      <div className="chips-container">
+                        {customConnectors2.map((item, idx) => (
+                          <span key={`conn2-chip-${idx}`} className="chip">
+                            {item}
+                            <button
+                              type="button"
+                              className="chip-remove"
+                              onClick={() => setCustomConnectors2(customConnectors2.filter((_, i) => i !== idx))}
+                            >
+                              ×
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <div className="custom-input-group">
+                  <label>
+                    Sufijo
+                    <div className="input-with-button">
+                      <input
+                        type="text"
+                        placeholder="Escribe un sufijo"
+                        value={tempSuffix}
+                        onChange={(e) => setTempSuffix(e.target.value)}
+                        onKeyPress={(e) => {
+                          if (e.key === 'Enter' && tempSuffix.trim()) {
+                            setCustomSuffixes([...customSuffixes, tempSuffix.trim()]);
+                            setTempSuffix('');
+                          }
+                        }}
+                      />
+                      <button
+                        type="button"
+                        className="small-btn"
+                        onClick={() => {
+                          if (tempSuffix.trim()) {
+                            setCustomSuffixes([...customSuffixes, tempSuffix.trim()]);
+                            setTempSuffix('');
+                          }
+                        }}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </label>
+                  {customSuffixes.length > 0 && (
+                    <div className="chips-container">
+                      {customSuffixes.map((item, idx) => (
+                        <span key={`suffix-chip-${idx}`} className="chip">
+                          {item}
+                          <button
+                            type="button"
+                            className="chip-remove"
+                            onClick={() => setCustomSuffixes(customSuffixes.filter((_, i) => i !== idx))}
+                          >
+                            ×
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
-          ) : formulaMode === 'CUSTOM' ? (
+            </>
+          )}
+          {style !== 'CUSTOM' && formulaMode === 'CUSTOM' ? (
             <div className="controls-row">
               <label>
                 Raíz

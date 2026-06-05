@@ -5,5 +5,6 @@ package name.generator.model;
  */
 public enum Style {
     GREEK,
-    NORDIC
+    NORDIC,
+    CUSTOM
 }
