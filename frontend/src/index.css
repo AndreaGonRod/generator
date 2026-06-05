@@ -1,0 +1,22 @@
+:root {
+  color-scheme: dark;
+  font-family: 'Montserrat', sans-serif;
+  background: #080a10;
+  color: #f4f4f8;
+  line-height: 1.5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, rgba(255,255,255,0.07), transparent 35%),
+    radial-gradient(circle at 70% 10%, rgba(255, 187, 51, 0.12), transparent 20%),
+    linear-gradient(180deg, #07080f 0%, #06070e 100%);
+}

@@ -28,6 +28,22 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
+task npmInstall(type: Exec) {
+    workingDir = file('frontend')
+    commandLine = ['npm.cmd', 'install']
+    onlyIf { !file('frontend/node_modules').exists() }
+}
+
+task buildFrontend(type: Exec) {
+    dependsOn npmInstall
+    workingDir = file('frontend')
+    commandLine = ['npm.cmd', 'run', 'build']
+}
+
+processResources {
+    dependsOn buildFrontend
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }

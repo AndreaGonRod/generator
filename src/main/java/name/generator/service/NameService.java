@@ -263,24 +263,93 @@ public class NameService {
     /**
      * Genera una lista de nombres según el estilo y el género.
      */
-    public List<GreekName> generateNames(Style style, Gender gender, int count) {
+    public List<GreekName> generateNames(String styleParam, String genderParam, int count,
+                                         String formulaModeParam, String formulaShapeParam,
+                                         String connector1Param, String infixParam, String connector2Param,
+                                         String rootParam, String suffixParam) {
         List<GreekName> results = new ArrayList<>();
         int limit = Math.min(Math.max(count, 1), 50);
-        
-        Style targetStyle = (style == null) ? Style.GREEK : style;
-        Gender targetGender = (gender == null) ? getRandomGender() : gender;
 
-        // Filtrar componentes por estilo para eficiencia
-        List<Root> styleRoots = roots.stream().filter(r -> r.style() == targetStyle).toList();
-        List<Suffix> styleSuffixes = suffixes.stream().filter(s -> s.style() == targetStyle).toList();
-        List<Connector> styleSimple = simpleConnectors.stream().filter(c -> c.style() == targetStyle).toList();
-        List<Connector> styleComplex = complexInfixes.stream().filter(c -> c.style() == targetStyle).toList();
+        boolean randomStyle = styleParam != null && styleParam.equalsIgnoreCase("RANDOM");
+        boolean randomGender = genderParam != null && genderParam.equalsIgnoreCase("RANDOM");
+        boolean autoFormula = formulaModeParam == null || formulaModeParam.isBlank() || formulaModeParam.equalsIgnoreCase("AUTO");
+        String selectedShape = autoFormula ? getRandomFormulaShape() : resolveFormulaShape(formulaShapeParam);
+
+        Style fixedStyle = resolveStyle(styleParam);
+        Gender fixedGender = resolveGender(genderParam);
+        Root fixedRoot = resolveRoot(rootParam);
+        Suffix fixedSuffix = resolveSuffix(suffixParam);
 
         for (int i = 0; i < limit; i++) {
-            Gender nameGender = (gender == null) ? getRandomGender() : targetGender;
-            results.add(generateSingleName(targetStyle, nameGender, styleRoots, styleSuffixes, styleSimple, styleComplex));
+            Style currentStyle;
+            if (fixedRoot != null) {
+                currentStyle = fixedRoot.style();
+            } else if (!randomStyle && fixedStyle != null) {
+                currentStyle = fixedStyle;
+            } else if (fixedSuffix != null) {
+                currentStyle = fixedSuffix.style();
+            } else {
+                currentStyle = getRandomStyle();
+            }
+
+            Gender currentGender;
+            if (fixedSuffix != null) {
+                currentGender = fixedSuffix.gender();
+            } else if (!randomGender && fixedGender != null) {
+                currentGender = fixedGender;
+            } else {
+                currentGender = getRandomGender();
+            }
+
+            List<Root> styleRoots = roots.stream().filter(r -> r.style() == currentStyle).toList();
+            List<Suffix> styleSuffixes = suffixes.stream().filter(s -> s.style() == currentStyle).toList();
+            List<Connector> styleSimple = simpleConnectors.stream().filter(c -> c.style() == currentStyle).toList();
+            List<Connector> styleComplex = complexInfixes.stream().filter(c -> c.style() == currentStyle).toList();
+
+            Root selectedRoot = chooseRoot(styleRoots, fixedRoot);
+            Suffix selectedSuffix = chooseSuffix(styleSuffixes, fixedSuffix, currentGender);
+            Connector selectedConnector1 = chooseConnector(styleSimple, connector1Param);
+            Connector selectedConnector2 = chooseConnector(styleSimple, connector2Param);
+            Connector selectedInfix = chooseConnector(styleComplex, infixParam);
+
+            switch (selectedShape) {
+                case "F1" -> results.add(generateFormula1(currentStyle, currentGender, selectedRoot, selectedSuffix));
+                case "F2" -> results.add(generateFormula2(currentStyle, currentGender, selectedRoot, selectedSuffix, selectedConnector1));
+                case "F3" -> results.add(generateFormula3(currentStyle, currentGender, selectedRoot, selectedSuffix, selectedInfix));
+                case "F4" -> results.add(generateFormula4(currentStyle, currentGender, selectedRoot, selectedSuffix, selectedConnector1, selectedInfix));
+                case "F5" -> results.add(generateFormula5(currentStyle, currentGender, selectedRoot, selectedSuffix, selectedInfix, selectedConnector1));
+                case "F6" -> results.add(generateFormula6(currentStyle, currentGender, selectedRoot, selectedSuffix, selectedConnector1, selectedInfix, selectedConnector2));
+                default -> results.add(generateSingleName(currentStyle, currentGender, styleRoots, styleSuffixes, styleSimple, styleComplex));
+            }
         }
+
         return results;
+    }
+
+    private Style resolveStyle(String styleParam) {
+        if (styleParam == null || styleParam.isBlank() || styleParam.equalsIgnoreCase("GREEK")) {
+            return Style.GREEK;
+        }
+        if (styleParam.equalsIgnoreCase("NORDIC")) {
+            return Style.NORDIC;
+        }
+        return Style.GREEK;
+    }
+
+    private Gender resolveGender(String genderParam) {
+        if (genderParam == null || genderParam.isBlank()) {
+            return null;
+        }
+        try {
+            return Gender.valueOf(genderParam.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    private Style getRandomStyle() {
+        Style[] styles = Style.values();
+        return styles[random.nextInt(styles.length)];
     }
 
     private Gender getRandomGender() {
@@ -288,24 +357,45 @@ public class NameService {
         return genders[random.nextInt(genders.length)];
     }
 
+    private String resolveFormulaShape(String formulaShapeParam) {
+        if (formulaShapeParam == null || formulaShapeParam.isBlank()) {
+            return "F1";
+        }
+        String normalized = formulaShapeParam.toUpperCase();
+        return switch (normalized) {
+            case "F1", "F2", "F3", "F4", "F5", "F6" -> normalized;
+            default -> "F1";
+        };
+    }
+
+    private String getRandomFormulaShape() {
+        String[] shapes = {"F1", "F2", "F3", "F4", "F5", "F6"};
+        return shapes[random.nextInt(shapes.length)];
+    }
+
     public List<GreekName> generateNames(Gender gender, int count) {
-        return generateNames(Style.GREEK, gender, count);
+        return generateNames("GREEK", gender == null ? null : gender.name(), count, null, null, null, null, null, null, null);
+    }
+
+    public List<GreekName> generateNames(Style style, Gender gender, int count) {
+        return generateNames(style == null ? null : style.name(), gender == null ? null : gender.name(), count, null, null, null, null, null, null, null);
     }
 
     private GreekName generateSingleName(Style style, Gender gender, List<Root> styleRoots, List<Suffix> styleSuffixes, List<Connector> styleSimple, List<Connector> styleComplex) {
-        int formulaChoice = random.nextInt(10); // 0-3: F1, 4-7: F2, 8-9: F3
+        int formulaChoice = random.nextInt(12); // 6 fórmulas posibles
         
-        if (formulaChoice < 4) {
-            return generateFormula1(style, gender, styleRoots, styleSuffixes);
-        } else if (formulaChoice < 8) {
-            return generateFormula2(style, gender, styleRoots, styleSuffixes, styleSimple);
-        } else {
-            return generateFormula3(style, gender, styleRoots, styleSuffixes, styleComplex);
-        }
+        return switch (formulaChoice) {
+            case 0, 1 -> generateFormula1(style, gender, styleRoots, styleSuffixes);
+            case 2, 3 -> generateFormula2(style, gender, styleRoots, styleSuffixes, styleSimple);
+            case 4, 5 -> generateFormula3(style, gender, styleRoots, styleSuffixes, styleComplex);
+            case 6, 7 -> generateFormula4(style, gender, getRandom(styleRoots), getRandomSuffix(styleSuffixes, gender), getRandom(styleSimple), getRandom(styleComplex));
+            case 8, 9 -> generateFormula5(style, gender, getRandom(styleRoots), getRandomSuffix(styleSuffixes, gender), getRandom(styleComplex), getRandom(styleSimple));
+            default -> generateFormula6(style, gender, getRandom(styleRoots), getRandomSuffix(styleSuffixes, gender), getRandom(styleSimple), getRandom(styleComplex), getRandom(styleSimple));
+        };
     }
 
     /**
-     * FÓRMULA 1: Raíz + Sufijo Directo
+     * FÓRMULA 1: Prefijo + Sufijo
      */
     private GreekName generateFormula1(Style style, Gender gender, List<Root> styleRoots, List<Suffix> styleSuffixes) {
         Root root = getRandom(styleRoots);
@@ -317,31 +407,30 @@ public class NameService {
         String rawMeaning = suffix.meaning() + " " + root.meaning();
         String meaning = cleanMeaning(rawMeaning);
 
-        return new GreekName(formattedName, gender, meaning, "Fórmula 1: Raíz + Sufijo Directo", style);
+        return new GreekName(formattedName, gender, meaning, "Fórmula 1: Prefijo + Sufijo", style);
     }
 
     /**
-     * FÓRMULA 2: Raíz Consonántica + Conector + Sufijo
+     * FÓRMULA 2: Prefijo + Conector + Sufijo
      */
     private GreekName generateFormula2(Style style, Gender gender, List<Root> styleRoots, List<Suffix> styleSuffixes, List<Connector> styleSimple) {
         Root root = getRandom(styleRoots);
         Connector connector = getRandom(styleSimple);
         Suffix suffix = getRandomSuffix(styleSuffixes, gender);
 
-        String consonantalBase = getConsonantalForm(root.text());
-        String intermediate = combine(consonantalBase, connector.text());
+        String intermediate = combine(root.text(), connector.text());
         String combinedName = combine(intermediate, suffix.text());
         
         String formattedName = capitalize(combinedName);
 
-        String rawMeaning = suffix.meaning() + " " + root.meaning();
+        String rawMeaning = suffix.meaning() + " " + connector.meaning() + " " + root.meaning();
         String meaning = cleanMeaning(rawMeaning);
 
-        return new GreekName(formattedName, gender, meaning, "Fórmula 2: Raíz Consonántica + Conector + Sufijo", style);
+        return new GreekName(formattedName, gender, meaning, "Fórmula 2: Prefijo + Conector + Sufijo", style);
     }
 
     /**
-     * FÓRMULA 3: Raíz + Infijo Complejo + Sufijo
+     * FÓRMULA 3: Prefijo + Infijo + Sufijo
      */
     private GreekName generateFormula3(Style style, Gender gender, List<Root> styleRoots, List<Suffix> styleSuffixes, List<Connector> styleComplex) {
         Root root = getRandom(styleRoots);
@@ -356,7 +445,76 @@ public class NameService {
         String rawMeaning = suffix.meaning() + " " + infix.meaning() + " " + root.meaning();
         String meaning = cleanMeaning(rawMeaning);
 
-        return new GreekName(formattedName, gender, meaning, "Fórmula 3: Raíz + Infijo Complejo + Sufijo", style);
+        return new GreekName(formattedName, gender, meaning, "Fórmula 3: Prefijo + Infijo + Sufijo", style);
+    }
+
+    private GreekName generateFormula1(Style style, Gender gender, Root root, Suffix suffix) {
+        String combinedName = combine(root.text(), suffix.text());
+        String formattedName = capitalize(combinedName);
+
+        String rawMeaning = suffix.meaning() + " " + root.meaning();
+        String meaning = cleanMeaning(rawMeaning);
+
+        return new GreekName(formattedName, gender, meaning, "Fórmula 1: Prefijo + Sufijo", style);
+    }
+
+    private GreekName generateFormula2(Style style, Gender gender, Root root, Suffix suffix, Connector connector) {
+        String intermediate = combine(root.text(), connector.text());
+        String combinedName = combine(intermediate, suffix.text());
+        String formattedName = capitalize(combinedName);
+
+        String rawMeaning = suffix.meaning() + " " + connector.meaning() + " " + root.meaning();
+        String meaning = cleanMeaning(rawMeaning);
+
+        return new GreekName(formattedName, gender, meaning, "Fórmula 2: Prefijo + Conector + Sufijo", style);
+    }
+
+    private GreekName generateFormula3(Style style, Gender gender, Root root, Suffix suffix, Connector infix) {
+        String intermediate = combine(root.text(), infix.text());
+        String combinedName = combine(intermediate, suffix.text());
+        String formattedName = capitalize(combinedName);
+
+        String rawMeaning = suffix.meaning() + " " + infix.meaning() + " " + root.meaning();
+        String meaning = cleanMeaning(rawMeaning);
+
+        return new GreekName(formattedName, gender, meaning, "Fórmula 3: Prefijo + Infijo + Sufijo", style);
+    }
+
+    private GreekName generateFormula4(Style style, Gender gender, Root root, Suffix suffix, Connector connector, Connector infix) {
+        String first = combine(root.text(), connector.text());
+        String second = combine(first, infix.text());
+        String combinedName = combine(second, suffix.text());
+        String formattedName = capitalize(combinedName);
+
+        String rawMeaning = suffix.meaning() + " " + infix.meaning() + " " + connector.meaning() + " " + root.meaning();
+        String meaning = cleanMeaning(rawMeaning);
+
+        return new GreekName(formattedName, gender, meaning, "Fórmula 4: Prefijo + Conector + Infijo + Sufijo", style);
+    }
+
+    private GreekName generateFormula5(Style style, Gender gender, Root root, Suffix suffix, Connector infix, Connector connector) {
+        String first = combine(root.text(), infix.text());
+        String second = combine(first, connector.text());
+        String combinedName = combine(second, suffix.text());
+        String formattedName = capitalize(combinedName);
+
+        String rawMeaning = suffix.meaning() + " " + connector.meaning() + " " + infix.meaning() + " " + root.meaning();
+        String meaning = cleanMeaning(rawMeaning);
+
+        return new GreekName(formattedName, gender, meaning, "Fórmula 5: Prefijo + Infijo + Conector + Sufijo", style);
+    }
+
+    private GreekName generateFormula6(Style style, Gender gender, Root root, Suffix suffix, Connector connector1, Connector infix, Connector connector2) {
+        String first = combine(root.text(), connector1.text());
+        String second = combine(first, infix.text());
+        String third = combine(second, connector2.text());
+        String combinedName = combine(third, suffix.text());
+        String formattedName = capitalize(combinedName);
+
+        String rawMeaning = suffix.meaning() + " " + connector2.meaning() + " " + infix.meaning() + " " + connector1.meaning() + " " + root.meaning();
+        String meaning = cleanMeaning(rawMeaning);
+
+        return new GreekName(formattedName, gender, meaning, "Fórmula 6: Prefijo + Conector + Infijo + Conector + Sufijo", style);
     }
 
     /**
@@ -427,6 +585,60 @@ public class NameService {
         return filtered.get(random.nextInt(filtered.size()));
     }
 
+    private Root resolveRoot(String rootParam) {
+        if (rootParam == null || rootParam.isBlank()) {
+            return null;
+        }
+        return roots.stream()
+                .filter(r -> r.text().equalsIgnoreCase(rootParam))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private Suffix resolveSuffix(String suffixParam) {
+        if (suffixParam == null || suffixParam.isBlank()) {
+            return null;
+        }
+        return suffixes.stream()
+                .filter(s -> s.text().equalsIgnoreCase(suffixParam))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private Root chooseRoot(List<Root> styleRoots, Root fixedRoot) {
+        if (fixedRoot != null) {
+            return fixedRoot;
+        }
+        return getRandom(styleRoots);
+    }
+
+    private Suffix chooseSuffix(List<Suffix> styleSuffixes, Suffix fixedSuffix, Gender gender) {
+        if (fixedSuffix != null) {
+            return fixedSuffix;
+        }
+        return getRandomSuffix(styleSuffixes, gender);
+    }
+
+    private Connector chooseConnector(List<Connector> connectors, String connectorParam) {
+        if (connectorParam != null && !connectorParam.isBlank()) {
+            Connector fixedConnector = findConnector(connectors, connectorParam);
+            if (fixedConnector != null) {
+                return fixedConnector;
+            }
+        }
+        return getRandom(connectors);
+    }
+
+    private Connector findConnector(List<Connector> connectors, String connectorParam) {
+        if (connectorParam == null || connectorParam.isBlank()) {
+            return null;
+        }
+        return connectors.stream()
+                .filter(c -> c.text().equalsIgnoreCase(connectorParam))
+                .findFirst()
+                .orElse(null);
+    }
+
     private String capitalize(String str) {
         if (str == null || str.isEmpty()) return str;
         return Character.toUpperCase(str.charAt(0)) + str.substring(1).toLowerCase();
@@ -446,6 +658,22 @@ public class NameService {
     // Métodos expuestos para la introspección de componentes
     public Map<String, Object> getComponents() {
         return getComponents(Style.GREEK);
+    }
+
+    public Map<String, Object> getComponents(String styleParam) {
+        if (styleParam == null || styleParam.isBlank()) {
+            return getComponents(Style.GREEK);
+        }
+        if (styleParam.equalsIgnoreCase("RANDOM")) {
+            Map<String, Object> components = new HashMap<>();
+            components.put("roots", roots);
+            components.put("simpleConnectors", simpleConnectors);
+            components.put("complexInfixes", complexInfixes);
+            components.put("suffixes", suffixes);
+            return components;
+        }
+        Style style = resolveStyle(styleParam);
+        return getComponents(style);
     }
 
     public Map<String, Object> getComponents(Style style) {

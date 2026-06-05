@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import name.generator.model.Gender;
 import name.generator.model.GreekName;
-import name.generator.model.Style;
 import name.generator.service.NameService;
 
 @RestController
@@ -35,11 +33,18 @@ public class NameController {
      */
     @GetMapping("/generate")
     public List<GreekName> generateNames(
-            @RequestParam(required = false) Style style,
-            @RequestParam(required = false) Gender gender,
-            @RequestParam(defaultValue = "1") int count
+            @RequestParam(required = false) String style,
+            @RequestParam(required = false) String gender,
+            @RequestParam(defaultValue = "4") int count,
+            @RequestParam(required = false) String formulaMode,
+            @RequestParam(required = false) String formula,
+            @RequestParam(required = false) String connector1,
+            @RequestParam(required = false) String infix,
+            @RequestParam(required = false) String connector2,
+            @RequestParam(required = false) String root,
+            @RequestParam(required = false) String suffix
     ) {
-        return nameService.generateNames(style, gender, count);
+        return nameService.generateNames(style, gender, count, formulaMode, formula, connector1, infix, connector2, root, suffix);
     }
 
     /**
@@ -48,7 +53,7 @@ public class NameController {
      */
     @GetMapping("/components")
     public Map<String, Object> getComponents(
-            @RequestParam(required = false) Style style
+            @RequestParam(required = false) String style
     ) {
         return nameService.getComponents(style);
     }
