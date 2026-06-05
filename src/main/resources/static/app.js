@@ -5,7 +5,6 @@ const componentsButton = document.getElementById('components');
 
 const styleInput = document.getElementById('style');
 const genderInput = document.getElementById('gender');
-const countInput = document.getElementById('count');
 
 function showStatus(message, isError = false) {
   status.textContent = message;
@@ -23,7 +22,7 @@ function createQuery(params) {
 async function generateNames() {
   const style = styleInput.value;
   const gender = genderInput.value;
-  const count = countInput.value;
+  const count = 4;
 
   showStatus('Generando nombres...');
   results.innerHTML = '';
