@@ -147,7 +147,13 @@ export function generateLocalNames(params) {
 
   const count = params.count ?? 4;
   const useCustomFormula = params.formulaMode === 'CUSTOM';
-  return Array.from({ length: count }, (_, index) => {
+  const results = [];
+  const seenNames = new Set();
+  let attempts = 0;
+  const maxAttempts = count * 10;
+
+  while (results.length < count && attempts < maxAttempts) {
+    attempts++;
     const style = params.style === 'RANDOM' ? pick(['GREEK', 'NORDIC']) : params.style || 'GREEK';
     const gender = params.gender === 'RANDOM' || !params.gender ? pick(GENDERS) : params.gender;
     const formula = useCustomFormula ? (params.formula || 'F1') : pick(FORMULAS);
@@ -155,7 +161,8 @@ export function generateLocalNames(params) {
     const suffixPool = params.suffix
       ? components.suffixes
       : components.suffixes.filter((item) => item.gender === gender);
-    return buildName({
+      
+    const newName = buildName({
       style,
       gender,
       formula,
@@ -164,9 +171,16 @@ export function generateLocalNames(params) {
       connector1: findOrPick(components.simpleConnectors, params.connector1),
       infix: findOrPick(components.complexInfixes, params.infix),
       connector2: findOrPick(components.simpleConnectors, params.connector2),
-      index
+      index: results.length
     });
-  });
+
+    if (!seenNames.has(newName.name)) {
+      seenNames.add(newName.name);
+      results.push(newName);
+    }
+  }
+  
+  return results;
 }
 
 function generateCustomNames(params) {
