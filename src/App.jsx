@@ -20,6 +20,7 @@ const styleOptions = [
   { value: 'POLYNESIAN', label: 'Polinesio' },
   { value: 'SWAHILI', label: 'Swahili' },
   { value: 'KHUZDUL', label: 'Enano (Khuzdul)' },
+  { value: 'MIX', label: 'Mezcla' },
   { value: 'CUSTOM', label: 'Personalizado' },
   { value: 'RANDOM', label: 'Aleatorio' }
 ];
@@ -66,6 +67,11 @@ function App() {
   const [tempInfix, setTempInfix] = useState('');
   const [tempConnector2, setTempConnector2] = useState('');
   const [tempSuffix, setTempSuffix] = useState('');
+  const [mixRoot, setMixRoot] = useState('GREEK');
+  const [mixConnector1, setMixConnector1] = useState('GREEK');
+  const [mixInfix, setMixInfix] = useState('GREEK');
+  const [mixConnector2, setMixConnector2] = useState('GREEK');
+  const [mixSuffix, setMixSuffix] = useState('GREEK');
   
   const [names, setNames] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -140,7 +146,7 @@ function App() {
 
   const handleStyleChange = (selectedStyle) => {
     setStyle(selectedStyle);
-    const isCustomStyle = selectedStyle === 'CUSTOM';
+    const isCustomStyle = selectedStyle === 'CUSTOM' || selectedStyle === 'MIX';
     setFormulaMode(isCustomStyle ? 'CUSTOM' : 'AUTO');
     setFormula(['ROOT', 'SUFFIX']);
     setConnector1('');
@@ -302,6 +308,36 @@ function App() {
           )}
         </div>
 
+        {style === 'MIX' && formulaMode === 'CUSTOM' && (
+          <div className="custom-selections" style={{ display: 'flex', gap: '1rem', marginTop: '1rem', flexWrap: 'wrap' }}>
+            <div className="control-group" style={{ flex: 1, minWidth: '200px' }}>
+              <label style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em' }}>Raíz</label>
+              <CustomSelect value={mixRoot} onChange={(e) => setMixRoot(e.target.value)} options={[
+                { value: '', label: 'Aleatorio' },
+                ...styleOptions.filter(o => o.value !== 'CUSTOM' && o.value !== 'RANDOM' && o.value !== 'MIX')
+              ]} />
+            </div>
+
+            {formula.includes('INFIX') && (
+              <div className="control-group" style={{ flex: 1, minWidth: '200px' }}>
+                <label style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em' }}>Infijo</label>
+                <CustomSelect value={mixInfix} onChange={(e) => setMixInfix(e.target.value)} options={[
+                  { value: '', label: 'Aleatorio' },
+                  ...styleOptions.filter(o => o.value !== 'CUSTOM' && o.value !== 'RANDOM' && o.value !== 'MIX')
+                ]} />
+              </div>
+            )}
+
+            <div className="control-group" style={{ flex: 1, minWidth: '200px' }}>
+              <label style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em' }}>Sufijo</label>
+              <CustomSelect value={mixSuffix} onChange={(e) => setMixSuffix(e.target.value)} options={[
+                { value: '', label: 'Aleatorio' },
+                ...styleOptions.filter(o => o.value !== 'CUSTOM' && o.value !== 'RANDOM' && o.value !== 'MIX')
+              ]} />
+            </div>
+          </div>
+        )}
+
         {style === 'CUSTOM' && (
           <div className="custom-components">
             <div className="custom-input-list">
@@ -459,7 +495,7 @@ function App() {
           </div>
         )}
 
-        {style !== 'CUSTOM' && formulaMode === 'CUSTOM' && (
+        {style !== 'CUSTOM' && style !== 'MIX' && formulaMode === 'CUSTOM' && (
           <div className="custom-selections">
             <div className="control-group">
               <label>Raíz</label>
