@@ -343,7 +343,6 @@ const DATA = {
   }
 };
 
-const FORMULAS = ['F1', 'F2', 'F3', 'F4', 'F5', 'F6'];
 const GENDERS = ['MALE', 'FEMALE', 'NEUTER'];
 
 const toItem = ([text, meaning], style) => ({ text, meaning, style });
@@ -379,7 +378,7 @@ export function generateLocalNames(params) {
     attempts++;
     const style = params.style === 'RANDOM' ? pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'ELVISH']) : params.style || 'GREEK';
     const gender = params.gender === 'RANDOM' || !params.gender ? pick(GENDERS) : params.gender;
-    const formula = useCustomFormula ? (params.formula || 'F1') : pick(FORMULAS);
+    const formula = useCustomFormula ? (params.formula || ['ROOT', 'SUFFIX']) : getRandomStructure();
     const components = getLocalComponents(style);
     const suffixPool = params.suffix
       ? components.suffixes
@@ -412,6 +411,7 @@ function generateCustomNames(params) {
   const connector1 = params.connector1?.length ? params.connector1 : [''];
   const infixes = params.infix?.length ? params.infix : [''];
   const connector2 = params.connector2?.length ? params.connector2 : [''];
+  const f = params.formula?.length ? params.formula : ['ROOT', 'SUFFIX'];
   const results = [];
 
   for (const root of roots) {
@@ -419,11 +419,11 @@ function generateCustomNames(params) {
       for (const c1 of connector1) {
         for (const infix of infixes) {
           for (const c2 of connector2) {
-            if (!customFormulaIsReady(params.formula, c1, infix, c2)) continue;
+            if (!customFormulaIsReady(f, c1, infix, c2)) continue;
             results.push(buildName({
               style: 'CUSTOM',
               gender: params.gender === 'RANDOM' ? pick(GENDERS) : params.gender,
-              formula: params.formula,
+              formula: f,
               root: { text: root, meaning: '' },
               suffix: { text: suffix, meaning: '' },
               connector1: { text: c1, meaning: '' },
@@ -442,14 +442,13 @@ function generateCustomNames(params) {
 }
 
 function buildName(parts) {
-  const formulaParts = {
-    F1: [parts.root, parts.suffix],
-    F2: [parts.root, parts.connector1, parts.suffix],
-    F3: [parts.root, parts.infix, parts.suffix],
-    F4: [parts.root, parts.connector1, parts.infix, parts.suffix],
-    F5: [parts.root, parts.infix, parts.connector1, parts.suffix],
-    F6: [parts.root, parts.connector1, parts.infix, parts.connector2, parts.suffix]
-  }[parts.formula || 'F1'];
+  const f = parts.formula || ['ROOT', 'SUFFIX'];
+  const formulaParts = [];
+  if (f.includes('ROOT')) formulaParts.push(parts.root);
+  if (f.includes('CONNECTOR1')) formulaParts.push(parts.connector1);
+  if (f.includes('INFIX')) formulaParts.push(parts.infix);
+  if (f.includes('CONNECTOR2')) formulaParts.push(parts.connector2);
+  if (f.includes('SUFFIX')) formulaParts.push(parts.suffix);
 
   const name = capitalize(formulaParts.reduce((result, item) => combine(result, item?.text || ''), ''));
   const meaning = [parts.suffix?.meaning, parts.infix?.meaning, parts.connector1?.meaning, parts.root?.meaning]
@@ -490,10 +489,18 @@ function findOrPick(items, text) {
 }
 
 function customFormulaIsReady(formula, connector1, infix, connector2) {
-  if (['F2', 'F4', 'F5', 'F6'].includes(formula) && !connector1) return false;
-  if (['F3', 'F4', 'F5', 'F6'].includes(formula) && !infix) return false;
-  if (formula === 'F6' && !connector2) return false;
+  if (formula.includes('CONNECTOR1') && !connector1) return false;
+  if (formula.includes('INFIX') && !infix) return false;
+  if (formula.includes('CONNECTOR2') && !connector2) return false;
   return true;
+}
+
+function getRandomStructure() {
+  const f = ['ROOT', 'SUFFIX'];
+  if (Math.random() > 0.5) f.push('CONNECTOR1');
+  if (Math.random() > 0.5) f.push('INFIX');
+  if (f.includes('INFIX') && Math.random() > 0.7) f.push('CONNECTOR2');
+  return f;
 }
 
 function pick(items) {
@@ -528,14 +535,14 @@ function capitalize(value) {
 }
 
 function formulaLabel(formula) {
-  return {
-    F1: 'Formula 1: Prefijo + Sufijo',
-    F2: 'Formula 2: Prefijo + Conector + Sufijo',
-    F3: 'Formula 3: Prefijo + Infijo + Sufijo',
-    F4: 'Formula 4: Prefijo + Conector + Infijo + Sufijo',
-    F5: 'Formula 5: Prefijo + Infijo + Conector + Sufijo',
-    F6: 'Formula 6: Prefijo + Conector + Infijo + Conector + Sufijo'
-  }[formula || 'F1'];
+  const f = formula || ['ROOT', 'SUFFIX'];
+  const labels = [];
+  if (f.includes('ROOT')) labels.push('Prefijo');
+  if (f.includes('CONNECTOR1')) labels.push('Conector 1');
+  if (f.includes('INFIX')) labels.push('Infijo');
+  if (f.includes('CONNECTOR2')) labels.push('Conector 2');
+  if (f.includes('SUFFIX')) labels.push('Sufijo');
+  return 'Estructura: ' + labels.join(' + ');
 }
 
 function generateIPA(name, style) {

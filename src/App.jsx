@@ -2,6 +2,7 @@ import { useMemo, useState, useEffect } from 'react';
 import './App.css';
 import { generateLocalNames, getLocalComponents } from './nameGenerator';
 import { CustomSelect } from './components/CustomSelect';
+import { ChipGroup } from './components/ChipGroup';
 
 const styleOptions = [
   { value: 'GREEK', label: 'Griego Antiguo' },
@@ -26,19 +27,18 @@ const formulaModeOptions = [
 ];
 
 const formulaShapeOptions = [
-  { value: 'F1', label: 'Prefijo + Sufijo' },
-  { value: 'F2', label: 'Prefijo + Conector + Sufijo' },
-  { value: 'F3', label: 'Prefijo + Infijo + Sufijo' },
-  { value: 'F4', label: 'Prefijo + Conector + Infijo + Sufijo' },
-  { value: 'F5', label: 'Prefijo + Infijo + Conector + Sufijo' },
-  { value: 'F6', label: 'Prefijo + Conector + Infijo + Conector + Sufijo' }
+  { value: 'ROOT', label: 'Raíz/Prefijo' },
+  { value: 'CONNECTOR1', label: 'Conector 1' },
+  { value: 'INFIX', label: 'Infijo' },
+  { value: 'CONNECTOR2', label: 'Conector 2' },
+  { value: 'SUFFIX', label: 'Sufijo' }
 ];
 
 function App() {
   const [style, setStyle] = useState('GREEK');
   const [gender, setGender] = useState('MALE');
   const [formulaMode, setFormulaMode] = useState('AUTO');
-  const [formula, setFormula] = useState('F1');
+  const [formula, setFormula] = useState(['ROOT', 'SUFFIX']);
   const [connector1, setConnector1] = useState('');
   const [infix, setInfix] = useState('');
   const [connector2, setConnector2] = useState('');
@@ -65,7 +65,7 @@ function App() {
     setStyle(selectedStyle);
     const isCustomStyle = selectedStyle === 'CUSTOM';
     setFormulaMode(isCustomStyle ? 'CUSTOM' : 'AUTO');
-    setFormula('F1');
+    setFormula(['ROOT', 'SUFFIX']);
     setConnector1('');
     setInfix('');
     setConnector2('');
@@ -149,71 +149,67 @@ function App() {
       </header>
 
       <section className="form-section">
-        <div className="style-selector-group">
-          <label>Origen</label>
-          <div className="style-chips">
-            {styleOptions.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                className={`style-chip ${style === option.value ? 'active' : ''}`}
-                onClick={() => handleStyleChange(option.value)}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        <ChipGroup 
+          label="Origen" 
+          value={style} 
+          options={styleOptions} 
+          onChange={handleStyleChange} 
+        />
 
         <div className="controls-grid">
           
           {style !== 'CUSTOM' && (
             <>
-              <div className="control-group">
-                <label>Género</label>
-                <CustomSelect value={gender} options={genderOptions} onChange={(e) => {
-                  setGender(e.target.value);
+              <ChipGroup 
+                label="Género" 
+                value={gender} 
+                options={genderOptions} 
+                onChange={(val) => {
+                  setGender(val);
                   setSuffix('');
-                }} />
-              </div>
-              <div className="control-group">
-                <label>Fórmula</label>
-                <CustomSelect value={formulaMode} options={formulaModeOptions} onChange={(e) => {
-                  setFormulaMode(e.target.value);
-                  if (e.target.value === 'AUTO') {
+                }} 
+              />
+              <ChipGroup 
+                label="Fórmula" 
+                value={formulaMode} 
+                options={formulaModeOptions} 
+                onChange={(val) => {
+                  setFormulaMode(val);
+                  if (val === 'AUTO') {
                     setConnector1('');
                     setInfix('');
                     setConnector2('');
                     setRoot('');
                     setSuffix('');
                   }
-                }} />
-              </div>
+                }} 
+              />
             </>
           )}
 
           {(formulaMode === 'CUSTOM' || style === 'CUSTOM') && (
-            <div className="control-group">
-              <label>Estructura</label>
-              <CustomSelect value={formula} options={formulaShapeOptions} onChange={(e) => {
-                setFormula(e.target.value);
-                setConnector1('');
-                setInfix('');
-                setConnector2('');
-                if (!['F2', 'F4', 'F5', 'F6'].includes(e.target.value)) {
+            <ChipGroup 
+              label="Estructura" 
+              value={formula} 
+              options={formulaShapeOptions} 
+              multiple={true}
+              mandatory={['ROOT', 'SUFFIX']}
+              onChange={(val) => {
+                setFormula(val);
+                if (!val.includes('CONNECTOR1')) {
                   setCustomConnectors1([]);
                   setTempConnector1('');
                 }
-                if (!['F3', 'F4', 'F5', 'F6'].includes(e.target.value)) {
+                if (!val.includes('INFIX')) {
                   setCustomInfixes([]);
                   setTempInfix('');
                 }
-                if (e.target.value !== 'F6') {
+                if (!val.includes('CONNECTOR2')) {
                   setCustomConnectors2([]);
                   setTempConnector2('');
                 }
-              }} />
-            </div>
+              }} 
+            />
           )}
         </div>
 
@@ -249,7 +245,7 @@ function App() {
                 </div>
               </div>
 
-              {['F2', 'F4', 'F5', 'F6'].includes(formula) && (
+              {formula.includes('CONNECTOR1') && (
                 <div className="custom-input-item">
                   <label>Conector 1</label>
                   <div className="input-wrap">
@@ -280,7 +276,7 @@ function App() {
                 </div>
               )}
 
-              {['F3', 'F4', 'F5', 'F6'].includes(formula) && (
+              {formula.includes('INFIX') && (
                 <div className="custom-input-item">
                   <label>Infijo</label>
                   <div className="input-wrap">
@@ -311,7 +307,7 @@ function App() {
                 </div>
               )}
 
-              {formula === 'F6' && (
+              {formula.includes('CONNECTOR2') && (
                 <div className="custom-input-item">
                   <label>Conector 2</label>
                   <div className="input-wrap">
@@ -384,7 +380,7 @@ function App() {
               ]} />
             </div>
 
-            {['F2', 'F4', 'F5', 'F6'].includes(formula) && (
+            {formula.includes('CONNECTOR1') && (
               <div className="control-group">
                 <label>Conector 1</label>
                 <CustomSelect value={connector1} onChange={(e) => setConnector1(e.target.value)} options={[
@@ -394,7 +390,7 @@ function App() {
               </div>
             )}
 
-            {['F3', 'F4', 'F5', 'F6'].includes(formula) && (
+            {formula.includes('INFIX') && (
               <div className="control-group">
                 <label>Infijo</label>
                 <CustomSelect value={infix} onChange={(e) => setInfix(e.target.value)} options={[
@@ -404,7 +400,7 @@ function App() {
               </div>
             )}
 
-            {formula === 'F6' && (
+            {formula.includes('CONNECTOR2') && (
               <div className="control-group">
                 <label>Conector 2</label>
                 <CustomSelect value={connector2} onChange={(e) => setConnector2(e.target.value)} options={[

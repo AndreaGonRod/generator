@@ -1,0 +1,45 @@
+.chip-group-wrapper {
+  margin-bottom: 24px;
+}
+
+.chip-group-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip-button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #aaa;
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.chip-button:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ededed;
+}
+
+.chip-button.active {
+  background: #ededed;
+  border-color: #ededed;
+  color: #050505;
+  font-weight: 600;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
