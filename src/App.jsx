@@ -67,11 +67,11 @@ function App() {
   const [tempInfix, setTempInfix] = useState('');
   const [tempConnector2, setTempConnector2] = useState('');
   const [tempSuffix, setTempSuffix] = useState('');
-  const [mixRoot, setMixRoot] = useState('GREEK');
-  const [mixConnector1, setMixConnector1] = useState('GREEK');
-  const [mixInfix, setMixInfix] = useState('GREEK');
-  const [mixConnector2, setMixConnector2] = useState('GREEK');
-  const [mixSuffix, setMixSuffix] = useState('GREEK');
+  const [mixRoot, setMixRoot] = useState('');
+  const [mixConnector1, setMixConnector1] = useState('');
+  const [mixInfix, setMixInfix] = useState('');
+  const [mixConnector2, setMixConnector2] = useState('');
+  const [mixSuffix, setMixSuffix] = useState('');
   
   const [names, setNames] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -167,7 +167,7 @@ function App() {
   };
 
   const availableConnectors = useMemo(() => {
-    if (style === 'CUSTOM') {
+    if (style === 'CUSTOM' || style === 'MIX') {
       return { roots: [], simpleConnectors: [], complexInfixes: [], suffixes: [] };
     }
     const styleQuery = style === 'RANDOM' ? 'RANDOM' : style;
@@ -183,7 +183,15 @@ function App() {
       count: style === 'CUSTOM' ? undefined : 6
     };
 
-    if (style === 'CUSTOM') {
+    if (style === 'MIX') {
+      params.mixOrigins = {
+        root: mixRoot,
+        connector1: mixConnector1,
+        infix: mixInfix,
+        connector2: mixConnector2,
+        suffix: mixSuffix
+      };
+    } else if (style === 'CUSTOM') {
       if (customRoots.length > 0) params.root = customRoots;
       if (customConnectors1.length > 0) params.connector1 = customConnectors1;
       if (customInfixes.length > 0) params.infix = customInfixes;
@@ -589,7 +597,7 @@ function App() {
                     className="card"
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
-                    <div className="card-actions">
+                    <div className="copy-action" style={{ position: 'absolute', top: '12px', left: '12px' }}>
                       <button 
                         className="copy-btn" 
                         onClick={() => copyToClipboard(item)}
@@ -597,6 +605,8 @@ function App() {
                       >
                         {copiedId === (item.id || item.name) ? '✅' : '📋'}
                       </button>
+                    </div>
+                    <div className="card-actions">
                       <button 
                         className={`fav-btn ${isFav ? 'active' : ''}`} 
                         onClick={() => toggleFavorite(item)}

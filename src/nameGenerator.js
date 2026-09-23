@@ -1542,6 +1542,24 @@ function generateCustomNames(params) {
   return results;
 }
 
+const STYLE_LABELS = {
+  GREEK: 'Griego Antiguo',
+  NORDIC: 'Nórdico Antiguo',
+  LATIN: 'Latín',
+  JAPANESE: 'Japonés',
+  ELVISH: 'Élfico',
+  VALYRIAN: 'Alto Valyrio',
+  CELTIC: 'Celta',
+  SANSKRIT: 'Sánscrito',
+  SLAVIC: 'Eslavo',
+  EGYPTIAN: 'Egipcio',
+  SUMERIAN: 'Sumerio',
+  ARABIC: 'Árabe Clásico',
+  POLYNESIAN: 'Polinesio',
+  SWAHILI: 'Swahili',
+  KHUZDUL: 'Enano (Khuzdul)'
+};
+
 function buildName(parts) {
   const f = parts.formula || ['ROOT', 'SUFFIX'];
   const formulaParts = [];
@@ -1552,12 +1570,20 @@ function buildName(parts) {
   if (f.includes('SUFFIX')) formulaParts.push(parts.suffix);
 
   const name = capitalize(formulaParts.reduce((result, item) => combine(result, item?.text || ''), ''));
-  const meaning = [parts.suffix?.meaning, parts.infix?.meaning, parts.connector1?.meaning, parts.root?.meaning]
-    .filter(Boolean)
-    .join(' ')
-    .replace(/\s+/g, ' ')
-    .replace(/\bde el\b/g, 'del')
-    .trim();
+  
+  let meaning = '';
+  if (parts.isRandomOrMix) {
+    const origins = [parts.root?.style, parts.connector1?.style, parts.infix?.style, parts.connector2?.style, parts.suffix?.style].filter(Boolean);
+    const uniqueOrigins = Array.from(new Set(origins));
+    meaning = 'Origen: ' + uniqueOrigins.map(o => STYLE_LABELS[o] || o).join(' + ');
+  } else {
+    meaning = [parts.suffix?.meaning, parts.infix?.meaning, parts.connector1?.meaning, parts.root?.meaning]
+      .filter(Boolean)
+      .join(' ')
+      .replace(/\s+/g, ' ')
+      .replace(/\bde el\b/g, 'del')
+      .trim();
+  }
 
   return {
     id: `${name}-${parts.index}`,
