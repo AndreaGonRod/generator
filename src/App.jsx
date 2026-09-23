@@ -371,7 +371,7 @@ function App() {
         )}
 
         {style !== 'CUSTOM' && formulaMode === 'CUSTOM' && (
-          <div className="controls-grid custom-selections">
+          <div className="custom-selections">
             <div className="control-group">
               <label>Raíz</label>
               <CustomSelect value={root} onChange={(e) => setRoot(e.target.value)} options={[

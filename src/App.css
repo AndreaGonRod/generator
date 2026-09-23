@@ -1,5 +1,5 @@
 .page-shell {
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 80px 24px 120px;
   display: flex;
@@ -34,15 +34,15 @@
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 16px;
-  padding: 32px;
+  padding: 40px;
   backdrop-filter: blur(20px);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .controls-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .control-group {
@@ -86,6 +86,9 @@ input:focus {
 .custom-selections {
   padding-top: 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.04);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
 }
 
 .custom-components {
