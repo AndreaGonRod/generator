@@ -451,6 +451,7 @@ function App() {
           {names.map((item) => (
             <div key={item.id} className="card">
               <h2>{item.name}</h2>
+              {item.ipa && <span className="ipa">/{item.ipa}/</span>}
               {item.meaning && <p>{item.meaning}</p>}
             </div>
           ))}

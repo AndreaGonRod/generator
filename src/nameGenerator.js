@@ -239,6 +239,7 @@ function buildName(parts) {
   return {
     id: `${name}-${parts.index}`,
     name,
+    ipa: generateIPA(name, parts.style),
     gender: parts.gender || 'NEUTER',
     meaning,
     formula: formulaLabel(parts.formula),
@@ -312,4 +313,68 @@ function formulaLabel(formula) {
     F5: 'Formula 5: Prefijo + Infijo + Conector + Sufijo',
     F6: 'Formula 6: Prefijo + Conector + Infijo + Conector + Sufijo'
   }[formula || 'F1'];
+}
+
+function generateIPA(name, style) {
+  let ipa = name.toLowerCase();
+  
+  if (style === 'GREEK') {
+    ipa = ipa
+      .replace(/ai/g, 'e')
+      .replace(/ei/g, 'i')
+      .replace(/oi/g, 'i')
+      .replace(/ou/g, 'u')
+      .replace(/au/g, 'af')
+      .replace(/eu/g, 'ef')
+      .replace(/ph/g, 'f')
+      .replace(/th/g, 'θ')
+      .replace(/ch/g, 'x')
+      .replace(/y/g, 'i')
+      .replace(/c/g, 'k')
+      .replace(/x/g, 'ks');
+  } else if (style === 'NORDIC') {
+    ipa = ipa
+      .replace(/ei/g, 'eɪ')
+      .replace(/au/g, 'aʊ')
+      .replace(/th/g, 'θ')
+      .replace(/j/g, 'j')
+      .replace(/y/g, 'y')
+      .replace(/v/g, 'v')
+      .replace(/ö/g, 'ø')
+      .replace(/o/g, 'o')
+      .replace(/rs/g, 'ʂ')
+      .replace(/rn/g, 'rn');
+  } else {
+    ipa = ipa
+      .replace(/ai/g, 'e')
+      .replace(/ou/g, 'u')
+      .replace(/ph/g, 'f')
+      .replace(/th/g, 'θ')
+      .replace(/ch/g, 'x')
+      .replace(/y/g, 'i');
+  }
+
+  // Accent logic (using standard Spanish tildes instead of IPA stress marks for readability)
+  const accents = { 'a': 'á', 'e': 'é', 'i': 'í', 'o': 'ó', 'u': 'ú', 'y': 'ý', 'ø': 'ǿ', 'θ': 'θ' };
+  
+  // Find all vowel characters
+  const vowelsMatches = [...ipa.matchAll(/[aeiouyø]/g)];
+  if (vowelsMatches.length >= 2) {
+    // Penultimate syllable stress
+    const penultMatch = vowelsMatches[vowelsMatches.length - 2];
+    const char = penultMatch[0];
+    const index = penultMatch.index;
+    if (accents[char]) {
+      ipa = ipa.substring(0, index) + accents[char] + ipa.substring(index + 1);
+    }
+  } else if (vowelsMatches.length === 1) {
+    const match = vowelsMatches[0];
+    const char = match[0];
+    const index = match.index;
+    if (accents[char]) {
+      ipa = ipa.substring(0, index) + accents[char] + ipa.substring(index + 1);
+    }
+  }
+
+  return ipa;
 }
