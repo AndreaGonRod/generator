@@ -5,6 +5,7 @@ import { generateLocalNames, getLocalComponents } from './nameGenerator';
 const styleOptions = [
   { value: 'GREEK', label: 'Griego Antiguo' },
   { value: 'NORDIC', label: 'Nórdico Antiguo' },
+  { value: 'LATIN', label: 'Latín' },
   { value: 'CUSTOM', label: 'Personalizado' },
   { value: 'RANDOM', label: 'Aleatorio' }
 ];

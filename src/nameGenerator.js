@@ -155,6 +155,47 @@ const DATA = {
       ['k', 'NEUTER', 'el núcleo de'],
       ['thing', 'NEUTER', 'la asamblea de']
     ]
+  },
+  LATIN: {
+    roots: [
+      ['Lux', 'la luz brillante'],
+      ['Ignis', 'el fuego devorador'],
+      ['Terra', 'la tierra firme'],
+      ['Bellum', 'la guerra implacable'],
+      ['Aevum', 'la eternidad insondable'],
+      ['Sol', 'el sol radiante'],
+      ['Luna', 'la luna mística'],
+      ['Cor', 'el corazón valiente'],
+      ['Vox', 'la voz divina'],
+      ['Fatum', 'el destino ineludible'],
+      ['Pax', 'la paz duradera'],
+      ['Lex', 'la ley inquebrantable'],
+      ['Nox', 'la noche profunda'],
+      ['Rex', 'la realeza suprema']
+    ],
+    simpleConnectors: [
+      ['i', ''],
+      ['u', ''],
+      ['a', '']
+    ],
+    complexInfixes: [
+      ['ifer', 'el que porta'],
+      ['potens', 'el poderoso'],
+      ['victrix', 'la victoriosa'],
+      ['fid', 'la fe de'],
+      ['val', 'el valor de'],
+      ['luc', 'el resplandor de']
+    ],
+    suffixes: [
+      ['us', 'MALE', 'aquel que personifica'],
+      ['ius', 'MALE', 'el hijo legítimo de'],
+      ['or', 'MALE', 'el creador de'],
+      ['a', 'FEMALE', 'la que personifica'],
+      ['ia', 'FEMALE', 'la esencia pura de'],
+      ['trix', 'FEMALE', 'la que gobierna sobre'],
+      ['um', 'NEUTER', 'el concepto de'],
+      ['ium', 'NEUTER', 'el reino eterno de']
+    ]
   }
 };
 
@@ -166,7 +207,7 @@ const toSuffix = ([text, gender, meaning], style) => ({ text, gender, meaning, s
 
 export function getLocalComponents(style = 'GREEK') {
   if (style === 'RANDOM') {
-    return mergeComponents(['GREEK', 'NORDIC']);
+    return mergeComponents(['GREEK', 'NORDIC', 'LATIN']);
   }
 
   const source = DATA[style] || DATA.GREEK;
@@ -192,7 +233,7 @@ export function generateLocalNames(params) {
 
   while (results.length < count && attempts < maxAttempts) {
     attempts++;
-    const style = params.style === 'RANDOM' ? pick(['GREEK', 'NORDIC']) : params.style || 'GREEK';
+    const style = params.style === 'RANDOM' ? pick(['GREEK', 'NORDIC', 'LATIN']) : params.style || 'GREEK';
     const gender = params.gender === 'RANDOM' || !params.gender ? pick(GENDERS) : params.gender;
     const formula = useCustomFormula ? (params.formula || 'F1') : pick(FORMULAS);
     const components = getLocalComponents(style);
@@ -382,6 +423,15 @@ function generateIPA(name, style) {
       .replace(/o/g, 'o')
       .replace(/rs/g, 'ʂ')
       .replace(/rn/g, 'rn');
+  } else if (style === 'LATIN') {
+    ipa = ipa
+      .replace(/qu/g, 'kw')
+      .replace(/ae/g, 'aɪ')
+      .replace(/c/g, 'k')
+      .replace(/v/g, 'w')
+      .replace(/ph/g, 'f')
+      .replace(/th/g, 't')
+      .replace(/y/g, 'i');
   } else {
     ipa = ipa
       .replace(/ai/g, 'e')
