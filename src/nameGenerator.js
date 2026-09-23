@@ -34,7 +34,13 @@ const DATA = {
       ['Bios', 'la esencia de la vida'],
       ['Dyna', 'el poder absoluto'],
       ['Tele', 'la gran distancia'],
-      ['Pneumo', 'el aliento vital']
+      ['Pneumo', 'el aliento vital'],
+      ['Calli', 'la hermosura sublime'],
+      ['Erebo', 'las sombras primigenias'],
+      ['Hiero', 'lo sagrado'],
+      ['Orpho', 'el misterio de la noche'],
+      ['Aethero', 'el cielo superior'],
+      ['Cosmo', 'el orden universal']
     ],
     simpleConnectors: [
       ['o', ''],
@@ -56,7 +62,10 @@ const DATA = {
       ['gen', 'el nacimiento de'],
       ['krat', 'el dominio de'],
       ['log', 'la razón de'],
-      ['mach', 'la batalla de']
+      ['mach', 'la batalla de'],
+      ['makh', 'la lucha por'],
+      ['crat', 'el gobierno de'],
+      ['nom', 'la ley de']
     ],
     suffixes: [
       ['os', 'MALE', 'aquel que representa'],
@@ -67,6 +76,8 @@ const DATA = {
       ['crates', 'MALE', 'el que gobierna con'],
       ['sthenes', 'MALE', 'fuerza indomable de'],
       ['cles', 'MALE', 'fama inmortal de'],
+      ['archos', 'MALE', 'líder supremo de'],
+      ['doros', 'MALE', 'don divino de'],
       ['a', 'FEMALE', 'aquella que posee gracia de'],
       ['ia', 'FEMALE', 'la esencia mística de'],
       ['ne', 'FEMALE', 'suave melodía de'],
@@ -75,11 +86,14 @@ const DATA = {
       ['phila', 'FEMALE', 'amiga de'],
       ['phone', 'FEMALE', 'voz cantante de'],
       ['mene', 'FEMALE', 'fuerza persistente de'],
+      ['nike', 'FEMALE', 'la victoria de'],
+      ['meda', 'FEMALE', 'la astucia de'],
       ['ma', 'NEUTER', 'manifestación concreta de'],
       ['ax', 'NEUTER', 'fuerza industrial de'],
       ['ox', 'NEUTER', 'visión moderna de'],
       ['ic', 'NEUTER', 'sistema de'],
-      ['polis', 'NEUTER', 'gran bastión de']
+      ['polis', 'NEUTER', 'gran bastión de'],
+      ['tron', 'NEUTER', 'el instrumento de']
     ]
   },
   NORDIC: {
@@ -111,7 +125,15 @@ const DATA = {
       ['Loki', 'el caos astuto'],
       ['Freya', 'el amor y la guerra'],
       ['Tyr', 'la justicia implacable'],
-      ['Draug', 'el espíritu vengativo']
+      ['Draug', 'el espíritu vengativo'],
+      ['Surt', 'el fuego negro'],
+      ['Fenrir', 'el lobo devorador'],
+      ['Skoll', 'la persecución'],
+      ['Ymir', 'el gigante primordial'],
+      ['Hugin', 'el pensamiento'],
+      ['Munin', 'la memoria'],
+      ['Asgard', 'el reino dorado'],
+      ['Jotun', 'la escarcha gigante']
     ],
     simpleConnectors: [],
     complexInfixes: [
@@ -122,7 +144,11 @@ const DATA = {
       ['gard', 'la fortaleza de'],
       ['skald', 'el poema épico de'],
       ['jarl', 'el mandato de'],
-      ['vard', 'el custodio de']
+      ['vard', 'el custodio de'],
+      ['varg', 'la ferocidad de'],
+      ['ulf', 'la manada de'],
+      ['storm', 'la tormenta de'],
+      ['hrafn', 'el vuelo de']
     ],
     suffixes: [
       ['or', 'MALE', 'el ejecutor de'],
@@ -134,6 +160,8 @@ const DATA = {
       ['son', 'MALE', 'el hijo de'],
       ['grim', 'MALE', 'la máscara de'],
       ['thjof', 'MALE', 'el saqueador de'],
+      ['thun', 'MALE', 'el trueno de'],
+      ['rek', 'MALE', 'el rey de'],
       ['da', 'FEMALE', 'la batalla de'],
       ['hild', 'FEMALE', 'la batalla de'],
       ['borg', 'FEMALE', 'el castillo protector de'],
@@ -142,11 +170,14 @@ const DATA = {
       ['a', 'FEMALE', 'la gracia de'],
       ['dottir', 'FEMALE', 'la hija de'],
       ['bjorg', 'FEMALE', 'la salvación de'],
+      ['lief', 'FEMALE', 'la amada de'],
       ['um', 'NEUTER', 'el hogar de'],
       ['en', 'NEUTER', 'el elemento de'],
       ['ark', 'NEUTER', 'el territorio de'],
       ['k', 'NEUTER', 'el núcleo de'],
-      ['thing', 'NEUTER', 'la asamblea de']
+      ['thing', 'NEUTER', 'la asamblea de'],
+      ['gard', 'NEUTER', 'la muralla de'],
+      ['heim', 'NEUTER', 'el mundo de']
     ]
   },
   LATIN: {
@@ -164,7 +195,15 @@ const DATA = {
       ['Pax', 'la paz duradera'],
       ['Lex', 'la ley inquebrantable'],
       ['Nox', 'la noche profunda'],
-      ['Rex', 'la realeza suprema']
+      ['Rex', 'la realeza suprema'],
+      ['Umbra', 'la penumbra oscura'],
+      ['Tempus', 'el tiempo incesante'],
+      ['Aura', 'la brisa etérea'],
+      ['Lumen', 'el resplandor ciego'],
+      ['Somnus', 'el sueño eterno'],
+      ['Mortis', 'el final inevitable'],
+      ['Imperium', 'el mandato divino'],
+      ['Sanguis', 'la sangre derramada']
     ],
     simpleConnectors: [
       ['i', ''],
@@ -177,17 +216,27 @@ const DATA = {
       ['victrix', 'la victoriosa'],
       ['fid', 'la fe de'],
       ['val', 'el valor de'],
-      ['luc', 'el resplandor de']
+      ['luc', 'el resplandor de'],
+      ['ficus', 'el creador de'],
+      ['vagus', 'el que vaga por'],
+      ['dolor', 'el sufrimiento de'],
+      ['glor', 'la gloria de']
     ],
     suffixes: [
       ['us', 'MALE', 'aquel que personifica'],
       ['ius', 'MALE', 'el hijo legítimo de'],
       ['or', 'MALE', 'el creador de'],
+      ['ianus', 'MALE', 'perteneciente a'],
+      ['maximus', 'MALE', 'el más grande de'],
       ['a', 'FEMALE', 'la que personifica'],
       ['ia', 'FEMALE', 'la esencia pura de'],
       ['trix', 'FEMALE', 'la que gobierna sobre'],
+      ['ina', 'FEMALE', 'proveniente de'],
+      ['rix', 'FEMALE', 'la reina indomable de'],
       ['um', 'NEUTER', 'el concepto de'],
-      ['ium', 'NEUTER', 'el reino eterno de']
+      ['ium', 'NEUTER', 'el reino eterno de'],
+      ['mentum', 'NEUTER', 'el instrumento de'],
+      ['arium', 'NEUTER', 'el santuario de']
     ]
   },
   JAPANESE: {
@@ -203,7 +252,17 @@ const DATA = {
       ['Ten', 'el cielo infinito'],
       ['Shiro', 'el castillo inexpugnable'],
       ['Hi', 'el fuego abrasador'],
-      ['Mori', 'el bosque sagrado']
+      ['Mori', 'el bosque sagrado'],
+      ['Tora', 'el tigre feroz'],
+      ['Hebi', 'la serpiente sigilosa'],
+      ['Inu', 'el lobo guardián'],
+      ['Hoshi', 'la estrella guía'],
+      ['Yuki', 'la nieve pura'],
+      ['Sora', 'el cielo despejado'],
+      ['Gin', 'la plata brillante'],
+      ['Kin', 'el oro imperial'],
+      ['Tetsu', 'el acero inquebrantable'],
+      ['Ken', 'la espada sagrada']
     ],
     simpleConnectors: [],
     complexInfixes: [
@@ -211,19 +270,30 @@ const DATA = {
       ['mura', 'la aldea de'],
       ['moto', 'el origen de'],
       ['kawa', 'el río de'],
-      ['kami', 'la divinidad de']
+      ['kami', 'la divinidad de'],
+      ['hashi', 'el puente hacia'],
+      ['kaze', 'el viento de'],
+      ['yama', 'el pico de'],
+      ['zaka', 'la colina de']
     ],
     suffixes: [
       ['taro', 'MALE', 'el gran hijo de'],
       ['ro', 'MALE', 'el hijo de'],
       ['shi', 'MALE', 'el guerrero de'],
       ['maru', 'MALE', 'el guardián perfecto de'],
+      ['jiro', 'MALE', 'el segundo hijo de'],
+      ['suke', 'MALE', 'el asistente de'],
+      ['yori', 'MALE', 'la confianza de'],
       ['ko', 'FEMALE', 'la niña de'],
       ['mi', 'FEMALE', 'la belleza de'],
       ['hana', 'FEMALE', 'la flor de'],
+      ['hime', 'FEMALE', 'la princesa de'],
+      ['nami', 'FEMALE', 'la ola de'],
       ['san', 'NEUTER', 'el honorable linaje de'],
       ['sama', 'NEUTER', 'el gran señorío de'],
-      ['shin', 'NEUTER', 'el corazón de']
+      ['shin', 'NEUTER', 'el corazón de'],
+      ['do', 'NEUTER', 'el camino de'],
+      ['jin', 'NEUTER', 'el espíritu de']
     ]
   }
 };
