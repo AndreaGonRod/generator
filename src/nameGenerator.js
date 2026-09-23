@@ -469,6 +469,59 @@ const DATA = {
       ['ost', 'NEUTER', 'la fortaleza élfica de'],
       ['lad', 'NEUTER', 'el valle oculto de']
     ]
+  },
+  VALYRIAN: {
+    roots: [
+      ['Aegon', 'la conquista de hierro'],
+      ['Viser', 'el dragón coronado'],
+      ['Rhae', 'la sangre inquebrantable'],
+      ['Dae', 'la pureza de fuego'],
+      ['Jahaer', 'la sabiduría anciana'],
+      ['Bae', 'la sombra carmesí'],
+      ['Vala', 'la profecía eterna'],
+      ['Syrax', 'la escama dorada'],
+      ['Laen', 'el océano bravo'],
+      ['Gael', 'el canto fiero'],
+      ['Aem', 'el fuego voraz'],
+      ['Mael', 'el lamento rojo'],
+      ['Tyrax', 'la tormenta negra'],
+      ['Merax', 'el terror alado'],
+      ['Vhag', 'la vieja furia'],
+      ['Verm', 'la llama de bronce'],
+      ['Tessar', 'el dardo azul'],
+      ['Sun', 'el fuego solar'],
+      ['Luc', 'la marea fuerte'],
+      ['Jacaer', 'el vuelo intrépido']
+    ],
+    simpleConnectors: [
+      ['a', ''],
+      ['e', ''],
+      ['y', '']
+    ],
+    complexInfixes: [
+      ['na', 'la bendición de'],
+      ['da', 'el poder de'],
+      ['lo', 'la luz de'],
+      ['mo', 'la sombra de'],
+      ['va', 'la magia de']
+    ],
+    suffixes: [
+      ['rys', 'MALE', 'el jinete de'],
+      ['mon', 'MALE', 'el guardián de'],
+      ['lon', 'MALE', 'el señor de'],
+      ['on', 'MALE', 'el que cabalga'],
+      ['gor', 'MALE', 'el destructor de'],
+      ['kar', 'MALE', 'el escudo de'],
+      ['nya', 'FEMALE', 'la reina de'],
+      ['ra', 'FEMALE', 'la princesa de'],
+      ['lys', 'FEMALE', 'la belleza de'],
+      ['la', 'FEMALE', 'la llama de'],
+      ['nera', 'FEMALE', 'la sacerdotisa de'],
+      ['ria', 'FEMALE', 'la heredera de'],
+      ['rion', 'NEUTER', 'la fortaleza de'],
+      ['x', 'NEUTER', 'la bestia de'],
+      ['es', 'NEUTER', 'el secreto de']
+    ]
   }
 };
 
@@ -479,7 +532,7 @@ const toSuffix = ([text, gender, meaning], style) => ({ text, gender, meaning, s
 
 export function getLocalComponents(style = 'GREEK') {
   if (style === 'RANDOM') {
-    return mergeComponents(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'ELVISH']);
+    return mergeComponents(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'ELVISH', 'VALYRIAN']);
   }
 
   const source = DATA[style] || DATA.GREEK;
@@ -505,7 +558,7 @@ export function generateLocalNames(params) {
 
   while (results.length < count && attempts < maxAttempts) {
     attempts++;
-    const style = params.style === 'RANDOM' ? pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'ELVISH']) : params.style || 'GREEK';
+    const style = params.style === 'RANDOM' ? pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'ELVISH', 'VALYRIAN']) : params.style || 'GREEK';
     const gender = params.gender === 'RANDOM' || !params.gender ? pick(GENDERS) : params.gender;
     const formula = useCustomFormula ? (params.formula || ['ROOT', 'SUFFIX']) : getRandomStructure();
     const components = getLocalComponents(style);
@@ -612,7 +665,7 @@ function findOrPick(items, text, type) {
   if (selected) return selected;
   
   // Si no está en este idioma (ej: style=NORDIC pero el usuario forzó una raíz LATIN), buscamos en el resto
-  for (const s of ['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'ELVISH']) {
+  for (const s of ['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'ELVISH', 'VALYRIAN']) {
     const comps = getLocalComponents(s);
     for (const key in comps) {
       const found = comps[key].find((item) => item.text.toLowerCase() === String(text).toLowerCase());

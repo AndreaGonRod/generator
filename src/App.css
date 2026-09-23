@@ -209,6 +209,7 @@ input:focus {
 }
 
 .card {
+  position: relative;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 12px;
@@ -301,4 +302,57 @@ input:focus {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.favorites-toggle {
+  margin-top: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.favorites-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.favorites-toggle.active {
+  background: rgba(255, 215, 0, 0.1);
+  border-color: rgba(255, 215, 0, 0.3);
+  color: #ffd700;
+}
+
+.fav-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 4px;
+  line-height: 1;
+}
+
+.fav-btn:hover {
+  color: rgba(255, 255, 255, 0.6);
+  transform: scale(1.1);
+}
+
+.fav-btn.active {
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.fav-btn.active:hover {
+  transform: scale(1.1);
+  color: #ffed4a;
 }

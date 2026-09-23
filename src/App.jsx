@@ -10,6 +10,7 @@ const styleOptions = [
   { value: 'LATIN', label: 'Latín' },
   { value: 'JAPANESE', label: 'Japonés' },
   { value: 'ELVISH', label: 'Élfico' },
+  { value: 'VALYRIAN', label: 'Alto Valyrio' },
   { value: 'CUSTOM', label: 'Personalizado' },
   { value: 'RANDOM', label: 'Aleatorio' }
 ];
@@ -60,6 +61,30 @@ function App() {
   const [names, setNames] = useState([]);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
+  
+  const [view, setView] = useState('GENERATOR'); // 'GENERATOR' | 'FAVORITES'
+  const [favorites, setFavorites] = useState(() => {
+    try {
+      const saved = localStorage.getItem('nomenguard_favorites');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('nomenguard_favorites', JSON.stringify(favorites));
+  }, [favorites]);
+
+  const toggleFavorite = (item) => {
+    setFavorites(prev => {
+      const isFav = prev.some(f => f.name === item.name);
+      if (isFav) {
+        return prev.filter(f => f.name !== item.name);
+      }
+      return [...prev, item];
+    });
+  };
 
   const handleStyleChange = (selectedStyle) => {
     setStyle(selectedStyle);
@@ -146,8 +171,15 @@ function App() {
       <header className="header">
         <h1>Nomen</h1>
         <p>Descubre nombres con significado.</p>
+        <button 
+          className={`favorites-toggle ${view === 'FAVORITES' ? 'active' : ''}`}
+          onClick={() => setView(view === 'FAVORITES' ? 'GENERATOR' : 'FAVORITES')}
+        >
+          {view === 'FAVORITES' ? 'Volver al Generador' : `⭐ Favoritos (${favorites.length})`}
+        </button>
       </header>
 
+      {view === 'GENERATOR' && (
       <section className="form-section">
         <ChipGroup 
           label="Origen" 
@@ -431,25 +463,42 @@ function App() {
           </button>
         </div>
       </section>
+      )}
 
       <section className="results">
         {status && <p className="status-message">{status}</p>}
         <div className="cards">
-          {loading
+          {view === 'FAVORITES' && favorites.length === 0 && (
+            <div className="empty-state" style={{ gridColumn: '1 / -1', textAlign: 'center', color: 'var(--text-muted)' }}>
+              <p>Aún no has guardado ningún nombre favorito.</p>
+            </div>
+          )}
+
+          {loading && view === 'GENERATOR'
             ? Array.from({ length: 6 }).map((_, idx) => (
                 <div key={`skeleton-${idx}`} className="skeleton-card" />
               ))
-            : names.map((item, index) => (
-                <div 
-                  key={item.id} 
-                  className="card"
-                  style={{ animationDelay: `${index * 0.05}s` }}
-                >
-                  <h2>{item.name}</h2>
-                  {item.ipa && <span className="ipa">/{item.ipa}/</span>}
-                  {item.meaning && <p>{item.meaning}</p>}
-                </div>
-              ))}
+            : (view === 'FAVORITES' ? favorites : names).map((item, index) => {
+                const isFav = favorites.some(f => f.name === item.name);
+                return (
+                  <div 
+                    key={item.id || item.name} 
+                    className="card"
+                    style={{ animationDelay: `${index * 0.05}s` }}
+                  >
+                    <button 
+                      className={`fav-btn ${isFav ? 'active' : ''}`} 
+                      onClick={() => toggleFavorite(item)}
+                      title={isFav ? "Quitar de favoritos" : "Añadir a favoritos"}
+                    >
+                      ★
+                    </button>
+                    <h2>{item.name}</h2>
+                    {item.ipa && <span className="ipa">/{item.ipa}/</span>}
+                    {item.meaning && <p>{item.meaning}</p>}
+                  </div>
+                );
+              })}
         </div>
       </section>
     </main>
