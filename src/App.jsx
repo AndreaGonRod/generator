@@ -435,13 +435,21 @@ function App() {
       <section className="results">
         {status && <p className="status-message">{status}</p>}
         <div className="cards">
-          {names.map((item) => (
-            <div key={item.id} className="card">
-              <h2>{item.name}</h2>
-              {item.ipa && <span className="ipa">/{item.ipa}/</span>}
-              {item.meaning && <p>{item.meaning}</p>}
-            </div>
-          ))}
+          {loading
+            ? Array.from({ length: 6 }).map((_, idx) => (
+                <div key={`skeleton-${idx}`} className="skeleton-card" />
+              ))
+            : names.map((item, index) => (
+                <div 
+                  key={item.id} 
+                  className="card"
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  <h2>{item.name}</h2>
+                  {item.ipa && <span className="ipa">/{item.ipa}/</span>}
+                  {item.meaning && <p>{item.meaning}</p>}
+                </div>
+              ))}
         </div>
       </section>
     </main>
