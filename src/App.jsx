@@ -62,7 +62,10 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
   
-  const [view, setView] = useState('GENERATOR'); // 'GENERATOR' | 'FAVORITES'
+  const [view, setView] = useState('GENERATOR'); // 'GENERATOR' | 'FAVORITES' | 'HISTORY'
+  const [history, setHistory] = useState([]);
+  const [copiedId, setCopiedId] = useState(null);
+  
   const [favorites, setFavorites] = useState(() => {
     try {
       const saved = localStorage.getItem('nomenguard_favorites');
@@ -84,6 +87,47 @@ function App() {
       }
       return [...prev, item];
     });
+  };
+
+  const copyToClipboard = (item) => {
+    const textToCopy = `${item.name}${item.meaning ? ` - ${item.meaning}` : ''}`;
+    navigator.clipboard.writeText(textToCopy);
+    setCopiedId(item.id || item.name);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const exportFavorites = () => {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(favorites));
+    const dlAnchorElem = document.createElement('a');
+    dlAnchorElem.setAttribute("href", dataStr);
+    dlAnchorElem.setAttribute("download", "nomenguard_favorites.json");
+    dlAnchorElem.click();
+  };
+
+  const importFavorites = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const imported = JSON.parse(event.target.result);
+        if (Array.isArray(imported)) {
+          setFavorites(prev => {
+            const newFavs = [...prev];
+            imported.forEach(item => {
+              if (!newFavs.some(f => f.name === item.name)) {
+                newFavs.push(item);
+              }
+            });
+            return newFavs;
+          });
+        }
+      } catch (err) {
+        console.error("Failed to parse JSON", err);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
   };
 
   const handleStyleChange = (selectedStyle) => {
@@ -149,6 +193,11 @@ function App() {
       const params = buildGenerationParams();
       const results = generateLocalNames(params);
       setNames(results);
+      setHistory(prev => {
+        const newHistory = [...results, ...prev];
+        // Keep only the last 50
+        return newHistory.slice(0, 50);
+      });
       if (results.length === 0) {
         setStatus('No se encontraron resultados.');
       }
@@ -171,12 +220,20 @@ function App() {
       <header className="header">
         <h1>Nomen</h1>
         <p>Descubre nombres con significado.</p>
-        <button 
-          className={`favorites-toggle ${view === 'FAVORITES' ? 'active' : ''}`}
-          onClick={() => setView(view === 'FAVORITES' ? 'GENERATOR' : 'FAVORITES')}
-        >
-          {view === 'FAVORITES' ? 'Volver al Generador' : `⭐ Favoritos (${favorites.length})`}
-        </button>
+        <div className="header-actions">
+          <button 
+            className={`favorites-toggle ${view === 'HISTORY' ? 'active' : ''}`}
+            onClick={() => setView(view === 'HISTORY' ? 'GENERATOR' : 'HISTORY')}
+          >
+            {view === 'HISTORY' ? 'Volver al Generador' : `⏱️ Historial (${history.length})`}
+          </button>
+          <button 
+            className={`favorites-toggle ${view === 'FAVORITES' ? 'active' : ''}`}
+            onClick={() => setView(view === 'FAVORITES' ? 'GENERATOR' : 'FAVORITES')}
+          >
+            {view === 'FAVORITES' ? 'Volver al Generador' : `⭐ Favoritos (${favorites.length})`}
+          </button>
+        </div>
       </header>
 
       {view === 'GENERATOR' && (
@@ -467,10 +524,26 @@ function App() {
 
       <section className="results">
         {status && <p className="status-message">{status}</p>}
+        
+        {view === 'FAVORITES' && (
+          <div className="favorites-actions">
+            <button className="btn-secondary" onClick={exportFavorites}>📤 Exportar JSON</button>
+            <label className="btn-secondary">
+              📥 Cargar JSON
+              <input type="file" accept=".json" onChange={importFavorites} hidden />
+            </label>
+          </div>
+        )}
+
         <div className="cards">
           {view === 'FAVORITES' && favorites.length === 0 && (
             <div className="empty-state" style={{ gridColumn: '1 / -1', textAlign: 'center', color: 'var(--text-muted)' }}>
               <p>Aún no has guardado ningún nombre favorito.</p>
+            </div>
+          )}
+          {view === 'HISTORY' && history.length === 0 && (
+            <div className="empty-state" style={{ gridColumn: '1 / -1', textAlign: 'center', color: 'var(--text-muted)' }}>
+              <p>Aún no hay historial en esta sesión.</p>
             </div>
           )}
 
@@ -478,7 +551,7 @@ function App() {
             ? Array.from({ length: 6 }).map((_, idx) => (
                 <div key={`skeleton-${idx}`} className="skeleton-card" />
               ))
-            : (view === 'FAVORITES' ? favorites : names).map((item, index) => {
+            : (view === 'FAVORITES' ? favorites : view === 'HISTORY' ? history : names).map((item, index) => {
                 const isFav = favorites.some(f => f.name === item.name);
                 return (
                   <div 
@@ -492,6 +565,13 @@ function App() {
                       title={isFav ? "Quitar de favoritos" : "Añadir a favoritos"}
                     >
                       ★
+                    </button>
+                    <button 
+                      className="copy-btn" 
+                      onClick={() => copyToClipboard(item)}
+                      title="Copiar al portapapeles"
+                    >
+                      {copiedId === (item.id || item.name) ? '✅' : '📋'}
                     </button>
                     <h2>{item.name}</h2>
                     {item.ipa && <span className="ipa">/{item.ipa}/</span>}
