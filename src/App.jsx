@@ -6,6 +6,7 @@ const styleOptions = [
   { value: 'GREEK', label: 'Griego Antiguo' },
   { value: 'NORDIC', label: 'Nórdico Antiguo' },
   { value: 'LATIN', label: 'Latín' },
+  { value: 'JAPANESE', label: 'Japonés' },
   { value: 'CUSTOM', label: 'Personalizado' },
   { value: 'RANDOM', label: 'Aleatorio' }
 ];

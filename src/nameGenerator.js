@@ -196,6 +196,47 @@ const DATA = {
       ['um', 'NEUTER', 'el concepto de'],
       ['ium', 'NEUTER', 'el reino eterno de']
     ]
+  },
+  JAPANESE: {
+    roots: [
+      ['Ryu', 'el dragón ancestral'],
+      ['Kami', 'el espíritu divino'],
+      ['Kage', 'la sombra silenciosa'],
+      ['Tsuki', 'la luna mística'],
+      ['Kaze', 'el viento cortante'],
+      ['Yama', 'la montaña eterna'],
+      ['Mizu', 'el agua que fluye'],
+      ['Kura', 'la oscuridad profunda'],
+      ['Ten', 'el cielo infinito'],
+      ['Shiro', 'el castillo inexpugnable'],
+      ['Hi', 'el fuego abrasador'],
+      ['Mori', 'el bosque sagrado']
+    ],
+    simpleConnectors: [
+      ['a', ''],
+      ['i', ''],
+      ['o', ''],
+      ['u', '']
+    ],
+    complexInfixes: [
+      ['no', 'perteneciente a'],
+      ['mura', 'la aldea de'],
+      ['moto', 'el origen de'],
+      ['kawa', 'el río de'],
+      ['kami', 'la divinidad de']
+    ],
+    suffixes: [
+      ['taro', 'MALE', 'el gran hijo de'],
+      ['ro', 'MALE', 'el hijo de'],
+      ['shi', 'MALE', 'el guerrero de'],
+      ['maru', 'MALE', 'el guardián perfecto de'],
+      ['ko', 'FEMALE', 'la niña de'],
+      ['mi', 'FEMALE', 'la belleza de'],
+      ['hana', 'FEMALE', 'la flor de'],
+      ['san', 'NEUTER', 'el honorable linaje de'],
+      ['sama', 'NEUTER', 'el gran señorío de'],
+      ['shin', 'NEUTER', 'el corazón de']
+    ]
   }
 };
 
@@ -207,7 +248,7 @@ const toSuffix = ([text, gender, meaning], style) => ({ text, gender, meaning, s
 
 export function getLocalComponents(style = 'GREEK') {
   if (style === 'RANDOM') {
-    return mergeComponents(['GREEK', 'NORDIC', 'LATIN']);
+    return mergeComponents(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE']);
   }
 
   const source = DATA[style] || DATA.GREEK;
@@ -233,7 +274,7 @@ export function generateLocalNames(params) {
 
   while (results.length < count && attempts < maxAttempts) {
     attempts++;
-    const style = params.style === 'RANDOM' ? pick(['GREEK', 'NORDIC', 'LATIN']) : params.style || 'GREEK';
+    const style = params.style === 'RANDOM' ? pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE']) : params.style || 'GREEK';
     const gender = params.gender === 'RANDOM' || !params.gender ? pick(GENDERS) : params.gender;
     const formula = useCustomFormula ? (params.formula || 'F1') : pick(FORMULAS);
     const components = getLocalComponents(style);
@@ -432,6 +473,13 @@ function generateIPA(name, style) {
       .replace(/ph/g, 'f')
       .replace(/th/g, 't')
       .replace(/y/g, 'i');
+  } else if (style === 'JAPANESE') {
+    ipa = ipa
+      .replace(/sh/g, 'ɕ')
+      .replace(/ch/g, 'tɕ')
+      .replace(/j/g, 'dʑ')
+      .replace(/y/g, 'j')
+      .replace(/r/g, 'ɾ');
   } else {
     ipa = ipa
       .replace(/ai/g, 'e')
