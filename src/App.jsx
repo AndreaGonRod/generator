@@ -3,8 +3,8 @@ import './App.css';
 import { generateLocalNames, getLocalComponents } from './nameGenerator';
 
 const styleOptions = [
-  { value: 'GREEK', label: 'Griego' },
-  { value: 'NORDIC', label: 'Nórdico' },
+  { value: 'GREEK', label: 'Griego Antiguo' },
+  { value: 'NORDIC', label: 'Nórdico Antiguo' },
   { value: 'CUSTOM', label: 'Personalizado' },
   { value: 'RANDOM', label: 'Aleatorio' }
 ];
