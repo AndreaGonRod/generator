@@ -40,7 +40,25 @@ const DATA = {
       ['Hiero', 'lo sagrado'],
       ['Orpho', 'el misterio de la noche'],
       ['Aethero', 'el cielo superior'],
-      ['Cosmo', 'el orden universal']
+      ['Cosmo', 'el orden universal'],
+      ['Eros', 'el deseo apasionado'],
+      ['Thanatos', 'la muerte serena'],
+      ['Hypnos', 'el trance profundo'],
+      ['Cyto', 'la célula vital'],
+      ['Ptero', 'el ala dorada'],
+      ['Archon', 'el magistrado supremo'],
+      ['Basi', 'el rey antiguo'],
+      ['Cler', 'la suerte designada'],
+      ['Dactyl', 'el dedo hábil'],
+      ['Echino', 'lo espinoso'],
+      ['Giga', 'el coloso gigante'],
+      ['Heli', 'el giro en espiral'],
+      ['Icon', 'la imagen venerada'],
+      ['Kine', 'el movimiento perpetuo'],
+      ['Lito', 'la piedra inamovible'],
+      ['Macro', 'la grandeza expansiva'],
+      ['Nekro', 'el sepulcro silente'],
+      ['Odonto', 'la ferocidad mordaz']
     ],
     simpleConnectors: [
       ['o', ''],
@@ -93,7 +111,17 @@ const DATA = {
       ['ox', 'NEUTER', 'visión moderna de'],
       ['ic', 'NEUTER', 'sistema de'],
       ['polis', 'NEUTER', 'gran bastión de'],
-      ['tron', 'NEUTER', 'el instrumento de']
+      ['tron', 'NEUTER', 'el instrumento de'],
+      ['makhos', 'MALE', 'el fiero guerrero de'],
+      ['phoros', 'MALE', 'el portador eterno de'],
+      ['tis', 'FEMALE', 'la tejedora de destinos de'],
+      ['gram', 'NEUTER', 'el antiguo mensaje de'],
+      ['genes', 'MALE', 'el engendrado por'],
+      ['poulos', 'MALE', 'el descendiente de'],
+      ['mache', 'FEMALE', 'la que lucha por'],
+      ['krateia', 'FEMALE', 'la soberana de'],
+      ['phobia', 'NEUTER', 'el terror a'],
+      ['mania', 'NEUTER', 'la pasión desmedida por']
     ]
   },
   NORDIC: {
@@ -133,7 +161,24 @@ const DATA = {
       ['Hugin', 'el pensamiento'],
       ['Munin', 'la memoria'],
       ['Asgard', 'el reino dorado'],
-      ['Jotun', 'la escarcha gigante']
+      ['Jotun', 'la escarcha gigante'],
+      ['Kari', 'el viento helado'],
+      ['Leif', 'el heredero sagrado'],
+      ['Ivar', 'el arquero letal'],
+      ['Sven', 'el joven guerrero'],
+      ['Gud', 'la deidad nórdica'],
+      ['Axe', 'el hacha de guerra'],
+      ['Berg', 'la montaña escarpada'],
+      ['Dal', 'el valle profundo'],
+      ['Eld', 'el fuego crepitante'],
+      ['Fisk', 'el pez plateado'],
+      ['Gull', 'el oro brillante'],
+      ['Hav', 'el mar embravecido'],
+      ['Is', 'el hielo quebradizo'],
+      ['Jern', 'el hierro forjado'],
+      ['Korp', 'el cuervo mensajero'],
+      ['Ljos', 'la luz cegadora'],
+      ['Mork', 'el bosque oscuro']
     ],
     simpleConnectors: [],
     complexInfixes: [
@@ -177,7 +222,18 @@ const DATA = {
       ['k', 'NEUTER', 'el núcleo de'],
       ['thing', 'NEUTER', 'la asamblea de'],
       ['gard', 'NEUTER', 'la muralla de'],
-      ['heim', 'NEUTER', 'el mundo de']
+      ['heim', 'NEUTER', 'el mundo de'],
+      ['kell', 'MALE', 'el casco forjado de'],
+      ['stein', 'MALE', 'el pilar sagrado de'],
+      ['frid', 'FEMALE', 'la hermosa pacífica de'],
+      ['gerd', 'FEMALE', 'el baluarte heroico de'],
+      ['hus', 'NEUTER', 'el salón noble de'],
+      ['skeg', 'MALE', 'el barbudo de'],
+      ['bjorn', 'MALE', 'el oso feroz de'],
+      ['fin', 'FEMALE', 'la magia blanca de'],
+      ['laug', 'FEMALE', 'la prometida bañada en'],
+      ['vik', 'NEUTER', 'la bahía de'],
+      ['fjell', 'NEUTER', 'la montaña sagrada de']
     ]
   },
   LATIN: {
@@ -203,7 +259,22 @@ const DATA = {
       ['Somnus', 'el sueño eterno'],
       ['Mortis', 'el final inevitable'],
       ['Imperium', 'el mandato divino'],
-      ['Sanguis', 'la sangre derramada']
+      ['Sanguis', 'la sangre derramada'],
+      ['Vita', 'la vida vibrante'],
+      ['Caelum', 'el cielo estrellado'],
+      ['Aqua', 'el agua purificadora'],
+      ['Flamma', 'la llama sagrada'],
+      ['Argentum', 'la plata pura'],
+      ['Aurum', 'el oro resplandeciente'],
+      ['Cinis', 'la ceniza ardiente'],
+      ['Deus', 'la divinidad creadora'],
+      ['Ferrum', 'el hierro letal'],
+      ['Gladius', 'la espada justiciera'],
+      ['Homo', 'la raza humana'],
+      ['Ira', 'la furia divina'],
+      ['Lapis', 'la piedra preciosa'],
+      ['Mare', 'el vasto océano'],
+      ['Natura', 'la esencia natural']
     ],
     simpleConnectors: [
       ['i', ''],
@@ -236,7 +307,17 @@ const DATA = {
       ['um', 'NEUTER', 'el concepto de'],
       ['ium', 'NEUTER', 'el reino eterno de'],
       ['mentum', 'NEUTER', 'el instrumento de'],
-      ['arium', 'NEUTER', 'el santuario de']
+      ['arium', 'NEUTER', 'el santuario de'],
+      ['ensis', 'MALE', 'el habitante orgulloso de'],
+      ['ana', 'FEMALE', 'la noble dama de'],
+      ['torium', 'NEUTER', 'el lugar de descanso de'],
+      ['fex', 'MALE', 'el hacedor de'],
+      ['ger', 'MALE', 'el que carga con'],
+      ['fer', 'MALE', 'el que lleva'],
+      ['fica', 'FEMALE', 'la forjadora de'],
+      ['gera', 'FEMALE', 'la que sostiene'],
+      ['cola', 'NEUTER', 'el habitante de'],
+      ['cida', 'NEUTER', 'el asesino de']
     ]
   },
   JAPANESE: {
@@ -262,7 +343,23 @@ const DATA = {
       ['Gin', 'la plata brillante'],
       ['Kin', 'el oro imperial'],
       ['Tetsu', 'el acero inquebrantable'],
-      ['Ken', 'la espada sagrada']
+      ['Ken', 'la espada sagrada'],
+      ['Aki', 'el otoño dorado'],
+      ['Haru', 'la primavera florida'],
+      ['Natsu', 'el verano ardiente'],
+      ['Fuyu', 'el invierno blanco'],
+      ['Kuro', 'la oscuridad abisal'],
+      ['Ame', 'la lluvia purificadora'],
+      ['Ishi', 'la roca ancestral'],
+      ['Umi', 'el mar profundo'],
+      ['Okami', 'el lobo espectral'],
+      ['Kaminari', 'el trueno ensordecedor'],
+      ['Kusa', 'la hierba silvestre'],
+      ['Shima', 'la isla solitaria'],
+      ['Tani', 'el valle oculto'],
+      ['Cho', 'la mariposa efímera'],
+      ['Neko', 'el gato de la suerte'],
+      ['Hashi', 'el puente espiritual']
     ],
     simpleConnectors: [],
     complexInfixes: [
@@ -293,7 +390,18 @@ const DATA = {
       ['sama', 'NEUTER', 'el gran señorío de'],
       ['shin', 'NEUTER', 'el corazón de'],
       ['do', 'NEUTER', 'el camino de'],
-      ['jin', 'NEUTER', 'el espíritu de']
+      ['jin', 'NEUTER', 'el espíritu de'],
+      ['yoshi', 'MALE', 'el justo servidor de'],
+      ['ka', 'FEMALE', 'el aroma dulce de'],
+      ['e', 'FEMALE', 'la pintura viva de'],
+      ['ku', 'NEUTER', 'el distrito ancestral de'],
+      ['katsu', 'MALE', 'la victoria de'],
+      ['hide', 'MALE', 'la excelencia de'],
+      ['nobu', 'MALE', 'la fe de'],
+      ['miya', 'FEMALE', 'el santuario de'],
+      ['ki', 'FEMALE', 'la esperanza de'],
+      ['mura', 'NEUTER', 'la aldea oculta de'],
+      ['kawa', 'NEUTER', 'el río cristalino de']
     ]
   },
   ELVISH: {
@@ -311,7 +419,23 @@ const DATA = {
       ['Nim', 'el blanco inmaculado'],
       ['Mor', 'la oscuridad antigua'],
       ['Cal', 'la luz del amanecer'],
-      ['Rin', 'el recuerdo eterno']
+      ['Rin', 'el recuerdo eterno'],
+      ['Anar', 'el sol radiante'],
+      ['Ithil', 'la luna plateada'],
+      ['Giliath', 'el manto de estrellas'],
+      ['Aear', 'el océano profundo'],
+      ['Luin', 'el azul etéreo'],
+      ['Alf', 'el cisne majestuoso'],
+      ['Breg', 'la ferocidad repentina'],
+      ['Curu', 'la habilidad artesana'],
+      ['Dae', 'la sombra densa'],
+      ['Eryn', 'el bosque frondoso'],
+      ['Fanu', 'la nube luminosa'],
+      ['Glin', 'el destello fugaz'],
+      ['Hiril', 'la dama noble'],
+      ['Iaur', 'lo antiguo y sabio'],
+      ['Lhae', 'el hilo del destino'],
+      ['Maeth', 'la batalla gloriosa']
     ],
     simpleConnectors: [
       ['i', ''],
@@ -338,7 +462,12 @@ const DATA = {
       ['riel', 'FEMALE', 'la doncella coronada de'],
       ['lin', 'NEUTER', 'la melodía de'],
       ['falas', 'NEUTER', 'la costa de'],
-      ['dor', 'NEUTER', 'la tierra de']
+      ['dor', 'NEUTER', 'la tierra de'],
+      ['las', 'MALE', 'la hoja perenne de'],
+      ['gorn', 'MALE', 'el árbol vigoroso de'],
+      ['wing', 'FEMALE', 'la espuma del mar de'],
+      ['ost', 'NEUTER', 'la fortaleza élfica de'],
+      ['lad', 'NEUTER', 'el valle oculto de']
     ]
   }
 };
