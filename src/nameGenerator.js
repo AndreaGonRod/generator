@@ -113,14 +113,7 @@ const DATA = {
       ['Tyr', 'la justicia implacable'],
       ['Draug', 'el espíritu vengativo']
     ],
-    simpleConnectors: [
-      ['ar', ''],
-      ['ir', ''],
-      ['ur', ''],
-      ['el', ''],
-      ['en', ''],
-      ['st', '']
-    ],
+    simpleConnectors: [],
     complexInfixes: [
       ['ey', 'la herencia de'],
       ['au', 'el destino de'],
@@ -212,12 +205,7 @@ const DATA = {
       ['Hi', 'el fuego abrasador'],
       ['Mori', 'el bosque sagrado']
     ],
-    simpleConnectors: [
-      ['a', ''],
-      ['i', ''],
-      ['o', ''],
-      ['u', '']
-    ],
+    simpleConnectors: [],
     complexInfixes: [
       ['no', 'perteneciente a'],
       ['mura', 'la aldea de'],
