@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from 'react';
 import './App.css';
 import { generateLocalNames, getLocalComponents } from './nameGenerator';
+import { CustomSelect } from './components/CustomSelect';
 
 const styleOptions = [
   { value: 'GREEK', label: 'Griego Antiguo' },
@@ -129,7 +130,7 @@ function App() {
         <div className="controls-grid">
           <div className="control-group">
             <label>Origen</label>
-            <select value={style} onChange={(e) => {
+            <CustomSelect value={style} options={styleOptions} onChange={(e) => {
               const selectedStyle = e.target.value;
               setStyle(selectedStyle);
               const isCustomStyle = selectedStyle === 'CUSTOM';
@@ -150,29 +151,21 @@ function App() {
               setTempInfix('');
               setTempConnector2('');
               setTempSuffix('');
-            }}>
-              {styleOptions.map((option) => (
-                <option key={option.value} value={option.value}>{option.label}</option>
-              ))}
-            </select>
+            }} />
           </div>
           
           {style !== 'CUSTOM' && (
             <>
               <div className="control-group">
                 <label>Género</label>
-                <select value={gender} onChange={(e) => {
+                <CustomSelect value={gender} options={genderOptions} onChange={(e) => {
                   setGender(e.target.value);
                   setSuffix('');
-                }}>
-                  {genderOptions.map((option) => (
-                    <option key={option.value} value={option.value}>{option.label}</option>
-                  ))}
-                </select>
+                }} />
               </div>
               <div className="control-group">
                 <label>Fórmula</label>
-                <select value={formulaMode} onChange={(e) => {
+                <CustomSelect value={formulaMode} options={formulaModeOptions} onChange={(e) => {
                   setFormulaMode(e.target.value);
                   if (e.target.value === 'AUTO') {
                     setConnector1('');
@@ -181,11 +174,7 @@ function App() {
                     setRoot('');
                     setSuffix('');
                   }
-                }}>
-                  {formulaModeOptions.map((option) => (
-                    <option key={option.value} value={option.value}>{option.label}</option>
-                  ))}
-                </select>
+                }} />
               </div>
             </>
           )}
@@ -193,7 +182,7 @@ function App() {
           {(formulaMode === 'CUSTOM' || style === 'CUSTOM') && (
             <div className="control-group">
               <label>Estructura</label>
-              <select value={formula} onChange={(e) => {
+              <CustomSelect value={formula} options={formulaShapeOptions} onChange={(e) => {
                 setFormula(e.target.value);
                 setConnector1('');
                 setInfix('');
@@ -210,11 +199,7 @@ function App() {
                   setCustomConnectors2([]);
                   setTempConnector2('');
                 }
-              }}>
-                {formulaShapeOptions.map((option) => (
-                  <option key={option.value} value={option.value}>{option.label}</option>
-                ))}
-              </select>
+              }} />
             </div>
           )}
         </div>
@@ -380,63 +365,53 @@ function App() {
           <div className="controls-grid custom-selections">
             <div className="control-group">
               <label>Raíz</label>
-              <select value={root} onChange={(e) => setRoot(e.target.value)}>
-                <option value="">Aleatorio</option>
-                {availableConnectors.roots.map((item, index) => (
-                  <option key={`root-${index}`} value={item.text}>{item.text}</option>
-                ))}
-              </select>
+              <CustomSelect value={root} onChange={(e) => setRoot(e.target.value)} options={[
+                { value: '', label: 'Aleatorio' },
+                ...availableConnectors.roots.map((item) => ({ value: item.text, label: item.text }))
+              ]} />
             </div>
 
             {['F2', 'F4', 'F5', 'F6'].includes(formula) && (
               <div className="control-group">
                 <label>Conector 1</label>
-                <select value={connector1} onChange={(e) => setConnector1(e.target.value)}>
-                  <option value="">Aleatorio</option>
-                  {availableConnectors.simpleConnectors.map((item, index) => (
-                    <option key={`connector1-${index}`} value={item.text}>{item.text}</option>
-                  ))}
-                </select>
+                <CustomSelect value={connector1} onChange={(e) => setConnector1(e.target.value)} options={[
+                  { value: '', label: 'Aleatorio' },
+                  ...availableConnectors.simpleConnectors.map((item) => ({ value: item.text, label: item.text }))
+                ]} />
               </div>
             )}
 
             {['F3', 'F4', 'F5', 'F6'].includes(formula) && (
               <div className="control-group">
                 <label>Infijo</label>
-                <select value={infix} onChange={(e) => setInfix(e.target.value)}>
-                  <option value="">Aleatorio</option>
-                  {availableConnectors.complexInfixes.map((item, index) => (
-                    <option key={`infix-${index}`} value={item.text}>{item.text}</option>
-                  ))}
-                </select>
+                <CustomSelect value={infix} onChange={(e) => setInfix(e.target.value)} options={[
+                  { value: '', label: 'Aleatorio' },
+                  ...availableConnectors.complexInfixes.map((item) => ({ value: item.text, label: item.text }))
+                ]} />
               </div>
             )}
 
             {formula === 'F6' && (
               <div className="control-group">
                 <label>Conector 2</label>
-                <select value={connector2} onChange={(e) => setConnector2(e.target.value)}>
-                  <option value="">Aleatorio</option>
-                  {availableConnectors.simpleConnectors.map((item, index) => (
-                    <option key={`connector2-${index}`} value={item.text}>{item.text}</option>
-                  ))}
-                </select>
+                <CustomSelect value={connector2} onChange={(e) => setConnector2(e.target.value)} options={[
+                  { value: '', label: 'Aleatorio' },
+                  ...availableConnectors.simpleConnectors.map((item) => ({ value: item.text, label: item.text }))
+                ]} />
               </div>
             )}
 
             <div className="control-group">
               <label>Sufijo</label>
-              <select value={suffix} onChange={(e) => setSuffix(e.target.value)}>
-                <option value="">Aleatorio</option>
-                {availableConnectors.suffixes
+              <CustomSelect value={suffix} onChange={(e) => setSuffix(e.target.value)} options={[
+                { value: '', label: 'Aleatorio' },
+                ...availableConnectors.suffixes
                   .filter((item) => {
                     const suffixGender = item.gender?.name ?? item.gender;
                     return gender === 'RANDOM' || suffixGender === gender;
                   })
-                  .map((item, index) => (
-                    <option key={`suffix-${index}`} value={item.text}>{item.text}</option>
-                  ))}
-              </select>
+                  .map((item) => ({ value: item.text, label: item.text }))
+              ]} />
             </div>
           </div>
         )}
