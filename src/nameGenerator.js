@@ -145,7 +145,7 @@ export function generateLocalNames(params) {
     return generateCustomNames(params);
   }
 
-  const count = params.count ?? 4;
+  const count = params.count ?? 6;
   const useCustomFormula = params.formulaMode === 'CUSTOM';
   const results = [];
   const seenNames = new Set();

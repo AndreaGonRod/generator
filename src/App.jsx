@@ -71,7 +71,7 @@ function App() {
       gender,
       formulaMode,
       formula,
-      count: style === 'CUSTOM' ? undefined : 4
+      count: style === 'CUSTOM' ? undefined : 6
     };
 
     if (style === 'CUSTOM') {
