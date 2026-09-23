@@ -491,7 +491,19 @@ const DATA = {
       ['Tessar', 'el dardo azul'],
       ['Sun', 'el fuego solar'],
       ['Luc', 'la marea fuerte'],
-      ['Jacaer', 'el vuelo intrépido']
+      ['Jacaer', 'el vuelo intrépido'],
+      ['Zaldrīz', 'el dragón indomable'],
+      ['Perzys', 'el fuego eterno'],
+      ['Ānogar', 'la sangre valyria'],
+      ['Morghul', 'la muerte segura'],
+      ['Dohaer', 'el servicio leal'],
+      ['Valar', 'los hombres mortales'],
+      ['Muña', 'la madre protectora'],
+      ['Kepa', 'el padre sabio'],
+      ['Vēzos', 'el sol naciente'],
+      ['Bāne', 'el calor abrasador'],
+      ['Gela', 'el hielo antiguo'],
+      ['Hontes', 'el ave majestuosa']
     ],
     simpleConnectors: [
       ['a', ''],
@@ -520,7 +532,18 @@ const DATA = {
       ['ria', 'FEMALE', 'la heredera de'],
       ['rion', 'NEUTER', 'la fortaleza de'],
       ['x', 'NEUTER', 'la bestia de'],
-      ['es', 'NEUTER', 'el secreto de']
+      ['es', 'NEUTER', 'el secreto de'],
+      ['ax', 'MALE', 'el conquistador de'],
+      ['vos', 'MALE', 'el señor de fuego de'],
+      ['arys', 'MALE', 'el príncipe de'],
+      ['ys', 'MALE', 'el nacido de'],
+      ['enya', 'FEMALE', 'la conquistadora de'],
+      ['aera', 'FEMALE', 'la llama brillante de'],
+      ['ela', 'FEMALE', 'la elegida de'],
+      ['yssa', 'FEMALE', 'la sacerdotisa oscura de'],
+      ['os', 'NEUTER', 'la ceniza de'],
+      ['ys', 'NEUTER', 'el legado de'],
+      ['ar', 'NEUTER', 'la eternidad de']
     ]
   }
 };
