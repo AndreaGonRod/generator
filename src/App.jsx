@@ -277,7 +277,10 @@ function App() {
             <ChipGroup 
               label="Estructura" 
               value={formula} 
-              options={formulaShapeOptions} 
+              options={formulaShapeOptions.filter(opt => 
+                (opt.value !== 'CONNECTOR1' && opt.value !== 'CONNECTOR2') || 
+                (availableConnectors.simpleConnectors && availableConnectors.simpleConnectors.length > 0)
+              )} 
               multiple={true}
               mandatory={['ROOT', 'SUFFIX']}
               onChange={(val) => {
