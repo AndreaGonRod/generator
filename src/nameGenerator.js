@@ -477,15 +477,21 @@ function mergeComponents(styles) {
   }, { roots: [], simpleConnectors: [], complexInfixes: [], suffixes: [] });
 }
 
-function findOrPick(items, text) {
-  if (!text) {
-    return pick(items);
-  }
+function findOrPick(items, text, type) {
+  if (!text) return pick(items);
   const selected = items.find((item) => item.text.toLowerCase() === String(text).toLowerCase());
-  if (selected) {
-    return selected;
+  if (selected) return selected;
+  
+  // Si no está en este idioma (ej: style=NORDIC pero el usuario forzó una raíz LATIN), buscamos en el resto
+  for (const s of ['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'ELVISH']) {
+    const comps = getLocalComponents(s);
+    for (const key in comps) {
+      const found = comps[key].find((item) => item.text.toLowerCase() === String(text).toLowerCase());
+      if (found) return found;
+    }
   }
-  return pick(items);
+  
+  return { text, meaning: '' };
 }
 
 function customFormulaIsReady(formula, connector1, infix, connector2) {
