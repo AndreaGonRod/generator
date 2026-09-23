@@ -328,10 +328,16 @@ input:focus {
   color: #ffd700;
 }
 
-.fav-btn {
+.card-actions {
   position: absolute;
   top: 12px;
   right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fav-btn {
   background: none;
   border: none;
   color: rgba(255, 255, 255, 0.2);
@@ -340,6 +346,9 @@ input:focus {
   transition: all 0.2s ease;
   padding: 4px;
   line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .fav-btn:hover {
@@ -358,9 +367,6 @@ input:focus {
 }
 
 .copy-btn {
-  position: absolute;
-  top: 12px;
-  right: 48px;
   background: none;
   border: none;
   color: rgba(255, 255, 255, 0.2);
@@ -369,6 +375,9 @@ input:focus {
   transition: all 0.2s ease;
   padding: 4px;
   line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .copy-btn:hover {

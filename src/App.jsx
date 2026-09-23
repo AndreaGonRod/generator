@@ -11,6 +11,15 @@ const styleOptions = [
   { value: 'JAPANESE', label: 'Japonés' },
   { value: 'ELVISH', label: 'Élfico' },
   { value: 'VALYRIAN', label: 'Alto Valyrio' },
+  { value: 'CELTIC', label: 'Celta' },
+  { value: 'SANSKRIT', label: 'Sánscrito' },
+  { value: 'SLAVIC', label: 'Eslavo' },
+  { value: 'EGYPTIAN', label: 'Egipcio' },
+  { value: 'SUMERIAN', label: 'Sumerio' },
+  { value: 'ARABIC', label: 'Árabe Clásico' },
+  { value: 'POLYNESIAN', label: 'Polinesio' },
+  { value: 'SWAHILI', label: 'Swahili' },
+  { value: 'KHUZDUL', label: 'Enano (Khuzdul)' },
   { value: 'CUSTOM', label: 'Personalizado' },
   { value: 'RANDOM', label: 'Aleatorio' }
 ];
@@ -62,8 +71,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
   
-  const [view, setView] = useState('GENERATOR'); // 'GENERATOR' | 'FAVORITES' | 'HISTORY'
-  const [history, setHistory] = useState([]);
+  const [view, setView] = useState('GENERATOR'); // 'GENERATOR' | 'FAVORITES'
   const [copiedId, setCopiedId] = useState(null);
   
   const [favorites, setFavorites] = useState(() => {
@@ -193,11 +201,6 @@ function App() {
       const params = buildGenerationParams();
       const results = generateLocalNames(params);
       setNames(results);
-      setHistory(prev => {
-        const newHistory = [...results, ...prev];
-        // Keep only the last 50
-        return newHistory.slice(0, 50);
-      });
       if (results.length === 0) {
         setStatus('No se encontraron resultados.');
       }
@@ -221,12 +224,6 @@ function App() {
         <h1>Nomen</h1>
         <p>Descubre nombres con significado.</p>
         <div className="header-actions">
-          <button 
-            className={`favorites-toggle ${view === 'HISTORY' ? 'active' : ''}`}
-            onClick={() => setView(view === 'HISTORY' ? 'GENERATOR' : 'HISTORY')}
-          >
-            {view === 'HISTORY' ? 'Volver al Generador' : `⏱️ Historial (${history.length})`}
-          </button>
           <button 
             className={`favorites-toggle ${view === 'FAVORITES' ? 'active' : ''}`}
             onClick={() => setView(view === 'FAVORITES' ? 'GENERATOR' : 'FAVORITES')}
@@ -541,17 +538,11 @@ function App() {
               <p>Aún no has guardado ningún nombre favorito.</p>
             </div>
           )}
-          {view === 'HISTORY' && history.length === 0 && (
-            <div className="empty-state" style={{ gridColumn: '1 / -1', textAlign: 'center', color: 'var(--text-muted)' }}>
-              <p>Aún no hay historial en esta sesión.</p>
-            </div>
-          )}
-
           {loading && view === 'GENERATOR'
             ? Array.from({ length: 6 }).map((_, idx) => (
                 <div key={`skeleton-${idx}`} className="skeleton-card" />
               ))
-            : (view === 'FAVORITES' ? favorites : view === 'HISTORY' ? history : names).map((item, index) => {
+            : (view === 'FAVORITES' ? favorites : names).map((item, index) => {
                 const isFav = favorites.some(f => f.name === item.name);
                 return (
                   <div 
@@ -559,20 +550,22 @@ function App() {
                     className="card"
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
-                    <button 
-                      className={`fav-btn ${isFav ? 'active' : ''}`} 
-                      onClick={() => toggleFavorite(item)}
-                      title={isFav ? "Quitar de favoritos" : "Añadir a favoritos"}
-                    >
-                      ★
-                    </button>
-                    <button 
-                      className="copy-btn" 
-                      onClick={() => copyToClipboard(item)}
-                      title="Copiar al portapapeles"
-                    >
-                      {copiedId === (item.id || item.name) ? '✅' : '📋'}
-                    </button>
+                    <div className="card-actions">
+                      <button 
+                        className="copy-btn" 
+                        onClick={() => copyToClipboard(item)}
+                        title="Copiar al portapapeles"
+                      >
+                        {copiedId === (item.id || item.name) ? '✅' : '📋'}
+                      </button>
+                      <button 
+                        className={`fav-btn ${isFav ? 'active' : ''}`} 
+                        onClick={() => toggleFavorite(item)}
+                        title={isFav ? "Quitar de favoritos" : "Añadir a favoritos"}
+                      >
+                        ★
+                      </button>
+                    </div>
                     <h2>{item.name}</h2>
                     {item.ipa && <span className="ipa">/{item.ipa}/</span>}
                     {item.meaning && <p>{item.meaning}</p>}
