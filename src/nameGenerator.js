@@ -295,6 +295,51 @@ const DATA = {
       ['do', 'NEUTER', 'el camino de'],
       ['jin', 'NEUTER', 'el espíritu de']
     ]
+  },
+  ELVISH: {
+    roots: [
+      ['Celeb', 'la plata brillante'],
+      ['Mith', 'la niebla gris'],
+      ['Galad', 'la luz radiante'],
+      ['Orod', 'la montaña alta'],
+      ['Elen', 'la estrella fugaz'],
+      ['Taur', 'el gran bosque'],
+      ['Loth', 'la flor sagrada'],
+      ['Gil', 'la estrella pura'],
+      ['Gwae', 'el viento susurrante'],
+      ['Fael', 'la justicia dorada'],
+      ['Nim', 'el blanco inmaculado'],
+      ['Mor', 'la oscuridad antigua'],
+      ['Cal', 'la luz del amanecer'],
+      ['Rin', 'el recuerdo eterno']
+    ],
+    simpleConnectors: [
+      ['i', ''],
+      ['a', ''],
+      ['e', '']
+    ],
+    complexInfixes: [
+      ['dil', 'el devoto de'],
+      ['dur', 'el sirviente de'],
+      ['ndil', 'el amante de'],
+      ['los', 'la flor de nieve de'],
+      ['wen', 'la doncella de'],
+      ['rion', 'el príncipe de']
+    ],
+    suffixes: [
+      ['ion', 'MALE', 'el hijo de'],
+      ['dir', 'MALE', 'el guardián de'],
+      ['rond', 'MALE', 'el custodio de la caverna de'],
+      ['mir', 'MALE', 'la joya de'],
+      ['randir', 'MALE', 'el peregrino de'],
+      ['iel', 'FEMALE', 'la hija de'],
+      ['wen', 'FEMALE', 'la doncella de'],
+      ['thien', 'FEMALE', 'la musa de'],
+      ['riel', 'FEMALE', 'la doncella coronada de'],
+      ['lin', 'NEUTER', 'la melodía de'],
+      ['falas', 'NEUTER', 'la costa de'],
+      ['dor', 'NEUTER', 'la tierra de']
+    ]
   }
 };
 
@@ -306,7 +351,7 @@ const toSuffix = ([text, gender, meaning], style) => ({ text, gender, meaning, s
 
 export function getLocalComponents(style = 'GREEK') {
   if (style === 'RANDOM') {
-    return mergeComponents(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE']);
+    return mergeComponents(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'ELVISH']);
   }
 
   const source = DATA[style] || DATA.GREEK;
@@ -332,7 +377,7 @@ export function generateLocalNames(params) {
 
   while (results.length < count && attempts < maxAttempts) {
     attempts++;
-    const style = params.style === 'RANDOM' ? pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE']) : params.style || 'GREEK';
+    const style = params.style === 'RANDOM' ? pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'ELVISH']) : params.style || 'GREEK';
     const gender = params.gender === 'RANDOM' || !params.gender ? pick(GENDERS) : params.gender;
     const formula = useCustomFormula ? (params.formula || 'F1') : pick(FORMULAS);
     const components = getLocalComponents(style);
@@ -538,6 +583,14 @@ function generateIPA(name, style) {
       .replace(/j/g, 'dʑ')
       .replace(/y/g, 'j')
       .replace(/r/g, 'ɾ');
+  } else if (style === 'ELVISH') {
+    ipa = ipa
+      .replace(/th/g, 'θ')
+      .replace(/dh/g, 'ð')
+      .replace(/ch/g, 'x')
+      .replace(/ph/g, 'f')
+      .replace(/lh/g, 'ɬ')
+      .replace(/y/g, 'y');
   } else {
     ipa = ipa
       .replace(/ai/g, 'e')

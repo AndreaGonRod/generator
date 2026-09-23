@@ -7,6 +7,7 @@ const styleOptions = [
   { value: 'NORDIC', label: 'Nórdico Antiguo' },
   { value: 'LATIN', label: 'Latín' },
   { value: 'JAPANESE', label: 'Japonés' },
+  { value: 'ELVISH', label: 'Élfico' },
   { value: 'CUSTOM', label: 'Personalizado' },
   { value: 'RANDOM', label: 'Aleatorio' }
 ];
