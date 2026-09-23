@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import './App.css';
+import { generateLocalNames, getLocalComponents } from './nameGenerator';
 
 const styleOptions = [
   { value: 'GREEK', label: 'Griego' },
@@ -29,39 +30,12 @@ const formulaShapeOptions = [
   { value: 'F6', label: 'Prefijo + Conector + Infijo + Conector + Sufijo' }
 ];
 
-function buildQuery(params) {
-  const query = new URLSearchParams();
-  // For CUSTOM style, don't set a fixed count - let backend calculate combinations
-  if (params.style !== 'CUSTOM') {
-    query.set('count', '4');
-  }
-  if (params.style) query.set('style', params.style);
-  if (params.gender) query.set('gender', params.gender);
-  if (params.formulaMode) query.set('formulaMode', params.formulaMode);
-  if (params.formula) query.set('formula', params.formula);
-  
-  // Support both single values and arrays
-  if (params.root) {
-    const rootValue = Array.isArray(params.root) ? params.root.join(',') : params.root;
-    if (rootValue) query.set('root', rootValue);
-  }
-  if (params.suffix) {
-    const suffixValue = Array.isArray(params.suffix) ? params.suffix.join(',') : params.suffix;
-    if (suffixValue) query.set('suffix', suffixValue);
-  }
-  if (params.connector1) {
-    const connector1Value = Array.isArray(params.connector1) ? params.connector1.join(',') : params.connector1;
-    if (connector1Value) query.set('connector1', connector1Value);
-  }
-  if (params.infix) {
-    const infixValue = Array.isArray(params.infix) ? params.infix.join(',') : params.infix;
-    if (infixValue) query.set('infix', infixValue);
-  }
-  if (params.connector2) {
-    const connector2Value = Array.isArray(params.connector2) ? params.connector2.join(',') : params.connector2;
-    if (connector2Value) query.set('connector2', connector2Value);
-  }
-  return query.toString();
+function getNameFontSize(name) {
+  if (!name) return '1.4rem';
+  if (name.length > 20) return '0.9rem';
+  if (name.length > 15) return '1.05rem';
+  if (name.length > 12) return '1.2rem';
+  return '1.4rem';
 }
 
 function App() {
@@ -75,25 +49,56 @@ function App() {
   const [root, setRoot] = useState('');
   const [suffix, setSuffix] = useState('');
   
-  // Custom personalized mode: lists of components
   const [customRoots, setCustomRoots] = useState([]);
   const [customConnectors1, setCustomConnectors1] = useState([]);
   const [customInfixes, setCustomInfixes] = useState([]);
   const [customConnectors2, setCustomConnectors2] = useState([]);
   const [customSuffixes, setCustomSuffixes] = useState([]);
   
-  // Temporary input fields for custom mode
   const [tempRoot, setTempRoot] = useState('');
   const [tempConnector1, setTempConnector1] = useState('');
   const [tempInfix, setTempInfix] = useState('');
   const [tempConnector2, setTempConnector2] = useState('');
   const [tempSuffix, setTempSuffix] = useState('');
   
-  const [availableConnectors, setAvailableConnectors] = useState({ roots: [], simpleConnectors: [], complexInfixes: [], suffixes: [] });
   const [names, setNames] = useState([]);
   const [components, setComponents] = useState(null);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
+
+  const availableConnectors = useMemo(() => {
+    if (style === 'CUSTOM') {
+      return { roots: [], simpleConnectors: [], complexInfixes: [], suffixes: [] };
+    }
+    const styleQuery = style === 'RANDOM' ? 'RANDOM' : style;
+    return getLocalComponents(styleQuery);
+  }, [style]);
+
+  const buildGenerationParams = () => {
+    const params = {
+      style,
+      gender,
+      formulaMode,
+      formula,
+      count: style === 'CUSTOM' ? undefined : 4
+    };
+
+    if (style === 'CUSTOM') {
+      if (customRoots.length > 0) params.root = customRoots;
+      if (customConnectors1.length > 0) params.connector1 = customConnectors1;
+      if (customInfixes.length > 0) params.infix = customInfixes;
+      if (customConnectors2.length > 0) params.connector2 = customConnectors2;
+      if (customSuffixes.length > 0) params.suffix = customSuffixes;
+    } else {
+      if (root) params.root = root;
+      if (suffix) params.suffix = suffix;
+      if (connector1) params.connector1 = connector1;
+      if (infix) params.infix = infix;
+      if (connector2) params.connector2 = connector2;
+    }
+
+    return params;
+  };
 
   const selectedStyleLabel = useMemo(
     () => styleOptions.find((option) => option.value === style)?.label ?? 'Griego',
@@ -111,101 +116,35 @@ function App() {
     }));
   };
 
-  const normalizeComponents = (data) => {
-    if (!data || typeof data !== 'object') return null;
-    return {
-      roots: Array.isArray(data.roots) ? data.roots : [],
-      simpleConnectors: Array.isArray(data.simpleConnectors) ? data.simpleConnectors : [],
-      complexInfixes: Array.isArray(data.complexInfixes) ? data.complexInfixes : [],
-      suffixes: Array.isArray(data.suffixes) ? data.suffixes : []
-    };
-  };
-
-  useEffect(() => {
-    if (style === 'CUSTOM') {
-      setAvailableConnectors({ roots: [], simpleConnectors: [], complexInfixes: [], suffixes: [] });
-      return;
-    }
-
-    const loadConnectorOptions = async () => {
-      try {
-        const styleQuery = style === 'RANDOM' ? 'RANDOM' : style;
-        const response = await fetch(`/api/names/components?style=${styleQuery}`);
-        if (!response.ok) {
-          throw new Error(`${response.status} ${response.statusText}`);
-        }
-        const data = await response.json();
-        const normalized = normalizeComponents(data);
-        setAvailableConnectors(normalized || { roots: [], simpleConnectors: [], complexInfixes: [], suffixes: [] });
-      } catch (error) {
-        setAvailableConnectors({ roots: [], simpleConnectors: [], complexInfixes: [], suffixes: [] });
-      }
-    };
-
-    loadConnectorOptions();
-  }, [style]);
-
-  const fetchNames = async () => {
+  const fetchNames = () => {
     setLoading(true);
     setStatus('');
     setComponents(null);
     try {
-      let queryParams = { 
-        style, 
-        gender, 
-        formulaMode, 
-        formula
-      };
-      
-      if (style === 'CUSTOM') {
-        // In custom mode, pass ALL components as arrays for backend to generate combinations
-        if (customRoots.length > 0) queryParams.root = customRoots;
-        if (customConnectors1.length > 0) queryParams.connector1 = customConnectors1;
-        if (customInfixes.length > 0) queryParams.infix = customInfixes;
-        if (customConnectors2.length > 0) queryParams.connector2 = customConnectors2;
-        if (customSuffixes.length > 0) queryParams.suffix = customSuffixes;
-      } else {
-        // In normal modes, pass individual selected values
-        if (root) queryParams.root = root;
-        if (suffix) queryParams.suffix = suffix;
-        if (connector1) queryParams.connector1 = connector1;
-        if (infix) queryParams.infix = infix;
-        if (connector2) queryParams.connector2 = connector2;
-      }
-      
-      const query = buildQuery(queryParams);
-      const response = await fetch(`/api/names/generate?${query}`);
-      if (!response.ok) {
-        throw new Error(`${response.status} ${response.statusText}`);
-      }
-      const data = await response.json();
-      const normalized = normalizeNames(data);
+      const params = buildGenerationParams();
+      const localData = generateLocalNames(params);
+      const normalized = normalizeNames(localData);
       setNames(normalized);
       if (normalized.length === 0) {
         setStatus('No se encontraron nombres para los filtros seleccionados.');
       }
     } catch (error) {
-      setStatus('Error cargando nombres: ' + error.message);
+      setStatus('Error generando nombres: ' + error.message);
       setNames([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchComponents = async () => {
+  const fetchComponents = () => {
     setLoading(true);
     setStatus('');
     setNames([]);
     try {
       const styleQuery = style === 'RANDOM' ? 'RANDOM' : style;
-      const response = await fetch(`/api/names/components?style=${styleQuery}`);
-      if (!response.ok) {
-        throw new Error(`${response.status} ${response.statusText}`);
-      }
-      const data = await response.json();
-      const normalized = normalizeComponents(data);
-      setComponents(normalized);
-      if (!normalized || Object.values(normalized).every((list) => list.length === 0)) {
+      const data = getLocalComponents(styleQuery);
+      setComponents(data);
+      if (!data || Object.values(data).every((list) => list.length === 0)) {
         setStatus('No hay componentes disponibles para ese estilo.');
       }
     } catch (error) {
@@ -238,7 +177,6 @@ function App() {
                 setConnector2('');
                 setRoot('');
                 setSuffix('');
-                // Reset custom components
                 setCustomRoots([]);
                 setCustomConnectors1([]);
                 setCustomInfixes([]);
@@ -295,7 +233,6 @@ function App() {
                   setConnector1('');
                   setInfix('');
                   setConnector2('');
-                  // Reset custom components that are no longer needed
                   if (!['F2', 'F4', 'F5', 'F6'].includes(e.target.value)) {
                     setCustomConnectors1([]);
                     setTempConnector1('');
@@ -768,7 +705,7 @@ function App() {
             <div className="cards-grid">
               {names.map((item) => (
                 <article key={item.id} className="name-card">
-                  <span className="name-title">{item.name}</span>
+                  <span className="name-title" style={{ fontSize: getNameFontSize(item.name) }}>{item.name}</span>
                   <small>{item.gender} · {item.formula}</small>
                   <p>{item.meaning}</p>
                 </article>

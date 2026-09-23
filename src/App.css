@@ -340,7 +340,7 @@ button:disabled {
 .components-grid {
   display: grid;
   gap: 18px;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
 .name-card,
@@ -354,9 +354,11 @@ button:disabled {
 
 .name-title {
   display: block;
-  font-size: 1.4rem;
   margin-bottom: 10px;
   color: #ffffff;
+  white-space: nowrap;
+  overflow: visible;
+  word-break: normal;
 }
 
 .name-card small {
@@ -395,6 +397,10 @@ button:disabled {
 .message {
   margin: 20px 0 0;
   color: #e0e2ea;
+}
+
+.offline-banner {
+  color: #f5d76e;
 }
 
 @media (min-width: 900px) {
