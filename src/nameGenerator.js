@@ -233,6 +233,7 @@ function buildName(parts) {
     .filter(Boolean)
     .join(' ')
     .replace(/\s+/g, ' ')
+    .replace(/\bde el\b/g, 'del')
     .trim();
 
   return {
