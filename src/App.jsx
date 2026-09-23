@@ -61,6 +61,28 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
 
+  const handleStyleChange = (selectedStyle) => {
+    setStyle(selectedStyle);
+    const isCustomStyle = selectedStyle === 'CUSTOM';
+    setFormulaMode(isCustomStyle ? 'CUSTOM' : 'AUTO');
+    setFormula('F1');
+    setConnector1('');
+    setInfix('');
+    setConnector2('');
+    setRoot('');
+    setSuffix('');
+    setCustomRoots([]);
+    setCustomConnectors1([]);
+    setCustomInfixes([]);
+    setCustomConnectors2([]);
+    setCustomSuffixes([]);
+    setTempRoot('');
+    setTempConnector1('');
+    setTempInfix('');
+    setTempConnector2('');
+    setTempSuffix('');
+  };
+
   const availableConnectors = useMemo(() => {
     if (style === 'CUSTOM') {
       return { roots: [], simpleConnectors: [], complexInfixes: [], suffixes: [] };
@@ -127,32 +149,23 @@ function App() {
       </header>
 
       <section className="form-section">
-        <div className="controls-grid">
-          <div className="control-group">
-            <label>Origen</label>
-            <CustomSelect value={style} options={styleOptions} onChange={(e) => {
-              const selectedStyle = e.target.value;
-              setStyle(selectedStyle);
-              const isCustomStyle = selectedStyle === 'CUSTOM';
-              setFormulaMode(isCustomStyle ? 'CUSTOM' : 'AUTO');
-              setFormula('F1');
-              setConnector1('');
-              setInfix('');
-              setConnector2('');
-              setRoot('');
-              setSuffix('');
-              setCustomRoots([]);
-              setCustomConnectors1([]);
-              setCustomInfixes([]);
-              setCustomConnectors2([]);
-              setCustomSuffixes([]);
-              setTempRoot('');
-              setTempConnector1('');
-              setTempInfix('');
-              setTempConnector2('');
-              setTempSuffix('');
-            }} />
+        <div className="style-selector-group">
+          <label>Origen</label>
+          <div className="style-chips">
+            {styleOptions.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                className={`style-chip ${style === option.value ? 'active' : ''}`}
+                onClick={() => handleStyleChange(option.value)}
+              >
+                {option.label}
+              </button>
+            ))}
           </div>
+        </div>
+
+        <div className="controls-grid">
           
           {style !== 'CUSTOM' && (
             <>
