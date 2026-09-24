@@ -6,7 +6,7 @@ import { ChipGroup } from './components/ChipGroup';
 
 const groupedStyleOptions = [
   {
-    label: 'Fantasía y Alta Ficción',
+    label: 'Fantasía y Ciencia Ficción',
     options: [
       { value: 'VALYRIAN', label: 'Alto Valyrio' },
       { value: 'ELVISH', label: 'Élfico' },
@@ -20,9 +20,9 @@ const groupedStyleOptions = [
       { value: 'CELTIC', label: 'Celta' },
       { value: 'EGYPTIAN', label: 'Egipcio' },
       { value: 'SLAVIC', label: 'Eslavo' },
-      { value: 'GREEK', label: 'Griego Antiguo' },
+      { value: 'GREEK', label: 'Griego' },
       { value: 'LATIN', label: 'Latín' },
-      { value: 'NORDIC', label: 'Nórdico Antiguo' },
+      { value: 'NORDIC', label: 'Nórdico' },
       { value: 'SUMERIAN', label: 'Sumerio' }
     ]
   },
@@ -82,13 +82,13 @@ function App() {
   const [connector2, setConnector2] = useState('');
   const [root, setRoot] = useState('');
   const [suffix, setSuffix] = useState('');
-  
+
   const [customRoots, setCustomRoots] = useState([]);
   const [customConnectors1, setCustomConnectors1] = useState([]);
   const [customInfixes, setCustomInfixes] = useState([]);
   const [customConnectors2, setCustomConnectors2] = useState([]);
   const [customSuffixes, setCustomSuffixes] = useState([]);
-  
+
   const [tempRoot, setTempRoot] = useState('');
   const [tempConnector1, setTempConnector1] = useState('');
   const [tempInfix, setTempInfix] = useState('');
@@ -99,14 +99,14 @@ function App() {
   const [mixInfix, setMixInfix] = useState('');
   const [mixConnector2, setMixConnector2] = useState('');
   const [mixSuffix, setMixSuffix] = useState('');
-  
+
   const [names, setNames] = useState([]);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('');
-  
+
   const [view, setView] = useState('GENERATOR'); // 'GENERATOR' | 'FAVORITES'
   const [copiedId, setCopiedId] = useState(null);
-  
+
   const [favorites, setFavorites] = useState(() => {
     try {
       const saved = localStorage.getItem('nomenguard_favorites');
@@ -276,9 +276,9 @@ function App() {
     <main className="page-shell">
       <header className="header">
         <h1>Nomen</h1>
-        <p>Descubre nombres con significado.</p>
+        <p>Genera nombres con significado.</p>
         <div className="header-actions">
-          <button 
+          <button
             className={`favorites-toggle ${view === 'FAVORITES' ? 'active' : ''}`}
             onClick={() => setView(view === 'FAVORITES' ? 'GENERATOR' : 'FAVORITES')}
           >
@@ -288,337 +288,337 @@ function App() {
       </header>
 
       {view === 'GENERATOR' && (
-      <section className="form-section">
-        <ChipGroup 
-          label="Origen" 
-          value={style} 
-          options={groupedStyleOptions} 
-          onChange={handleStyleChange} 
-        />
+        <section className="form-section">
+          <ChipGroup
+            label="Origen"
+            value={style}
+            options={groupedStyleOptions}
+            onChange={handleStyleChange}
+          />
 
-        <div className="controls-grid">
-          
-          {style !== 'CUSTOM' && (
-            <>
-              <ChipGroup 
-                label="Género" 
-                value={gender} 
-                options={genderOptions} 
-                onChange={(val) => {
-                  setGender(val);
-                  setSuffix('');
-                }} 
-              />
-              <ChipGroup 
-                label="Fórmula" 
-                value={formulaMode} 
-                options={formulaModeOptions} 
-                onChange={(val) => {
-                  setFormulaMode(val);
-                  if (val === 'AUTO') {
-                    setConnector1('');
-                    setInfix('');
-                    setConnector2('');
-                    setRoot('');
+          <div className="controls-grid">
+
+            {style !== 'CUSTOM' && (
+              <>
+                <ChipGroup
+                  label="Género"
+                  value={gender}
+                  options={genderOptions}
+                  onChange={(val) => {
+                    setGender(val);
                     setSuffix('');
+                  }}
+                />
+                <ChipGroup
+                  label="Fórmula"
+                  value={formulaMode}
+                  options={formulaModeOptions}
+                  onChange={(val) => {
+                    setFormulaMode(val);
+                    if (val === 'AUTO') {
+                      setConnector1('');
+                      setInfix('');
+                      setConnector2('');
+                      setRoot('');
+                      setSuffix('');
+                    }
+                  }}
+                />
+              </>
+            )}
+
+            {(formulaMode === 'CUSTOM' || style === 'CUSTOM') && (
+              <ChipGroup
+                label="Estructura"
+                value={formula}
+                options={formulaShapeOptions.filter(opt => {
+                  if (opt.value === 'CONNECTOR1' || opt.value === 'CONNECTOR2') {
+                    return style === 'CUSTOM' || style === 'MIX' || (availableConnectors.simpleConnectors && availableConnectors.simpleConnectors.length > 0);
                   }
-                }} 
+                  if (opt.value === 'INFIX') {
+                    return style === 'CUSTOM' || style === 'MIX' || (availableConnectors.complexInfixes && availableConnectors.complexInfixes.length > 0);
+                  }
+                  if (opt.value === 'SUFFIX') {
+                    return style === 'CUSTOM' || style === 'MIX' || (availableConnectors.suffixes && availableConnectors.suffixes.some(s => gender === 'RANDOM' || (s.gender?.name ?? s.gender) === gender));
+                  }
+                  return true;
+                })}
+                multiple={true}
+                mandatory={['ROOT', 'SUFFIX']}
+                onChange={(val) => {
+                  setFormula(val);
+                  if (!val.includes('CONNECTOR1')) {
+                    setCustomConnectors1([]);
+                    setTempConnector1('');
+                  }
+                  if (!val.includes('INFIX')) {
+                    setCustomInfixes([]);
+                    setTempInfix('');
+                  }
+                  if (!val.includes('CONNECTOR2')) {
+                    setCustomConnectors2([]);
+                    setTempConnector2('');
+                  }
+                }}
               />
-            </>
-          )}
+            )}
+          </div>
 
-          {(formulaMode === 'CUSTOM' || style === 'CUSTOM') && (
-            <ChipGroup 
-              label="Estructura" 
-              value={formula} 
-              options={formulaShapeOptions.filter(opt => {
-                if (opt.value === 'CONNECTOR1' || opt.value === 'CONNECTOR2') {
-                  return style === 'CUSTOM' || style === 'MIX' || (availableConnectors.simpleConnectors && availableConnectors.simpleConnectors.length > 0);
-                }
-                if (opt.value === 'INFIX') {
-                  return style === 'CUSTOM' || style === 'MIX' || (availableConnectors.complexInfixes && availableConnectors.complexInfixes.length > 0);
-                }
-                if (opt.value === 'SUFFIX') {
-                  return style === 'CUSTOM' || style === 'MIX' || (availableConnectors.suffixes && availableConnectors.suffixes.some(s => gender === 'RANDOM' || (s.gender?.name ?? s.gender) === gender));
-                }
-                return true;
-              })} 
-              multiple={true}
-              mandatory={['ROOT', 'SUFFIX']}
-              onChange={(val) => {
-                setFormula(val);
-                if (!val.includes('CONNECTOR1')) {
-                  setCustomConnectors1([]);
-                  setTempConnector1('');
-                }
-                if (!val.includes('INFIX')) {
-                  setCustomInfixes([]);
-                  setTempInfix('');
-                }
-                if (!val.includes('CONNECTOR2')) {
-                  setCustomConnectors2([]);
-                  setTempConnector2('');
-                }
-              }} 
-            />
-          )}
-        </div>
-
-        {style === 'MIX' && formulaMode === 'CUSTOM' && (
-          <div className="custom-selections" style={{ display: 'flex', gap: '1rem', marginTop: '1rem', flexWrap: 'wrap' }}>
-            <div className="control-group" style={{ flex: 1, minWidth: '200px' }}>
-              <label style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em' }}>Raíz</label>
-              <CustomSelect value={mixRoot} onChange={(e) => setMixRoot(e.target.value)} options={[
-                { value: '', label: 'Elige...' },
-                ...styleOptions.filter(o => o.value !== 'CUSTOM' && o.value !== 'RANDOM' && o.value !== 'MIX')
-              ]} />
-            </div>
-
-            {formula.includes('INFIX') && (
+          {style === 'MIX' && formulaMode === 'CUSTOM' && (
+            <div className="custom-selections" style={{ display: 'flex', gap: '1rem', marginTop: '1rem', flexWrap: 'wrap' }}>
               <div className="control-group" style={{ flex: 1, minWidth: '200px' }}>
-                <label style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em' }}>Infijo</label>
-                <CustomSelect value={mixInfix} onChange={(e) => setMixInfix(e.target.value)} options={[
+                <label style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em' }}>Raíz</label>
+                <CustomSelect value={mixRoot} onChange={(e) => setMixRoot(e.target.value)} options={[
                   { value: '', label: 'Elige...' },
                   ...styleOptions.filter(o => o.value !== 'CUSTOM' && o.value !== 'RANDOM' && o.value !== 'MIX')
                 ]} />
               </div>
-            )}
 
-            <div className="control-group" style={{ flex: 1, minWidth: '200px' }}>
-              <label style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em' }}>Sufijo</label>
-              <CustomSelect value={mixSuffix} onChange={(e) => setMixSuffix(e.target.value)} options={[
-                { value: '', label: 'Aleatorio' },
-                ...styleOptions.filter(o => o.value !== 'CUSTOM' && o.value !== 'RANDOM' && o.value !== 'MIX')
-              ]} />
+              {formula.includes('INFIX') && (
+                <div className="control-group" style={{ flex: 1, minWidth: '200px' }}>
+                  <label style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em' }}>Infijo</label>
+                  <CustomSelect value={mixInfix} onChange={(e) => setMixInfix(e.target.value)} options={[
+                    { value: '', label: 'Elige...' },
+                    ...styleOptions.filter(o => o.value !== 'CUSTOM' && o.value !== 'RANDOM' && o.value !== 'MIX')
+                  ]} />
+                </div>
+              )}
+
+              <div className="control-group" style={{ flex: 1, minWidth: '200px' }}>
+                <label style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em' }}>Sufijo</label>
+                <CustomSelect value={mixSuffix} onChange={(e) => setMixSuffix(e.target.value)} options={[
+                  { value: '', label: 'Aleatorio' },
+                  ...styleOptions.filter(o => o.value !== 'CUSTOM' && o.value !== 'RANDOM' && o.value !== 'MIX')
+                ]} />
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {style === 'CUSTOM' && (
-          <div className="custom-components">
-            <div className="custom-input-list">
-              <div className="custom-input-item">
-                <label>Raíces</label>
-                <div className="input-wrap">
-                  <input
-                    type="text"
-                    placeholder="Añadir..."
-                    value={tempRoot}
-                    onChange={(e) => setTempRoot(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && tempRoot.trim()) {
+          {style === 'CUSTOM' && (
+            <div className="custom-components">
+              <div className="custom-input-list">
+                <div className="custom-input-item">
+                  <label>Raíces</label>
+                  <div className="input-wrap">
+                    <input
+                      type="text"
+                      placeholder="Añadir..."
+                      value={tempRoot}
+                      onChange={(e) => setTempRoot(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && tempRoot.trim()) {
+                          setCustomRoots([...customRoots, tempRoot.trim()]);
+                          setTempRoot('');
+                        }
+                      }}
+                    />
+                    <button type="button" onClick={() => {
+                      if (tempRoot.trim()) {
                         setCustomRoots([...customRoots, tempRoot.trim()]);
                         setTempRoot('');
                       }
-                    }}
-                  />
-                  <button type="button" onClick={() => {
-                    if (tempRoot.trim()) {
-                      setCustomRoots([...customRoots, tempRoot.trim()]);
-                      setTempRoot('');
-                    }
-                  }}>+</button>
+                    }}>+</button>
+                  </div>
+                  <div className="chips">
+                    {customRoots.map((item, idx) => (
+                      <span key={idx} className="chip" onClick={() => setCustomRoots(customRoots.filter((_, i) => i !== idx))}>{item}</span>
+                    ))}
+                  </div>
                 </div>
-                <div className="chips">
-                  {customRoots.map((item, idx) => (
-                    <span key={idx} className="chip" onClick={() => setCustomRoots(customRoots.filter((_, i) => i !== idx))}>{item}</span>
-                  ))}
-                </div>
-              </div>
 
-              {formula.includes('CONNECTOR1') && (
-                <div className="custom-input-item">
-                  <label>Conector 1</label>
-                  <div className="input-wrap">
-                    <input
-                      type="text"
-                      placeholder="Añadir..."
-                      value={tempConnector1}
-                      onChange={(e) => setTempConnector1(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && tempConnector1.trim()) {
+                {formula.includes('CONNECTOR1') && (
+                  <div className="custom-input-item">
+                    <label>Conector 1</label>
+                    <div className="input-wrap">
+                      <input
+                        type="text"
+                        placeholder="Añadir..."
+                        value={tempConnector1}
+                        onChange={(e) => setTempConnector1(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && tempConnector1.trim()) {
+                            setCustomConnectors1([...customConnectors1, tempConnector1.trim()]);
+                            setTempConnector1('');
+                          }
+                        }}
+                      />
+                      <button type="button" onClick={() => {
+                        if (tempConnector1.trim()) {
                           setCustomConnectors1([...customConnectors1, tempConnector1.trim()]);
                           setTempConnector1('');
                         }
-                      }}
-                    />
-                    <button type="button" onClick={() => {
-                      if (tempConnector1.trim()) {
-                        setCustomConnectors1([...customConnectors1, tempConnector1.trim()]);
-                        setTempConnector1('');
-                      }
-                    }}>+</button>
+                      }}>+</button>
+                    </div>
+                    <div className="chips">
+                      {customConnectors1.map((item, idx) => (
+                        <span key={idx} className="chip" onClick={() => setCustomConnectors1(customConnectors1.filter((_, i) => i !== idx))}>{item}</span>
+                      ))}
+                    </div>
                   </div>
-                  <div className="chips">
-                    {customConnectors1.map((item, idx) => (
-                      <span key={idx} className="chip" onClick={() => setCustomConnectors1(customConnectors1.filter((_, i) => i !== idx))}>{item}</span>
-                    ))}
-                  </div>
-                </div>
-              )}
+                )}
 
-              {formula.includes('INFIX') && (
-                <div className="custom-input-item">
-                  <label>Infijo</label>
-                  <div className="input-wrap">
-                    <input
-                      type="text"
-                      placeholder="Añadir..."
-                      value={tempInfix}
-                      onChange={(e) => setTempInfix(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && tempInfix.trim()) {
+                {formula.includes('INFIX') && (
+                  <div className="custom-input-item">
+                    <label>Infijo</label>
+                    <div className="input-wrap">
+                      <input
+                        type="text"
+                        placeholder="Añadir..."
+                        value={tempInfix}
+                        onChange={(e) => setTempInfix(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && tempInfix.trim()) {
+                            setCustomInfixes([...customInfixes, tempInfix.trim()]);
+                            setTempInfix('');
+                          }
+                        }}
+                      />
+                      <button type="button" onClick={() => {
+                        if (tempInfix.trim()) {
                           setCustomInfixes([...customInfixes, tempInfix.trim()]);
                           setTempInfix('');
                         }
-                      }}
-                    />
-                    <button type="button" onClick={() => {
-                      if (tempInfix.trim()) {
-                        setCustomInfixes([...customInfixes, tempInfix.trim()]);
-                        setTempInfix('');
-                      }
-                    }}>+</button>
+                      }}>+</button>
+                    </div>
+                    <div className="chips">
+                      {customInfixes.map((item, idx) => (
+                        <span key={idx} className="chip" onClick={() => setCustomInfixes(customInfixes.filter((_, i) => i !== idx))}>{item}</span>
+                      ))}
+                    </div>
                   </div>
-                  <div className="chips">
-                    {customInfixes.map((item, idx) => (
-                      <span key={idx} className="chip" onClick={() => setCustomInfixes(customInfixes.filter((_, i) => i !== idx))}>{item}</span>
-                    ))}
-                  </div>
-                </div>
-              )}
+                )}
 
-              {formula.includes('CONNECTOR2') && (
+                {formula.includes('CONNECTOR2') && (
+                  <div className="custom-input-item">
+                    <label>Conector 2</label>
+                    <div className="input-wrap">
+                      <input
+                        type="text"
+                        placeholder="Añadir..."
+                        value={tempConnector2}
+                        onChange={(e) => setTempConnector2(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && tempConnector2.trim()) {
+                            setCustomConnectors2([...customConnectors2, tempConnector2.trim()]);
+                            setTempConnector2('');
+                          }
+                        }}
+                      />
+                      <button type="button" onClick={() => {
+                        if (tempConnector2.trim()) {
+                          setCustomConnectors2([...customConnectors2, tempConnector2.trim()]);
+                          setTempConnector2('');
+                        }
+                      }}>+</button>
+                    </div>
+                    <div className="chips">
+                      {customConnectors2.map((item, idx) => (
+                        <span key={idx} className="chip" onClick={() => setCustomConnectors2(customConnectors2.filter((_, i) => i !== idx))}>{item}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <div className="custom-input-item">
-                  <label>Conector 2</label>
+                  <label>Sufijos</label>
                   <div className="input-wrap">
                     <input
                       type="text"
                       placeholder="Añadir..."
-                      value={tempConnector2}
-                      onChange={(e) => setTempConnector2(e.target.value)}
+                      value={tempSuffix}
+                      onChange={(e) => setTempSuffix(e.target.value)}
                       onKeyDown={(e) => {
-                        if (e.key === 'Enter' && tempConnector2.trim()) {
-                          setCustomConnectors2([...customConnectors2, tempConnector2.trim()]);
-                          setTempConnector2('');
+                        if (e.key === 'Enter' && tempSuffix.trim()) {
+                          setCustomSuffixes([...customSuffixes, tempSuffix.trim()]);
+                          setTempSuffix('');
                         }
                       }}
                     />
                     <button type="button" onClick={() => {
-                      if (tempConnector2.trim()) {
-                        setCustomConnectors2([...customConnectors2, tempConnector2.trim()]);
-                        setTempConnector2('');
+                      if (tempSuffix.trim()) {
+                        setCustomSuffixes([...customSuffixes, tempSuffix.trim()]);
+                        setTempSuffix('');
                       }
                     }}>+</button>
                   </div>
                   <div className="chips">
-                    {customConnectors2.map((item, idx) => (
-                      <span key={idx} className="chip" onClick={() => setCustomConnectors2(customConnectors2.filter((_, i) => i !== idx))}>{item}</span>
+                    {customSuffixes.map((item, idx) => (
+                      <span key={idx} className="chip" onClick={() => setCustomSuffixes(customSuffixes.filter((_, i) => i !== idx))}>{item}</span>
                     ))}
                   </div>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {style !== 'CUSTOM' && style !== 'MIX' && formulaMode === 'CUSTOM' && (
+            <div className="custom-selections">
+              <div className="control-group">
+                <label>Raíz</label>
+                <CustomSelect value={root} onChange={(e) => setRoot(e.target.value)} options={[
+                  { value: '', label: 'Aleatorio' },
+                  ...availableConnectors.roots.map((item) => ({ value: item.text, label: item.text }))
+                ]} />
+              </div>
+
+              {formula.includes('CONNECTOR1') && (style === 'CUSTOM' || style === 'MIX' || (availableConnectors.simpleConnectors && availableConnectors.simpleConnectors.length > 0)) && (
+                <div className="control-group">
+                  <label>Conector 1</label>
+                  <CustomSelect value={connector1} onChange={(e) => setConnector1(e.target.value)} options={[
+                    { value: '', label: 'Aleatorio' },
+                    ...availableConnectors.simpleConnectors.map((item) => ({ value: item.text, label: item.text }))
+                  ]} />
+                </div>
               )}
 
-              <div className="custom-input-item">
-                <label>Sufijos</label>
-                <div className="input-wrap">
-                  <input
-                    type="text"
-                    placeholder="Añadir..."
-                    value={tempSuffix}
-                    onChange={(e) => setTempSuffix(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && tempSuffix.trim()) {
-                        setCustomSuffixes([...customSuffixes, tempSuffix.trim()]);
-                        setTempSuffix('');
-                      }
-                    }}
-                  />
-                  <button type="button" onClick={() => {
-                    if (tempSuffix.trim()) {
-                      setCustomSuffixes([...customSuffixes, tempSuffix.trim()]);
-                      setTempSuffix('');
-                    }
-                  }}>+</button>
+              {formula.includes('INFIX') && (style === 'CUSTOM' || style === 'MIX' || (availableConnectors.complexInfixes && availableConnectors.complexInfixes.length > 0)) && (
+                <div className="control-group">
+                  <label>Infijo</label>
+                  <CustomSelect value={infix} onChange={(e) => setInfix(e.target.value)} options={[
+                    { value: '', label: 'Aleatorio' },
+                    ...availableConnectors.complexInfixes.map((item) => ({ value: item.text, label: item.text }))
+                  ]} />
                 </div>
-                <div className="chips">
-                  {customSuffixes.map((item, idx) => (
-                    <span key={idx} className="chip" onClick={() => setCustomSuffixes(customSuffixes.filter((_, i) => i !== idx))}>{item}</span>
-                  ))}
+              )}
+
+              {formula.includes('CONNECTOR2') && (style === 'CUSTOM' || style === 'MIX' || (availableConnectors.simpleConnectors && availableConnectors.simpleConnectors.length > 0)) && (
+                <div className="control-group">
+                  <label>Conector 2</label>
+                  <CustomSelect value={connector2} onChange={(e) => setConnector2(e.target.value)} options={[
+                    { value: '', label: 'Aleatorio' },
+                    ...availableConnectors.simpleConnectors.map((item) => ({ value: item.text, label: item.text }))
+                  ]} />
                 </div>
-              </div>
+              )}
+
+              {formula.includes('SUFFIX') && (style === 'CUSTOM' || style === 'MIX' || (availableConnectors.suffixes && availableConnectors.suffixes.some(s => gender === 'RANDOM' || (s.gender?.name ?? s.gender) === gender))) && (
+                <div className="control-group">
+                  <label>Sufijo</label>
+                  <CustomSelect value={suffix} onChange={(e) => setSuffix(e.target.value)} options={[
+                    { value: '', label: 'Aleatorio' },
+                    ...availableConnectors.suffixes
+                      .filter((item) => {
+                        const suffixGender = item.gender?.name ?? item.gender;
+                        return gender === 'RANDOM' || suffixGender === gender;
+                      })
+                      .map((item) => ({ value: item.text, label: item.text }))
+                  ]} />
+                </div>
+              )}
             </div>
+          )}
+
+          <div className="action-row">
+            <button type="button" className="btn-primary" onClick={fetchNames} disabled={loading || !isMixComplete()}>
+              Descubrir
+            </button>
           </div>
-        )}
-
-        {style !== 'CUSTOM' && style !== 'MIX' && formulaMode === 'CUSTOM' && (
-          <div className="custom-selections">
-            <div className="control-group">
-              <label>Raíz</label>
-              <CustomSelect value={root} onChange={(e) => setRoot(e.target.value)} options={[
-                { value: '', label: 'Aleatorio' },
-                ...availableConnectors.roots.map((item) => ({ value: item.text, label: item.text }))
-              ]} />
-            </div>
-
-            {formula.includes('CONNECTOR1') && (style === 'CUSTOM' || style === 'MIX' || (availableConnectors.simpleConnectors && availableConnectors.simpleConnectors.length > 0)) && (
-              <div className="control-group">
-                <label>Conector 1</label>
-                <CustomSelect value={connector1} onChange={(e) => setConnector1(e.target.value)} options={[
-                  { value: '', label: 'Aleatorio' },
-                  ...availableConnectors.simpleConnectors.map((item) => ({ value: item.text, label: item.text }))
-                ]} />
-              </div>
-            )}
-
-            {formula.includes('INFIX') && (style === 'CUSTOM' || style === 'MIX' || (availableConnectors.complexInfixes && availableConnectors.complexInfixes.length > 0)) && (
-              <div className="control-group">
-                <label>Infijo</label>
-                <CustomSelect value={infix} onChange={(e) => setInfix(e.target.value)} options={[
-                  { value: '', label: 'Aleatorio' },
-                  ...availableConnectors.complexInfixes.map((item) => ({ value: item.text, label: item.text }))
-                ]} />
-              </div>
-            )}
-
-            {formula.includes('CONNECTOR2') && (style === 'CUSTOM' || style === 'MIX' || (availableConnectors.simpleConnectors && availableConnectors.simpleConnectors.length > 0)) && (
-              <div className="control-group">
-                <label>Conector 2</label>
-                <CustomSelect value={connector2} onChange={(e) => setConnector2(e.target.value)} options={[
-                  { value: '', label: 'Aleatorio' },
-                  ...availableConnectors.simpleConnectors.map((item) => ({ value: item.text, label: item.text }))
-                ]} />
-              </div>
-            )}
-
-            {formula.includes('SUFFIX') && (style === 'CUSTOM' || style === 'MIX' || (availableConnectors.suffixes && availableConnectors.suffixes.some(s => gender === 'RANDOM' || (s.gender?.name ?? s.gender) === gender))) && (
-              <div className="control-group">
-                <label>Sufijo</label>
-                <CustomSelect value={suffix} onChange={(e) => setSuffix(e.target.value)} options={[
-                  { value: '', label: 'Aleatorio' },
-                  ...availableConnectors.suffixes
-                    .filter((item) => {
-                      const suffixGender = item.gender?.name ?? item.gender;
-                      return gender === 'RANDOM' || suffixGender === gender;
-                    })
-                    .map((item) => ({ value: item.text, label: item.text }))
-                ]} />
-              </div>
-            )}
-          </div>
-        )}
-
-        <div className="action-row">
-          <button type="button" className="btn-primary" onClick={fetchNames} disabled={loading || !isMixComplete()}>
-            Descubrir
-          </button>
-        </div>
-      </section>
+        </section>
       )}
 
       <section className="results">
         {status && <p className="status-message">{status}</p>}
-        
+
         {view === 'FAVORITES' && (
           <div className="favorites-actions">
             <button className="btn-secondary" onClick={exportFavorites}>📤 Exportar JSON</button>
@@ -637,41 +637,41 @@ function App() {
           )}
           {loading && view === 'GENERATOR'
             ? Array.from({ length: 6 }).map((_, idx) => (
-                <div key={`skeleton-${idx}`} className="skeleton-card" />
-              ))
+              <div key={`skeleton-${idx}`} className="skeleton-card" />
+            ))
             : (view === 'FAVORITES' ? favorites : names).map((item, index) => {
-                const isFav = favorites.some(f => f.name === item.name);
-                return (
-                  <div 
-                    key={item.id || item.name} 
-                    className="card"
-                    style={{ animationDelay: `${index * 0.05}s` }}
-                  >
-                    <div className="copy-action" style={{ position: 'absolute', top: '8px', left: '8px' }}>
-                      <button 
-                        className={`copy-btn ${copiedId === (item.id || item.name) ? 'active' : ''}`} 
-                        onClick={() => copyToClipboard(item)}
-                        title="Copiar al portapapeles"
-                      >
-                        {copiedId === (item.id || item.name) ? '✓' : '📋'}
-                      </button>
-                    </div>
-                    <div className="card-actions">
-                      <button 
-                        className={`fav-btn ${isFav ? 'active' : ''}`} 
-                        onClick={() => toggleFavorite(item)}
-                        title={isFav ? "Quitar de favoritos" : "Añadir a favoritos"}
-                      >
-                        ★
-                      </button>
-                    </div>
-                    <h2>{item.name}</h2>
-                    {item.ipa && <span className="ipa">/{item.ipa}/</span>}
-                    {item.meaning && <p>{item.meaning}</p>}
-                    {item.originMix && <p className="origin-mix" style={{ fontSize: '0.8em', color: 'var(--text-muted)', marginTop: '0.5rem', fontStyle: 'italic' }}>{item.originMix}</p>}
+              const isFav = favorites.some(f => f.name === item.name);
+              return (
+                <div
+                  key={item.id || item.name}
+                  className="card"
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  <div className="copy-action" style={{ position: 'absolute', top: '8px', left: '8px' }}>
+                    <button
+                      className={`copy-btn ${copiedId === (item.id || item.name) ? 'active' : ''}`}
+                      onClick={() => copyToClipboard(item)}
+                      title="Copiar al portapapeles"
+                    >
+                      {copiedId === (item.id || item.name) ? '✓' : '📋'}
+                    </button>
                   </div>
-                );
-              })}
+                  <div className="card-actions">
+                    <button
+                      className={`fav-btn ${isFav ? 'active' : ''}`}
+                      onClick={() => toggleFavorite(item)}
+                      title={isFav ? "Quitar de favoritos" : "Añadir a favoritos"}
+                    >
+                      ★
+                    </button>
+                  </div>
+                  <h2>{item.name}</h2>
+                  {item.ipa && <span className="ipa">/{item.ipa}/</span>}
+                  {item.meaning && <p>{item.meaning}</p>}
+                  {item.originMix && <p className="origin-mix" style={{ fontSize: '0.8em', color: 'var(--text-muted)', marginTop: '0.5rem', fontStyle: 'italic' }}>{item.originMix}</p>}
+                </div>
+              );
+            })}
         </div>
       </section>
     </main>
