@@ -1855,7 +1855,7 @@ const STYLE_LABELS = {
   ARABIC: 'Árabe Clásico',
   POLYNESIAN: 'Polinesio',
   SWAHILI: 'Swahili',
-  KHUZDUL: 'Enano (Khuzdul)'
+  KHUZDUL: 'Khuzdul'
 };
 
 function buildName(parts) {

@@ -24,7 +24,7 @@ const styleOptions = [
   { value: 'ARABIC', label: 'Árabe Clásico' },
   { value: 'POLYNESIAN', label: 'Polinesio' },
   { value: 'SWAHILI', label: 'Swahili' },
-  { value: 'KHUZDUL', label: 'Enano (Khuzdul)' },
+  { value: 'KHUZDUL', label: 'Khuzdul' },
   { value: 'MIX', label: 'Mezcla' },
   { value: 'CUSTOM', label: 'Personalizado' },
   { value: 'RANDOM', label: 'Aleatorio' }
