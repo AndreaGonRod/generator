@@ -1,109 +1,5 @@
 const DATA = {
-  ARAMAIC: {
-    roots: [
-      ['El', 'la divinidad'],
-      ['Malak', 'el mensajero celestial'],
-      ['Or', 'la luz'],
-      ['Sar', 'el príncipe'],
-      ['Nabi', 'el profeta'],
-      ['Bar', 'el hijo de'],
-      ['Qadosh', 'lo sagrado'],
-      ['Shalom', 'la paz'],
-      ['Zohar', 'el resplandor'],
-      ['Melek', 'el rey'],
-      ['Ruach', 'el espíritu'],
-      ['Tzur', 'la roca'],
-      ['Yasha', 'la salvación'],
-      ['Chayim', 'la vida'],
-      ['Lev', 'el corazón'],
-      ['Esh', 'el fuego'],
-      ['Mayim', 'el agua'],
-      ['Shamayim', 'los cielos'],
-      ['Eretz', 'la tierra'],
-      ['Chesed', 'la bondad'],
-      ['Emet', 'la verdad'],
-      ['Tzedek', 'la justicia'],
-      ['Gibbor', 'el guerrero'],
-      ['Natan', 'el don']
-    ],
-    simpleConnectors: [
-      ['i', 'de'],
-      ['o', 'de'],
-      ['a', 'y'],
-      ['u', 'y']
-    ],
-    complexInfixes: [
-      ['az', 'fuerte'],
-      ['ur', 'luminoso'],
-      ['ram', 'exaltado'],
-      ['elyon', 'altísimo'],
-      ['shaddai', 'todopoderoso'],
-      ['tzvi', 'hermoso']
-    ],
-    suffixes: [
-      ['el', 'MALE', 'el ángel de'],
-      ['iah', 'MALE', 'el siervo de'],
-      ['ah', 'FEMALE', 'la prometida de'],
-      ['iel', 'NEUTER', 'el mensajero de'],
-      ['im', 'MALE', 'el guardián de'],
-      ['ut', 'FEMALE', 'la esencia de'],
-      ['on', 'MALE', 'el poder de'],
-      ['oth', 'FEMALE', 'la legión de'],
-      ['ya', 'NEUTER', 'la creación de'],
-      ['ai', 'MALE', 'el líder de']
-    ]
-  },
-  PERSIAN: {
-    roots: [
-      ['Shir', 'el león'],
-      ['Mithra', 'el sol'],
-      ['Arta', 'la verdad cósmica'],
-      ['Dar', 'el poseedor'],
-      ['Khshathra', 'el imperio'],
-      ['Zar', 'el oro'],
-      ['Rukh', 'el espíritu'],
-      ['Shad', 'la alegría'],
-      ['Far', 'la gloria divina'],
-      ['Nav', 'lo nuevo'],
-      ['Roshan', 'la luz'],
-      ['Zib', 'la belleza'],
-      ['Omid', 'la esperanza'],
-      ['Azad', 'la libertad'],
-      ['Nima', 'la justicia'],
-      ['Farzan', 'la sabiduría'],
-      ['Bahram', 'la victoria'],
-      ['Darya', 'el mar'],
-      ['Khorshid', 'el sol'],
-      ['Mah', 'la luna'],
-      ['Barf', 'la nieve'],
-      ['Atash', 'el fuego']
-    ],
-    simpleConnectors: [
-      ['a', 'y'],
-      ['i', 'de'],
-      ['o', 'y'],
-      ['e', 'de']
-    ],
-    complexInfixes: [
-      ['van', 'victorioso'],
-      ['mehr', 'amoroso'],
-      ['ruz', 'radiante'],
-      ['dil', 'valiente'],
-      ['nam', 'ilustre']
-    ],
-    suffixes: [
-      ['zad', 'MALE', 'el nacido de'],
-      ['shah', 'MALE', 'el soberano de'],
-      ['dokht', 'FEMALE', 'la hija de'],
-      ['banu', 'FEMALE', 'la dama de'],
-      ['yar', 'NEUTER', 'el compañero de'],
-      ['pour', 'MALE', 'el hijo de'],
-      ['nia', 'NEUTER', 'el linaje de'],
-      ['vand', 'MALE', 'el defensor de'],
-      ['din', 'NEUTER', 'la fe de'],
-      ['far', 'MALE', 'el esplendor de']
-    ]
-  },
+
   OLD_ENGLISH: {
     roots: [
       ['Aethel', 'la nobleza'],
@@ -254,69 +150,23 @@ const DATA = {
   },
   GREEK: {
     roots: [
-      ['Theo', 'la divinidad'],
-      ['Astro', 'las estrellas'],
-      ['Helio', 'el sol'],
-      ['Seleno', 'el brillo lunar'],
-      ['Krono', 'el tiempo'],
-      ['Geo', 'la tierra'],
-      ['Aero', 'el aire y viento'],
-      ['Hydro', 'el agua fluida'],
-      ['Pyro', 'el fuego ardiente'],
-      ['Kalo', 'la belleza'],
-      ['Arki', 'el liderazgo'],
-      ['Andro', 'la fuerza humana'],
-      ['Philo', 'el amor afín'],
-      ['Xeno', 'lo misterioso y extranjero'],
-      ['Neo', 'lo nuevo y moderno'],
-      ['Paleo', 'la sabiduría antigua'],
-      ['Mega', 'lo magnífico'],
-      ['Kleo', 'el renombre'],
-      ['Niko', 'lo triunfante'],
-      ['Sofi', 'el conocimiento'],
-      ['Aristo', 'lo excelente y mejor'],
-      ['Demo', 'el pueblo'],
-      ['Irena', 'la paz serena'],
-      ['Leon', 'la fuerza del león'],
-      ['Zeno', 'el firmamento de Zeus'],
-      ['Chrono', 'el paso del tiempo'],
-      ['Morpho', 'la forma cambiante'],
-      ['Nyx', 'la noche oscura'],
-      ['Krypto', 'lo oculto'],
-      ['Agape', 'el amor incondicional'],
-      ['Bios', 'la esencia de la vida'],
-      ['Dyna', 'el poder absoluto'],
-      ['Tele', 'la gran distancia'],
-      ['Pneumo', 'el aliento vital'],
-      ['Calli', 'la hermosura sublime'],
-      ['Erebo', 'las sombras primigenias'],
-      ['Hiero', 'lo sagrado'],
-      ['Orpho', 'el misterio de la noche'],
-      ['Aethero', 'el cielo superior'],
-      ['Cosmo', 'el orden universal'],
-      ['Eros', 'el deseo apasionado'],
-      ['Thanatos', 'la muerte serena'],
-      ['Hypnos', 'el trance profundo'],
-      ['Cyto', 'la célula vital'],
-      ['Ptero', 'el ala dorada'],
-      ['Archon', 'el magistrado supremo'],
-      ['Basi', 'el rey antiguo'],
-      ['Cler', 'la suerte designada'],
-      ['Dactyl', 'el dedo hábil'],
-      ['Echino', 'lo espinoso'],
-      ['Giga', 'el coloso gigante'],
-      ['Heli', 'el giro en espiral'],
-      ['Icon', 'la imagen venerada'],
-      ['Kine', 'el movimiento perpetuo'],
-      ['Lito', 'la piedra inamovible'],
-      ['Macro', 'la grandeza expansiva'],
-      ['Nekro', 'el sepulcro silente'],
-      ['Odonto', 'la ferocidad mordaz'],
-      ['Thalassa', 'el mar profundo'],
-      ['Kyklos', 'el círculo eterno'],
-      ['Hema', 'la sangre vital'],
-      ['Aster', 'la estrella brillante'],
-      ['Phos', 'la luz cegadora']
+      ['Alex', 'la defensa'],
+      ['Andr', 'la fuerza del hombre'],
+      ['Arist', 'la excelencia'],
+      ['Calli', 'la hermosura'],
+      ['Chrys', 'el oro'],
+      ['Cleo', 'la gloria'],
+      ['Dem', 'el pueblo'],
+      ['Di', 'la divinidad'],
+      ['Euch', 'la buena plegaria'],
+      ['Herm', 'el mensajero'],
+      ['Iren', 'la paz'],
+      ['Lys', 'la liberación'],
+      ['Nik', 'la victoria'],
+      ['Phil', 'el amor afín'],
+      ['Soph', 'la sabiduría'],
+      ['Tim', 'el honor'],
+      ['Zen', 'el poder de Zeus']
     ],
     simpleConnectors: [
       ['o', ''],
@@ -324,379 +174,144 @@ const DATA = {
       ['a', ''],
       ['e', '']
     ],
-    complexInfixes: [
-      ['and', 'la fuerza de'],
-      ['ant', 'el brillo de'],
-      ['onit', 'la firmeza de'],
-      ['ist', 'el seguidor de'],
-      ['althe', 'la curación de'],
-      ['eleu', 'la libertad de'],
-      ['io', 'la gracia de'],
-      ['opol', 'la ciudad de'],
-      ['ast', 'el espacio de'],
-      ['arch', 'el origen de'],
-      ['gen', 'el nacimiento de'],
-      ['krat', 'el dominio de'],
-      ['log', 'la razón de'],
-      ['mach', 'la batalla de'],
-      ['makh', 'la lucha por'],
-      ['crat', 'el gobierno de'],
-      ['nom', 'la ley de'],
-      ['phane', 'la aparición de'],
-      ['dot', 'el regalo de']
-    ],
+    complexInfixes: [],
     suffixes: [
-      ['os', 'MALE', 'aquel que representa'],
-      ['is', 'MALE', 'noble guardián de'],
-      ['as', 'MALE', 'fuerte como'],
-      ['on', 'MALE', 'el gran protector de'],
-      ['ander', 'MALE', 'hombre fuerte de'],
-      ['crates', 'MALE', 'el que gobierna con'],
-      ['sthenes', 'MALE', 'fuerza indomable de'],
-      ['cles', 'MALE', 'fama inmortal de'],
-      ['archos', 'MALE', 'líder supremo de'],
-      ['doros', 'MALE', 'don divino de'],
-      ['a', 'FEMALE', 'aquella que posee gracia de'],
-      ['ia', 'FEMALE', 'la esencia mística de'],
-      ['ne', 'FEMALE', 'suave melodía de'],
-      ['thea', 'FEMALE', 'divina protectora de'],
-      ['dora', 'FEMALE', 'regalo de'],
-      ['phila', 'FEMALE', 'amiga de'],
-      ['phone', 'FEMALE', 'voz cantante de'],
-      ['mene', 'FEMALE', 'fuerza persistente de'],
-      ['nike', 'FEMALE', 'la victoria de'],
-      ['meda', 'FEMALE', 'la astucia de'],
-      ['ma', 'NEUTER', 'manifestación concreta de'],
-      ['ax', 'NEUTER', 'fuerza industrial de'],
-      ['ox', 'NEUTER', 'visión moderna de'],
-      ['ic', 'NEUTER', 'sistema de'],
-      ['polis', 'NEUTER', 'gran bastión de'],
-      ['tron', 'NEUTER', 'el instrumento de'],
-      ['makhos', 'MALE', 'el fiero guerrero de'],
-      ['phoros', 'MALE', 'el portador eterno de'],
-      ['tis', 'FEMALE', 'la tejedora de destinos de'],
-      ['gram', 'NEUTER', 'el antiguo mensaje de'],
-      ['genes', 'MALE', 'el engendrado por'],
-      ['poulos', 'MALE', 'el descendiente de'],
-      ['mache', 'FEMALE', 'la que lucha por'],
+      ['ander', 'MALE', 'el hombre de'],
+      ['archos', 'MALE', 'el líder de'],
+      ['cles', 'MALE', 'la gloria de'],
+      ['crates', 'MALE', 'el poder de'],
+      ['dorus', 'MALE', 'el regalo de'],
+      ['machus', 'MALE', 'el luchador por'],
+      ['medes', 'MALE', 'la astucia de'],
+      ['menes', 'MALE', 'la fuerza de'],
+      ['nikos', 'MALE', 'el victorioso en'],
+      ['sthenes', 'MALE', 'el indomable de'],
+      ['dora', 'FEMALE', 'el regalo de'],
       ['krateia', 'FEMALE', 'la soberana de'],
-      ['phobia', 'NEUTER', 'el terror a'],
-      ['mania', 'NEUTER', 'la pasión desmedida por'],
-      ['on', 'MALE', 'el señor absoluto de'],
-      ['is', 'FEMALE', 'la esencia femenina de'],
-      ['os', 'NEUTER', 'el espíritu de']
+      ['mache', 'FEMALE', 'la que lucha por'],
+      ['niche', 'FEMALE', 'la victoria de'],
+      ['phone', 'FEMALE', 'la voz de'],
+      ['thea', 'FEMALE', 'la diosa de']
     ]
   },
   NORDIC: {
     roots: [
-      ['Thor', 'el trueno'],
-      ['Odin', 'la furia y sabiduría'],
-      ['Frey', 'la fertilidad'],
-      ['As', 'el entorno de los dioses'],
-      ['Ing', 'el dios primordial'],
-      ['Ragn', 'el destino'],
-      ['Bjorn', 'la fuerza bruta'],
-      ['Ulf', 'el lobo'],
-      ['Arn', 'el águila'],
-      ['Eir', 'la protección y paz'],
-      ['Frost', 'la escarcha'],
-      ['Snae', 'la nieve'],
-      ['Fjord', 'el fiordo'],
-      ['Sig', 'la victoria'],
+      ['Alf', 'el elfo'],
+      ['As', 'el dios'],
+      ['Bjorn', 'el oso'],
+      ['Gud', 'la deidad'],
       ['Gunn', 'la batalla'],
-      ['Hild', 'la guerra'],
-      ['Val', 'los caídos en combate'],
-      ['Einar', 'el guerrero solitario'],
-      ['Brand', 'la espada de fuego'],
-      ['Hrim', 'la escarcha eterna'],
-      ['Sol', 'la luz del sol'],
-      ['Mani', 'el resplandor de la luna'],
-      ['Vidar', 'el silencio profundo'],
-      ['Heimdall', 'la guardia vigilante'],
-      ['Loki', 'el caos astuto'],
-      ['Freya', 'el amor y la guerra'],
-      ['Tyr', 'la justicia implacable'],
-      ['Draug', 'el espíritu vengativo'],
-      ['Surt', 'el fuego negro'],
-      ['Fenrir', 'el lobo devorador'],
-      ['Skoll', 'la persecución'],
-      ['Ymir', 'el gigante primordial'],
-      ['Hugin', 'el pensamiento'],
-      ['Munin', 'la memoria'],
-      ['Asgard', 'el reino dorado'],
-      ['Jotun', 'la escarcha gigante'],
-      ['Kari', 'el viento helado'],
-      ['Leif', 'el heredero sagrado'],
-      ['Ivar', 'el arquero letal'],
-      ['Sven', 'el joven guerrero'],
-      ['Gud', 'la deidad nórdica'],
-      ['Axe', 'el hacha de guerra'],
-      ['Berg', 'la montaña escarpada'],
-      ['Dal', 'el valle profundo'],
-      ['Eld', 'el fuego crepitante'],
-      ['Fisk', 'el pez plateado'],
-      ['Gull', 'el oro brillante'],
-      ['Hav', 'el mar embravecido'],
-      ['Is', 'el hielo quebradizo'],
-      ['Jern', 'el hierro forjado'],
-      ['Korp', 'el cuervo mensajero'],
-      ['Ljos', 'la luz cegadora'],
-      ['Mork', 'el bosque oscuro'],
-      ['Drak', 'el dragón ancestral'],
-      ['Skog', 'el bosque denso'],
-      ['Vind', 'el viento aullante'],
-      ['Galdr', 'el hechizo rúnico'],
-      ['Blod', 'la sangre guerrera']
+      ['Hall', 'la roca'],
+      ['Hrod', 'la fama'],
+      ['Ing', 'el ancestro'],
+      ['Ketil', 'el yelmo'],
+      ['Ragn', 'el consejo divino'],
+      ['Sig', 'la victoria'],
+      ['Thor', 'el trueno'],
+      ['Ulf', 'el lobo'],
+      ['Val', 'los caídos'],
+      ['Vig', 'la guerra']
     ],
-    simpleConnectors: [],
-    complexInfixes: [
-      ['ey', 'la herencia de'],
-      ['au', 'el destino de'],
-      ['va', 'el paso de'],
-      ['heim', 'el hogar nevado de'],
-      ['gard', 'la fortaleza de'],
-      ['skald', 'el poema épico de'],
-      ['jarl', 'el mandato de'],
-      ['vard', 'el custodio de'],
-      ['varg', 'la ferocidad de'],
-      ['ulf', 'la manada de'],
-      ['storm', 'la tormenta de'],
-      ['hrafn', 'el vuelo de'],
-      ['fell', 'la montaña de'],
-      ['holm', 'la isla de']
+    simpleConnectors: [
+      ['i', ''],
+      ['a', ''],
+      ['u', '']
     ],
+    complexInfixes: [],
     suffixes: [
-      ['or', 'MALE', 'el ejecutor de'],
-      ['ar', 'MALE', 'el ejecutor de'],
-      ['ulf', 'MALE', 'el lobo de'],
+      ['brandr', 'MALE', 'la espada de'],
       ['mund', 'MALE', 'el protector de'],
       ['rik', 'MALE', 'el gobernante de'],
-      ['sten', 'MALE', 'la roca inquebrantable de'],
-      ['son', 'MALE', 'el hijo de'],
-      ['grim', 'MALE', 'la máscara de'],
-      ['thjof', 'MALE', 'el saqueador de'],
-      ['thun', 'MALE', 'el trueno de'],
-      ['rek', 'MALE', 'el rey de'],
-      ['da', 'FEMALE', 'la batalla de'],
+      ['valdr', 'MALE', 'el soberano de'],
+      ['vid', 'MALE', 'el árbol de'],
+      ['frid', 'FEMALE', 'la paz de'],
+      ['gerd', 'FEMALE', 'el amparo de'],
       ['hild', 'FEMALE', 'la batalla de'],
-      ['borg', 'FEMALE', 'el castillo protector de'],
-      ['dis', 'FEMALE', 'la diosa protectora de'],
-      ['run', 'FEMALE', 'el secreto rúnico de'],
-      ['a', 'FEMALE', 'la gracia de'],
-      ['dottir', 'FEMALE', 'la hija de'],
-      ['bjorg', 'FEMALE', 'la salvación de'],
-      ['lief', 'FEMALE', 'la amada de'],
-      ['um', 'NEUTER', 'el hogar de'],
-      ['en', 'NEUTER', 'el elemento de'],
-      ['ark', 'NEUTER', 'el territorio de'],
-      ['k', 'NEUTER', 'el núcleo de'],
-      ['thing', 'NEUTER', 'la asamblea de'],
-      ['gard', 'NEUTER', 'la muralla de'],
-      ['heim', 'NEUTER', 'el mundo de'],
-      ['kell', 'MALE', 'el casco forjado de'],
-      ['stein', 'MALE', 'el pilar sagrado de'],
-      ['frid', 'FEMALE', 'la hermosa pacífica de'],
-      ['gerd', 'FEMALE', 'el baluarte heroico de'],
-      ['hus', 'NEUTER', 'el salón noble de'],
-      ['skeg', 'MALE', 'el barbudo de'],
-      ['bjorn', 'MALE', 'el oso feroz de'],
-      ['fin', 'FEMALE', 'la magia blanca de'],
-      ['laug', 'FEMALE', 'la prometida bañada en'],
-      ['vik', 'NEUTER', 'la bahía de'],
-      ['fjell', 'NEUTER', 'la montaña sagrada de'],
-      ['vid', 'MALE', 'el árbol fuerte de'],
-      ['gny', 'FEMALE', 'el clamor de'],
-      ['stad', 'NEUTER', 'el asentamiento de']
+      ['laug', 'FEMALE', 'el compromiso de'],
+      ['run', 'FEMALE', 'el secreto de'],
+      ['veig', 'FEMALE', 'la fuerza de']
     ]
   },
   LATIN: {
     roots: [
-      ['Lux', 'la luz brillante'],
-      ['Ignis', 'el fuego devorador'],
-      ['Terra', 'la tierra firme'],
-      ['Bellum', 'la guerra implacable'],
-      ['Aevum', 'la eternidad insondable'],
-      ['Sol', 'el sol radiante'],
-      ['Luna', 'la luna mística'],
-      ['Cor', 'el corazón valiente'],
-      ['Vox', 'la voz divina'],
-      ['Fatum', 'el destino ineludible'],
-      ['Pax', 'la paz duradera'],
-      ['Lex', 'la ley inquebrantable'],
-      ['Nox', 'la noche profunda'],
-      ['Rex', 'la realeza suprema'],
-      ['Umbra', 'la penumbra oscura'],
-      ['Tempus', 'el tiempo incesante'],
-      ['Aura', 'la brisa etérea'],
-      ['Lumen', 'el resplandor ciego'],
-      ['Somnus', 'el sueño eterno'],
-      ['Mortis', 'el final inevitable'],
-      ['Imperium', 'el mandato divino'],
-      ['Sanguis', 'la sangre derramada'],
-      ['Vita', 'la vida vibrante'],
-      ['Caelum', 'el cielo estrellado'],
-      ['Aqua', 'el agua purificadora'],
-      ['Flamma', 'la llama sagrada'],
-      ['Argentum', 'la plata pura'],
-      ['Aurum', 'el oro resplandeciente'],
-      ['Cinis', 'la ceniza ardiente'],
-      ['Deus', 'la divinidad creadora'],
-      ['Ferrum', 'el hierro letal'],
-      ['Gladius', 'la espada justiciera'],
-      ['Homo', 'la raza humana'],
-      ['Ira', 'la furia divina'],
-      ['Lapis', 'la piedra preciosa'],
-      ['Mare', 'el vasto océano'],
-      ['Natura', 'la esencia natural'],
-      ['Silva', 'el bosque tupido'],
-      ['Stella', 'la estrella celestial'],
-      ['Fulgur', 'el relámpago fugaz'],
-      ['Ventus', 'el viento furioso'],
-      ['Sidus', 'el astro luminoso']
+      ['Aure', 'lo dorado'],
+      ['Cael', 'lo celestial'],
+      ['Cass', 'lo vacío'],
+      ['Clar', 'lo brillante'],
+      ['Clement', 'la misericordia'],
+      ['Domin', 'el señorío'],
+      ['Feli', 'la fortuna'],
+      ['Flor', 'la flor'],
+      ['Ign', 'el fuego'],
+      ['Luc', 'la luz'],
+      ['Magn', 'la grandeza'],
+      ['Silv', 'el bosque'],
+      ['Val', 'la fuerza'],
+      ['Vic', 'la victoria'],
+      ['Vit', 'la vida'],
+      ['Aemil', 'el rival'],
+      ['August', 'lo venerable'],
+      ['Jul', 'la juventud'],
+      ['Marc', 'lo consagrado a Marte'],
+      ['Ruf', 'lo pelirrojo']
     ],
     simpleConnectors: [
       ['i', ''],
-      ['u', ''],
-      ['a', ''],
       ['o', ''],
-      ['e', '']
+      ['u', '']
     ],
-    complexInfixes: [
-      ['ifer', 'el que porta'],
-      ['potens', 'el poderoso'],
-      ['victrix', 'la victoriosa'],
-      ['fid', 'la fe de'],
-      ['val', 'el valor de'],
-      ['luc', 'el resplandor de'],
-      ['ficus', 'el creador de'],
-      ['vagus', 'el que vaga por'],
-      ['dolor', 'el sufrimiento de'],
-      ['glor', 'la gloria de'],
-      ['vola', 'el vuelo de'],
-      ['fug', 'la huida de']
-    ],
+    complexInfixes: [],
     suffixes: [
-      ['us', 'MALE', 'aquel que personifica'],
-      ['ius', 'MALE', 'el hijo legítimo de'],
-      ['or', 'MALE', 'el creador de'],
-      ['ianus', 'MALE', 'perteneciente a'],
-      ['maximus', 'MALE', 'el más grande de'],
-      ['a', 'FEMALE', 'la que personifica'],
-      ['ia', 'FEMALE', 'la esencia pura de'],
-      ['trix', 'FEMALE', 'la que gobierna sobre'],
-      ['ina', 'FEMALE', 'proveniente de'],
-      ['rix', 'FEMALE', 'la reina indomable de'],
-      ['um', 'NEUTER', 'el concepto de'],
-      ['ium', 'NEUTER', 'el reino eterno de'],
-      ['mentum', 'NEUTER', 'el instrumento de'],
-      ['arium', 'NEUTER', 'el santuario de'],
-      ['ensis', 'MALE', 'el habitante orgulloso de'],
-      ['ana', 'FEMALE', 'la noble dama de'],
-      ['torium', 'NEUTER', 'el lugar de descanso de'],
-      ['fex', 'MALE', 'el hacedor de'],
-      ['ger', 'MALE', 'el que carga con'],
-      ['fer', 'MALE', 'el que lleva'],
-      ['fica', 'FEMALE', 'la forjadora de'],
-      ['gera', 'FEMALE', 'la que sostiene'],
-      ['cola', 'NEUTER', 'el habitante de'],
-      ['cida', 'NEUTER', 'el asesino de'],
-      ['anus', 'MALE', 'el descendiente noble de'],
-      ['aria', 'FEMALE', 'la melodía de'],
-      ['etum', 'NEUTER', 'el bosque de']
+      ['anus', 'MALE', 'perteneciente a'],
+      ['ius', 'MALE', 'de la familia de'],
+      ['inus', 'MALE', 'con la naturaleza de'],
+      ['icus', 'MALE', 'relativo a'],
+      ['ensis', 'MALE', 'procedente de'],
+      ['tor', 'MALE', 'el que hace'],
+      ['ana', 'FEMALE', 'perteneciente a'],
+      ['ia', 'FEMALE', 'de la familia de'],
+      ['ina', 'FEMALE', 'con la naturaleza de'],
+      ['ica', 'FEMALE', 'relativa a'],
+      ['trix', 'FEMALE', 'la que hace']
     ]
   },
   JAPANESE: {
     roots: [
-      ['Ryu', 'el dragón ancestral'],
-      ['Kami', 'el espíritu divino'],
-      ['Kage', 'la sombra silenciosa'],
-      ['Tsuki', 'la luna mística'],
-      ['Kaze', 'el viento cortante'],
-      ['Yama', 'la montaña eterna'],
-      ['Mizu', 'el agua que fluye'],
-      ['Kura', 'la oscuridad profunda'],
-      ['Ten', 'el cielo infinito'],
-      ['Shiro', 'el castillo inexpugnable'],
-      ['Hi', 'el fuego abrasador'],
-      ['Mori', 'el bosque sagrado'],
-      ['Tora', 'el tigre feroz'],
-      ['Hebi', 'la serpiente sigilosa'],
-      ['Inu', 'el lobo guardián'],
-      ['Hoshi', 'la estrella guía'],
-      ['Yuki', 'la nieve pura'],
-      ['Sora', 'el cielo despejado'],
-      ['Gin', 'la plata brillante'],
-      ['Kin', 'el oro imperial'],
-      ['Tetsu', 'el acero inquebrantable'],
-      ['Ken', 'la espada sagrada'],
-      ['Aki', 'el otoño dorado'],
-      ['Haru', 'la primavera florida'],
-      ['Natsu', 'el verano ardiente'],
-      ['Fuyu', 'el invierno blanco'],
-      ['Kuro', 'la oscuridad abisal'],
-      ['Ame', 'la lluvia purificadora'],
-      ['Ishi', 'la roca ancestral'],
-      ['Umi', 'el mar profundo'],
-      ['Okami', 'el lobo espectral'],
-      ['Kaminari', 'el trueno ensordecedor'],
-      ['Kusa', 'la hierba silvestre'],
-      ['Shima', 'la isla solitaria'],
-      ['Tani', 'el valle oculto'],
-      ['Cho', 'la mariposa efímera'],
-      ['Neko', 'el gato de la suerte'],
-      ['Hashi', 'el puente espiritual'],
-      ['Taka', 'el halcón veloz'],
-      ['Kiku', 'el crisantemo real'],
-      ['Matsu', 'el pino eterno'],
-      ['Take', 'el bambú flexible'],
-      ['Kari', 'el ganso salvaje']
+      ['Hiro', 'lo amplio y generoso'],
+      ['Kiyo', 'la pureza'],
+      ['Masa', 'la justicia'],
+      ['Tada', 'la lealtad'],
+      ['Taka', 'lo noble'],
+      ['Toshi', 'la sabiduría'],
+      ['Yoshi', 'la bondad'],
+      ['Nori', 'la ley'],
+      ['Hide', 'la excelencia'],
+      ['Nobu', 'la confianza'],
+      ['Kazu', 'la armonía'],
+      ['Shige', 'lo exuberante'],
+      ['Yasu', 'la paz'],
+      ['Mitsu', 'la luz'],
+      ['Moto', 'el origen'],
+      ['Aya', 'el color'],
+      ['Emi', 'la sonrisa']
     ],
     simpleConnectors: [],
-    complexInfixes: [
-      ['no', 'perteneciente a'],
-      ['mura', 'la aldea de'],
-      ['moto', 'el origen de'],
-      ['kawa', 'el río de'],
-      ['kami', 'la divinidad de'],
-      ['hashi', 'el puente hacia'],
-      ['kaze', 'el viento de'],
-      ['yama', 'el pico de'],
-      ['zaka', 'la colina de'],
-      ['guchi', 'la entrada de'],
-      ['saki', 'el cabo de']
-    ],
+    complexInfixes: [],
     suffixes: [
-      ['taro', 'MALE', 'el gran hijo de'],
       ['ro', 'MALE', 'el hijo de'],
-      ['shi', 'MALE', 'el guerrero de'],
-      ['maru', 'MALE', 'el guardián perfecto de'],
+      ['taro', 'MALE', 'el gran hijo de'],
       ['jiro', 'MALE', 'el segundo hijo de'],
-      ['suke', 'MALE', 'el asistente de'],
-      ['yori', 'MALE', 'la confianza de'],
+      ['suke', 'MALE', 'el ayudante de'],
+      ['shi', 'MALE', 'la voluntad de'],
+      ['ya', 'MALE', 'la flecha de'],
+      ['hiko', 'MALE', 'el príncipe de'],
+      ['maru', 'MALE', 'la pureza de'],
       ['ko', 'FEMALE', 'la niña de'],
       ['mi', 'FEMALE', 'la belleza de'],
-      ['hana', 'FEMALE', 'la flor de'],
-      ['hime', 'FEMALE', 'la princesa de'],
-      ['nami', 'FEMALE', 'la ola de'],
-      ['san', 'NEUTER', 'el honorable linaje de'],
-      ['sama', 'NEUTER', 'el gran señorío de'],
-      ['shin', 'NEUTER', 'el corazón de'],
-      ['do', 'NEUTER', 'el camino de'],
-      ['jin', 'NEUTER', 'el espíritu de'],
-      ['yoshi', 'MALE', 'el justo servidor de'],
-      ['ka', 'FEMALE', 'el aroma dulce de'],
-      ['e', 'FEMALE', 'la pintura viva de'],
-      ['ku', 'NEUTER', 'el distrito ancestral de'],
-      ['katsu', 'MALE', 'la victoria de'],
-      ['hide', 'MALE', 'la excelencia de'],
-      ['nobu', 'MALE', 'la fe de'],
-      ['miya', 'FEMALE', 'el santuario de'],
-      ['ki', 'FEMALE', 'la esperanza de'],
-      ['mura', 'NEUTER', 'la aldea oculta de'],
-      ['kawa', 'NEUTER', 'el río cristalino de'],
-      ['ta', 'MALE', 'el campo de'],
-      ['mi', 'FEMALE', 'el mar hermoso de'],
-      ['sho', 'NEUTER', 'el lugar de']
+      ['ka', 'FEMALE', 'el aroma de'],
+      ['na', 'FEMALE', 'la gracia de'],
+      ['e', 'FEMALE', 'la bendición de'],
+      ['yo', 'FEMALE', 'el mundo de']
     ]
   },
   CELTIC: {
@@ -1061,75 +676,7 @@ const DATA = {
       ['shub', 'FEMALE', 'la hermosa de'],
       ['ki', 'NEUTER', 'el lugar de']
     ]
-  },
-  ARABIC: {
-    roots: [
-      ['Alt', 'el vuelo del águila'],
-      ['Zah', 'la flor radiante'],
-      ['Tari', 'la estrella nocturna'],
-      ['Kar', 'la generosidad infinita'],
-      ['Noo', 'la luz divina'],
-      ['Hak', 'la sabiduría eterna'],
-      ['Mal', 'el rey soberano'],
-      ['Sal', 'la paz profunda'],
-      ['Jal', 'la majestad de'],
-      ['Kha', 'la eternidad de'],
-      ['Rah', 'la misericordia de'],
-      ['Ami', 'la confianza de'],
-      ['Fari', 'la alegría de'],
-      ['Nas', 'la victoria de'],
-      ['Ziy', 'el resplandor de']
-    ],
-    simpleConnectors: [['a', ''], ['i', ''], ['u', ''], ['ou', ''], ['ee', '']],
-    complexInfixes: [
-      ['din', 'la fe de'],
-      ['ullah', 'la bendición de'],
-      ['abd', 'el siervo de'],
-      ['ibn', 'el hijo de'],
-      ['bint', 'la hija de']
-    ],
-    suffixes: [
-      ['ir', 'MALE', 'el príncipe de'],
-      ['im', 'MALE', 'el sabio de'],
-      ['ira', 'FEMALE', 'la princesa de'],
-      ['ima', 'FEMALE', 'la sabia de'],
-      ['ar', 'NEUTER', 'el resplandor de']
-    ]
-  },
-  POLYNESIAN: {
-    roots: [
-      ['Kai', 'el océano infinito'],
-      ['Lan', 'el cielo despejado'],
-      ['Moa', 'el mar profundo'],
-      ['Pel', 'el fuego volcánico'],
-      ['Hok', 'la estrella guía'],
-      ['Man', 'el poder espiritual'],
-      ['Mak', 'el viento suave'],
-      ['Al', 'la realeza de'],
-      ['Aho', 'el aliento de vida'],
-      ['Ika', 'el guerrero fuerte'],
-      ['Kap', 'el lugar sagrado'],
-      ['Nal', 'la ola gigante'],
-      ['On', 'la tierra firme'],
-      ['Pon', 'la armonía del'],
-      ['Wai', 'el agua dulce']
-    ],
-    simpleConnectors: [['a', ''], ['e', ''], ['i', ''], ['o', ''], ['u', '']],
-    complexInfixes: [
-      ['lani', 'el cielo de'],
-      ['kai', 'el mar de'],
-      ['nui', 'la grandeza de'],
-      ['loa', 'la longitud de'],
-      ['mana', 'el espíritu de']
-    ],
-    suffixes: [
-      ['haku', 'MALE', 'el señor de'],
-      ['koa', 'MALE', 'el guerrero de'],
-      ['pua', 'FEMALE', 'la flor de'],
-      ['mele', 'FEMALE', 'la canción de'],
-      ['ola', 'NEUTER', 'la vida de']
-    ]
-  },
+  },
   SWAHILI: {
     roots: [
       ['Kof', 'el nacido en viernes'],
@@ -1262,138 +809,7 @@ const DATA = {
       ['nin', 'FEMALE', 'la señora de'],
       ['ama', 'FEMALE', 'la madre de']
     ]
-  },
-  ARABIC: {
-    roots: [
-      ['Zaid', 'el abundante'],
-      ['Umar', 'el de larga vida'],
-      ['Ali', 'el elevado'],
-      ['Hassan', 'el hermoso'],
-      ['Hussein', 'el pequeño hermoso'],
-      ['Fatima', 'la que se abstiene'],
-      ['Aisha', 'la viva'],
-      ['Khadija', 'la nacida prematura'],
-      ['Maryam', 'la amada de Dios'],
-      ['Zainab', 'la flor del desierto'],
-      ['Alt', 'el vuelo del águila'],
-      ['Zah', 'la flor radiante'],
-      ['Tari', 'la estrella nocturna'],
-      ['Kar', 'la generosidad infinita'],
-      ['Noo', 'la luz divina'],
-      ['Hak', 'la sabiduría eterna'],
-      ['Mal', 'el rey soberano'],
-      ['Sal', 'la paz profunda'],
-      ['Jal', 'la majestad de'],
-      ['Kha', 'la eternidad de'],
-      ['Rah', 'la misericordia de'],
-      ['Ami', 'la confianza de'],
-      ['Fari', 'la alegría de'],
-      ['Nas', 'la victoria de'],
-      ['Ziy', 'el resplandor de'],
-      ['Amir', 'el príncipe soberano'],
-      ['Haf', 'el protector vigilante'],
-      ['Kam', 'la perfección pura'],
-      ['Nad', 'el mensajero divino'],
-      ['Qam', 'la luna llena'],
-      ['Raf', 'la nobleza de espíritu'],
-      ['Sam', 'el compañero leal'],
-      ['Taq', 'el temeroso de Dios'],
-      ['Wad', 'el amigo afectuoso'],
-      ['Yaq', 'la certeza inquebrantable']
-    ],
-    simpleConnectors: [],
-    complexInfixes: [
-      ['din', 'la fe de'],
-      ['ullah', 'la bendición de'],
-      ['abd', 'el siervo de'],
-      ['ibn', 'el hijo de'],
-      ['bint', 'la hija de'],
-      ['nur', 'la luz de'],
-      ['haqq', 'la verdad de'],
-      ['saif', 'la espada de']
-    ],
-    suffixes: [
-      ['ir', 'MALE', 'el príncipe de'],
-      ['im', 'MALE', 'el sabio de'],
-      ['ira', 'FEMALE', 'la princesa de'],
-      ['ima', 'FEMALE', 'la sabia de'],
-      ['ar', 'NEUTER', 'el resplandor de'],
-      ['ullah', 'MALE', 'el sirviente de'],
-      ['uddin', 'MALE', 'la fe de'],
-      ['iyah', 'FEMALE', 'la esencia de'],
-      ['in', 'MALE', 'el perteneciente a'],
-      ['at', 'FEMALE', 'la portadora de'],
-      ['an', 'NEUTER', 'el espíritu de'],
-      ['i', 'MALE', 'el devoto a']
-    ]
-  },
-  POLYNESIAN: {
-    roots: [
-      ['Kanoa', 'el hombre libre'],
-      ['Kekoa', 'el guerrero valiente'],
-      ['Kimo', 'el suplantador'],
-      ['Lilo', 'la generosa'],
-      ['Malia', 'la calma'],
-      ['Nani', 'la belleza'],
-      ['Noa', 'el libre'],
-      ['Pika', 'la roca'],
-      ['Pua', 'la flor'],
-      ['Tiki', 'la primera estatua'],
-      ['Kai', 'el océano infinito'],
-      ['Lan', 'el cielo despejado'],
-      ['Moa', 'el mar profundo'],
-      ['Pel', 'el fuego volcánico'],
-      ['Hok', 'la estrella guía'],
-      ['Man', 'el poder espiritual'],
-      ['Mak', 'el viento suave'],
-      ['Al', 'la realeza de'],
-      ['Aho', 'el aliento de vida'],
-      ['Ika', 'el guerrero fuerte'],
-      ['Kap', 'el lugar sagrado'],
-      ['Nal', 'la ola gigante'],
-      ['On', 'la tierra firme'],
-      ['Pon', 'la armonía del'],
-      ['Wai', 'el agua dulce'],
-      ['Akua', 'el espíritu divino'],
-      ['Hale', 'el hogar seguro'],
-      ['Ilima', 'la flor del desierto'],
-      ['Koa', 'el guerrero valiente'],
-      ['Loko', 'el lago interior'],
-      ['Mahu', 'la niebla matutina'],
-      ['Nene', 'el vuelo del ganso'],
-      ['Pohaku', 'la piedra inamovible'],
-      ['Ulu', 'el bosque creciente'],
-      ['Wahine', 'la mujer sabia']
-    ],
-    simpleConnectors: [],
-    complexInfixes: [
-      ['lani', 'el cielo de'],
-      ['kai', 'el mar de'],
-      ['nui', 'la grandeza de'],
-      ['loa', 'la longitud de'],
-      ['mana', 'el espíritu de'],
-      ['wai', 'el agua de'],
-      ['moku', 'la isla de'],
-      ['hoku', 'la estrella de']
-    ],
-    suffixes: [
-      ['haku', 'MALE', 'el señor de'],
-      ['koa', 'MALE', 'el guerrero de'],
-      ['pua', 'FEMALE', 'la flor de'],
-      ['mele', 'FEMALE', 'la canción de'],
-      ['ola', 'NEUTER', 'la vida de'],
-      ['kane', 'MALE', 'el hombre de'],
-      ['ali', 'MALE', 'el jefe de'],
-      ['wahine', 'FEMALE', 'la mujer de'],
-      ['lani', 'FEMALE', 'la celestial de'],
-      ['kai', 'MALE', 'el marinero de'],
-      ['nui', 'NEUTER', 'la grandeza de'],
-      ['iki', 'NEUTER', 'lo pequeño de'],
-      ['loa', 'NEUTER', 'lo infinito de'],
-      ['mana', 'NEUTER', 'el poder de'],
-      ['kapu', 'NEUTER', 'lo prohibido de']
-    ]
-  },
+  },
   SWAHILI: {
     roots: [
       ['Juma', 'el nacido en viernes'],
@@ -1704,7 +1120,7 @@ const toSuffix = ([text, gender, meaning], style) => ({ text, gender, meaning, s
 
 export function getLocalComponents(style = 'GREEK') {
   if (style === 'RANDOM') {
-    return mergeComponents(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'ARAMAIC', 'PERSIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']);
+    return mergeComponents(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']);
   }
 
   const source = DATA[style] || DATA.GREEK;
@@ -1739,9 +1155,9 @@ export function generateLocalNames(params) {
     let finalStyle = params.style || 'GREEK';
 
     if (isMix && params.mixOrigins) {
-      const rootStyle = params.mixOrigins.root || pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'ARAMAIC', 'PERSIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']);
-      const infixStyle = params.mixOrigins.infix || pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'ARAMAIC', 'PERSIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']);
-      const suffixStyle = params.mixOrigins.suffix || pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'ARAMAIC', 'PERSIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']);
+      const rootStyle = params.mixOrigins.root || pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']);
+      const infixStyle = params.mixOrigins.infix || pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']);
+      const suffixStyle = params.mixOrigins.suffix || pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']);
       
       const roots = getLocalComponents(rootStyle).roots;
       const infixes = getLocalComponents(infixStyle).complexInfixes;
@@ -1759,7 +1175,7 @@ export function generateLocalNames(params) {
       
       finalStyle = rootStyle;
     } else {
-      const style = isRandom ? pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'ARAMAIC', 'PERSIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']) : params.style || 'GREEK';
+      const style = isRandom ? pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']) : params.style || 'GREEK';
       const components = getLocalComponents(style);
       let formulaComps = components;
       if (isRandom) {
@@ -1836,8 +1252,6 @@ function generateCustomNames(params) {
 }
 
 const STYLE_LABELS = {
-  ARAMAIC: 'Arameo Antiguo',
-  PERSIAN: 'Persa Antiguo',
   OLD_ENGLISH: 'Anglosajón',
   CELESTIAL: 'Celestial',
   ABYSSAL: 'Abisal',
@@ -1852,8 +1266,6 @@ const STYLE_LABELS = {
   SLAVIC: 'Eslavo',
   EGYPTIAN: 'Egipcio',
   SUMERIAN: 'Sumerio',
-  ARABIC: 'Árabe Clásico',
-  POLYNESIAN: 'Polinesio',
   SWAHILI: 'Swahili',
   KHUZDUL: 'Khuzdul'
 };
@@ -1919,7 +1331,7 @@ function findOrPick(items, text, type) {
   if (selected) return selected;
   
   // Si no está en este idioma (ej: style=NORDIC pero el usuario forzó una raíz LATIN), buscamos en el resto
-  for (const s of ['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'ARAMAIC', 'PERSIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']) {
+  for (const s of ['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']) {
     const comps = getLocalComponents(s);
     for (const key in comps) {
       const found = comps[key].find((item) => item.text.toLowerCase() === String(text).toLowerCase());
@@ -2032,7 +1444,7 @@ function generateIPA(name, style) {
       .replace(/j/g, 'dʑ')
       .replace(/y/g, 'j')
       .replace(/r/g, 'ɾ');
-  } else if (style === 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH') {
+  } else if (style === 'SUMERIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH') {
     ipa = ipa
       .replace(/th/g, 'θ')
       .replace(/dh/g, 'ð')
@@ -2085,7 +1497,7 @@ function generateIPA(name, style) {
       .replace(/sh/g, 'ʃ')
       .replace(/kh/g, 'x')
       .replace(/z/g, 't͡s');
-  } else if (style === 'ARABIC') {
+  } else if (style === ) {
     ipa = ipa
       .replace(/kh/g, 'x')
       .replace(/gh/g, 'ʁ')
@@ -2093,7 +1505,7 @@ function generateIPA(name, style) {
       .replace(/th/g, 'θ')
       .replace(/dh/g, 'ð')
       .replace(/q/g, 'q');
-  } else if (style === 'POLYNESIAN') {
+  } else if (style === ) {
     ipa = ipa
       .replace(/w/g, 'v')
       .replace(/r/g, 'ɾ')
@@ -2118,7 +1530,7 @@ function generateIPA(name, style) {
       .replace(/sh/g, 'ʃ')
       .replace(/kh/g, 'x')
       .replace(/z/g, 't͡s');
-  } else if (style === 'ARABIC') {
+  } else if (style === ) {
     ipa = ipa
       .replace(/kh/g, 'x')
       .replace(/gh/g, 'ʁ')
@@ -2126,7 +1538,7 @@ function generateIPA(name, style) {
       .replace(/th/g, 'θ')
       .replace(/dh/g, 'ð')
       .replace(/q/g, 'q');
-  } else if (style === 'POLYNESIAN') {
+  } else if (style === ) {
     ipa = ipa
       .replace(/w/g, 'v')
       .replace(/r/g, 'ɾ')
@@ -2145,12 +1557,12 @@ function generateIPA(name, style) {
       .replace(/zh/g, 'ʒ')
       .replace(/sh/g, 'ʃ')
       .replace(/z/g, 'z');
-  } else if (style === 'ARAMAIC') {
+  } else if (style === ) {
     ipa = ipa
       .replace(/sh/g, 'ʃ')
       .replace(/kh/g, 'x')
       .replace(/q/g, 'q');
-  } else if (style === 'PERSIAN') {
+  } else if (style === ) {
     ipa = ipa
       .replace(/sh/g, 'ʃ')
       .replace(/kh/g, 'x')
