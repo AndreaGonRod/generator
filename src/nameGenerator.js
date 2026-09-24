@@ -956,10 +956,18 @@ function buildName(parts) {
   // No repetir vocales ni consonantes
   name = name.replace(/(.)\1+/gi, '$1');
   
-  let meaning = [parts.suffix?.meaning, parts.connector2?.meaning, parts.infix?.meaning, parts.connector1?.meaning, parts.root?.meaning]
-    .filter(Boolean)
-    .join(' ')
+  let meaningParts = [parts.suffix?.meaning, parts.connector2?.meaning, parts.infix?.meaning, parts.connector1?.meaning, parts.root?.meaning].filter(Boolean);
+  let meaning = meaningParts.reduce((acc, curr) => {
+    if (!acc) return curr;
+    if (/\b(de|en|por|con|a|para)$/i.test(acc.trim())) {
+        return acc + ' ' + curr;
+    }
+    return acc + ' de ' + curr;
+  }, '');
+
+  meaning = meaning
     .replace(/\s+/g, ' ')
+    .replace(/\ba el\b/gi, 'al')
     .replace(/\bde el\b/g, 'del')
     .replace(/\bde de\b/g, 'de')
     .replace(/\by y\b/g, 'y')
