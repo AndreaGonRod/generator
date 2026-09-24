@@ -1243,7 +1243,7 @@ function generateIPA(name, style) {
       .replace(/f/g, 'v')
       .replace(/c/g, 'k')
       .replace(/mh/g, 'v');
-  } else if (style === ) {
+  } else if (false) {
     ipa = ipa
       .replace(/sh/g, 'ɕ')
       .replace(/ch/g, 'tɕ')
