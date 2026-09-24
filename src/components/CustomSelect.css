@@ -74,3 +74,25 @@
   background-color: rgba(255, 255, 255, 0.05);
   font-weight: 500;
 }
+
+.custom-select-group {
+  margin-bottom: 4px;
+}
+
+.custom-select-group:last-child {
+  margin-bottom: 0;
+}
+
+.custom-select-group-label {
+  padding: 8px 14px 4px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  font-weight: 600;
+  cursor: default;
+}
+
+.custom-select-suboption {
+  padding-left: 24px;
+}

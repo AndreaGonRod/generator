@@ -4,26 +4,53 @@ import { generateLocalNames, getLocalComponents } from './nameGenerator';
 import { CustomSelect } from './components/CustomSelect';
 import { ChipGroup } from './components/ChipGroup';
 
-const styleOptions = [
-  { value: 'GREEK', label: 'Griego Antiguo' },
-  { value: 'NORDIC', label: 'Nórdico Antiguo' },
-  { value: 'LATIN', label: 'Latín' },
-  { value: 'JAPANESE', label: 'Japonés' },
-  { value: 'ELVISH', label: 'Élfico' },
-  { value: 'VALYRIAN', label: 'Alto Valyrio' },
-  { value: 'OLD_ENGLISH', label: 'Anglosajón' },
-  { value: 'CELESTIAL', label: 'Celestial' },
-  { value: 'ABYSSAL', label: 'Abisal' },
-  { value: 'CELTIC', label: 'Celta' },
-  { value: 'SLAVIC', label: 'Eslavo' },
-  { value: 'EGYPTIAN', label: 'Egipcio' },
-  { value: 'SUMERIAN', label: 'Sumerio' },
-  { value: 'SWAHILI', label: 'Swahili' },
-  { value: 'KHUZDUL', label: 'Khuzdul' },
-  { value: 'MIX', label: 'Mezcla' },
-  { value: 'CUSTOM', label: 'Personalizado' },
-  { value: 'RANDOM', label: 'Aleatorio' }
+const groupedStyleOptions = [
+  {
+    label: 'Fantasía y Alta Ficción',
+    options: [
+      { value: 'VALYRIAN', label: 'Alto Valyrio' },
+      { value: 'ELVISH', label: 'Élfico' },
+      { value: 'KHUZDUL', label: 'Khuzdul' }
+    ]
+  },
+  {
+    label: 'Históricos y Antiguos',
+    options: [
+      { value: 'OLD_ENGLISH', label: 'Anglosajón' },
+      { value: 'CELTIC', label: 'Celta' },
+      { value: 'EGYPTIAN', label: 'Egipcio' },
+      { value: 'SLAVIC', label: 'Eslavo' },
+      { value: 'GREEK', label: 'Griego Antiguo' },
+      { value: 'LATIN', label: 'Latín' },
+      { value: 'NORDIC', label: 'Nórdico Antiguo' },
+      { value: 'SUMERIAN', label: 'Sumerio' }
+    ]
+  },
+  {
+    label: 'Míticos y Divinos',
+    options: [
+      { value: 'ABYSSAL', label: 'Abisal' },
+      { value: 'CELESTIAL', label: 'Celestial' }
+    ]
+  },
+  {
+    label: 'Otros',
+    options: [
+      { value: 'RANDOM', label: 'Aleatorio' },
+      { value: 'MIX', label: 'Mezcla' },
+      { value: 'CUSTOM', label: 'Personalizado' }
+    ]
+  },
+  {
+    label: 'Regionales y Culturales',
+    options: [
+      { value: 'JAPANESE', label: 'Japonés' },
+      { value: 'SWAHILI', label: 'Swahili' }
+    ]
+  }
 ];
+
+const styleOptions = groupedStyleOptions.flatMap(g => g.options);
 
 const genderOptions = [
   { value: 'MALE', label: 'Masculino' },
@@ -265,7 +292,7 @@ function App() {
         <ChipGroup 
           label="Origen" 
           value={style} 
-          options={styleOptions} 
+          options={groupedStyleOptions} 
           onChange={handleStyleChange} 
         />
 

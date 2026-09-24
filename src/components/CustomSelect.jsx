@@ -40,15 +40,33 @@ export function CustomSelect({ value, onChange, options, disabled }) {
 
       {isOpen && (
         <div className="custom-select-menu">
-          {options.map((opt) => (
-            <div
-              key={opt.value}
-              className={`custom-select-option ${opt.value === value ? 'selected' : ''}`}
-              onClick={() => handleSelect(opt.value)}
-            >
-              {opt.label}
-            </div>
-          ))}
+          {options.map((opt, index) => {
+            if (opt.options) {
+              return (
+                <div key={`group-${index}`} className="custom-select-group">
+                  <div className="custom-select-group-label">{opt.label}</div>
+                  {opt.options.map(subOpt => (
+                    <div
+                      key={subOpt.value}
+                      className={`custom-select-option custom-select-suboption ${subOpt.value === value ? 'selected' : ''}`}
+                      onClick={() => handleSelect(subOpt.value)}
+                    >
+                      {subOpt.label}
+                    </div>
+                  ))}
+                </div>
+              );
+            }
+            return (
+              <div
+                key={opt.value}
+                className={`custom-select-option ${opt.value === value ? 'selected' : ''}`}
+                onClick={() => handleSelect(opt.value)}
+              >
+                {opt.label}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

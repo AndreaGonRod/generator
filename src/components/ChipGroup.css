@@ -43,3 +43,37 @@
   font-weight: 600;
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
 }
+
+.chip-group-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chip-group-section {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 8px 12px;
+  transition: background 0.2s;
+}
+
+.chip-group-section.expanded {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chip-group-section-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: #888;
+  font-weight: 600;
+  user-select: none;
+  transition: color 0.2s;
+}
+
+.chip-group-section-label:hover {
+  color: #ededed;
+}
