@@ -208,6 +208,15 @@ function App() {
     return params;
   };
 
+  const isMixComplete = () => {
+    if (style !== 'MIX') return true;
+    if (formulaMode !== 'CUSTOM') return true;
+    if (!mixRoot) return false;
+    if (formula.includes('INFIX') && !mixInfix) return false;
+    if (!mixSuffix) return false;
+    return true;
+  };
+
   const fetchNames = () => {
     setLoading(true);
     setStatus('');
@@ -321,7 +330,7 @@ function App() {
             <div className="control-group" style={{ flex: 1, minWidth: '200px' }}>
               <label style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em' }}>Raíz</label>
               <CustomSelect value={mixRoot} onChange={(e) => setMixRoot(e.target.value)} options={[
-                { value: '', label: 'Aleatorio' },
+                { value: '', label: 'Elige...' },
                 ...styleOptions.filter(o => o.value !== 'CUSTOM' && o.value !== 'RANDOM' && o.value !== 'MIX')
               ]} />
             </div>
@@ -330,7 +339,7 @@ function App() {
               <div className="control-group" style={{ flex: 1, minWidth: '200px' }}>
                 <label style={{ textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em' }}>Infijo</label>
                 <CustomSelect value={mixInfix} onChange={(e) => setMixInfix(e.target.value)} options={[
-                  { value: '', label: 'Aleatorio' },
+                  { value: '', label: 'Elige...' },
                   ...styleOptions.filter(o => o.value !== 'CUSTOM' && o.value !== 'RANDOM' && o.value !== 'MIX')
                 ]} />
               </div>
@@ -559,7 +568,7 @@ function App() {
         )}
 
         <div className="action-row">
-          <button type="button" className="btn-primary" onClick={fetchNames} disabled={loading}>
+          <button type="button" className="btn-primary" onClick={fetchNames} disabled={loading || !isMixComplete()}>
             Descubrir
           </button>
         </div>
