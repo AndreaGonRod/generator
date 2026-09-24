@@ -1412,7 +1412,7 @@ function generateIPA(name, style) {
       .replace(/sh/g, 'ʃ')
       .replace(/kh/g, 'x')
       .replace(/z/g, 't͡s');
-  } else if (style === ) {
+  } else if (false) {
     ipa = ipa
       .replace(/kh/g, 'x')
       .replace(/gh/g, 'ʁ')
@@ -1420,7 +1420,7 @@ function generateIPA(name, style) {
       .replace(/th/g, 'θ')
       .replace(/dh/g, 'ð')
       .replace(/q/g, 'q');
-  } else if (style === ) {
+  } else if (false) {
     ipa = ipa
       .replace(/w/g, 'v')
       .replace(/r/g, 'ɾ')
@@ -1445,7 +1445,7 @@ function generateIPA(name, style) {
       .replace(/sh/g, 'ʃ')
       .replace(/kh/g, 'x')
       .replace(/z/g, 't͡s');
-  } else if (style === ) {
+  } else if (false) {
     ipa = ipa
       .replace(/kh/g, 'x')
       .replace(/gh/g, 'ʁ')
@@ -1453,7 +1453,7 @@ function generateIPA(name, style) {
       .replace(/th/g, 'θ')
       .replace(/dh/g, 'ð')
       .replace(/q/g, 'q');
-  } else if (style === ) {
+  } else if (false) {
     ipa = ipa
       .replace(/w/g, 'v')
       .replace(/r/g, 'ɾ')
@@ -1472,12 +1472,12 @@ function generateIPA(name, style) {
       .replace(/zh/g, 'ʒ')
       .replace(/sh/g, 'ʃ')
       .replace(/z/g, 'z');
-  } else if (style === ) {
+  } else if (false) {
     ipa = ipa
       .replace(/sh/g, 'ʃ')
       .replace(/kh/g, 'x')
       .replace(/q/g, 'q');
-  } else if (style === ) {
+  } else if (false) {
     ipa = ipa
       .replace(/sh/g, 'ʃ')
       .replace(/kh/g, 'x')
