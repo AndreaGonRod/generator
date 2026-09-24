@@ -952,7 +952,9 @@ function buildName(parts) {
   if (f.includes('CONNECTOR2')) formulaParts.push(parts.connector2);
   if (f.includes('SUFFIX')) formulaParts.push(parts.suffix);
 
-  const name = capitalize(formulaParts.reduce((result, item) => combine(result, item?.text || ''), ''));
+  let name = capitalize(formulaParts.reduce((result, item) => combine(result, item?.text || ''), ''));
+  // No repetir vocales ni consonantes
+  name = name.replace(/(.)\1+/gi, '$1');
   
   let meaning = [parts.suffix?.meaning, parts.connector2?.meaning, parts.infix?.meaning, parts.connector1?.meaning, parts.root?.meaning]
     .filter(Boolean)
@@ -1117,7 +1119,7 @@ function generateIPA(name, style) {
       .replace(/j/g, 'dʑ')
       .replace(/y/g, 'j')
       .replace(/r/g, 'ɾ');
-  } else if (style === 'SUMERIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH') {
+  } else if (['SUMERIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH'].includes(style)) {
     ipa = ipa
       .replace(/th/g, 'θ')
       .replace(/dh/g, 'ð')
@@ -1137,17 +1139,6 @@ function generateIPA(name, style) {
       .replace(/f/g, 'v')
       .replace(/c/g, 'k')
       .replace(/mh/g, 'v');
-  } else if (false) {
-    ipa = ipa
-      .replace(/sh/g, 'ɕ')
-      .replace(/ch/g, 'tɕ')
-      .replace(/j/g, 'dʑ')
-      .replace(/bh/g, 'bʱ')
-      .replace(/dh/g, 'dʱ')
-      .replace(/gh/g, 'gʱ')
-      .replace(/kh/g, 'kʰ')
-      .replace(/ph/g, 'pʰ')
-      .replace(/th/g, 'tʰ');
   } else if (style === 'SLAVIC') {
     ipa = ipa
       .replace(/sh/g, 'ʂ')
