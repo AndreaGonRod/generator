@@ -1,4 +1,257 @@
 const DATA = {
+  ARAMAIC: {
+    roots: [
+      ['El', 'la divinidad'],
+      ['Malak', 'el mensajero celestial'],
+      ['Or', 'la luz'],
+      ['Sar', 'el príncipe'],
+      ['Nabi', 'el profeta'],
+      ['Bar', 'el hijo de'],
+      ['Qadosh', 'lo sagrado'],
+      ['Shalom', 'la paz'],
+      ['Zohar', 'el resplandor'],
+      ['Melek', 'el rey'],
+      ['Ruach', 'el espíritu'],
+      ['Tzur', 'la roca'],
+      ['Yasha', 'la salvación'],
+      ['Chayim', 'la vida'],
+      ['Lev', 'el corazón'],
+      ['Esh', 'el fuego'],
+      ['Mayim', 'el agua'],
+      ['Shamayim', 'los cielos'],
+      ['Eretz', 'la tierra'],
+      ['Chesed', 'la bondad'],
+      ['Emet', 'la verdad'],
+      ['Tzedek', 'la justicia'],
+      ['Gibbor', 'el guerrero'],
+      ['Natan', 'el don']
+    ],
+    simpleConnectors: [
+      ['i', 'de'],
+      ['o', 'de'],
+      ['a', 'y'],
+      ['u', 'y']
+    ],
+    complexInfixes: [
+      ['az', 'fuerte'],
+      ['ur', 'luminoso'],
+      ['ram', 'exaltado'],
+      ['elyon', 'altísimo'],
+      ['shaddai', 'todopoderoso'],
+      ['tzvi', 'hermoso']
+    ],
+    suffixes: [
+      ['el', 'MALE', 'el ángel de'],
+      ['iah', 'MALE', 'el siervo de'],
+      ['ah', 'FEMALE', 'la prometida de'],
+      ['iel', 'NEUTER', 'el mensajero de'],
+      ['im', 'MALE', 'el guardián de'],
+      ['ut', 'FEMALE', 'la esencia de'],
+      ['on', 'MALE', 'el poder de'],
+      ['oth', 'FEMALE', 'la legión de'],
+      ['ya', 'NEUTER', 'la creación de'],
+      ['ai', 'MALE', 'el líder de']
+    ]
+  },
+  PERSIAN: {
+    roots: [
+      ['Shir', 'el león'],
+      ['Mithra', 'el sol'],
+      ['Arta', 'la verdad cósmica'],
+      ['Dar', 'el poseedor'],
+      ['Khshathra', 'el imperio'],
+      ['Zar', 'el oro'],
+      ['Rukh', 'el espíritu'],
+      ['Shad', 'la alegría'],
+      ['Far', 'la gloria divina'],
+      ['Nav', 'lo nuevo'],
+      ['Roshan', 'la luz'],
+      ['Zib', 'la belleza'],
+      ['Omid', 'la esperanza'],
+      ['Azad', 'la libertad'],
+      ['Nima', 'la justicia'],
+      ['Farzan', 'la sabiduría'],
+      ['Bahram', 'la victoria'],
+      ['Darya', 'el mar'],
+      ['Khorshid', 'el sol'],
+      ['Mah', 'la luna'],
+      ['Barf', 'la nieve'],
+      ['Atash', 'el fuego']
+    ],
+    simpleConnectors: [
+      ['a', 'y'],
+      ['i', 'de'],
+      ['o', 'y'],
+      ['e', 'de']
+    ],
+    complexInfixes: [
+      ['van', 'victorioso'],
+      ['mehr', 'amoroso'],
+      ['ruz', 'radiante'],
+      ['dil', 'valiente'],
+      ['nam', 'ilustre']
+    ],
+    suffixes: [
+      ['zad', 'MALE', 'el nacido de'],
+      ['shah', 'MALE', 'el soberano de'],
+      ['dokht', 'FEMALE', 'la hija de'],
+      ['banu', 'FEMALE', 'la dama de'],
+      ['yar', 'NEUTER', 'el compañero de'],
+      ['pour', 'MALE', 'el hijo de'],
+      ['nia', 'NEUTER', 'el linaje de'],
+      ['vand', 'MALE', 'el defensor de'],
+      ['din', 'NEUTER', 'la fe de'],
+      ['far', 'MALE', 'el esplendor de']
+    ]
+  },
+  OLD_ENGLISH: {
+    roots: [
+      ['Aethel', 'la nobleza'],
+      ['Cen', 'el valor'],
+      ['Ead', 'la riqueza'],
+      ['Leof', 'el amor'],
+      ['God', 'la bondad'],
+      ['Wulf', 'el lobo'],
+      ['Beorht', 'la luz brillante'],
+      ['Cyne', 'la realeza'],
+      ['Sig', 'la victoria'],
+      ['Maer', 'la fama'],
+      ['Aelf', 'el elfo'],
+      ['Beald', 'la audacia'],
+      ['Cwen', 'la reina'],
+      ['Dun', 'la colina oscura'],
+      ['Eald', 'lo antiguo'],
+      ['Frod', 'la sabiduría'],
+      ['Gar', 'la lanza'],
+      ['Here', 'el ejército'],
+      ['Iren', 'el hierro'],
+      ['Rad', 'el consejo'],
+      ['Os', 'la deidad']
+    ],
+    simpleConnectors: [
+      ['a', ''],
+      ['e', ''],
+      ['i', ''],
+      ['o', '']
+    ],
+    complexInfixes: [
+      ['weald', 'poderoso'],
+      ['stan', 'firme'],
+      ['helm', 'protector'],
+      ['fri', 'pacífico'],
+      ['grim', 'feroz']
+    ],
+    suffixes: [
+      ['ric', 'MALE', 'el gobernante de'],
+      ['red', 'MALE', 'el consejero de'],
+      ['wyn', 'FEMALE', 'la alegría de'],
+      ['flaed', 'FEMALE', 'la pureza de'],
+      ['run', 'NEUTER', 'el misterio de'],
+      ['gar', 'MALE', 'el lancero de'],
+      ['weard', 'MALE', 'el guardián de'],
+      ['gifu', 'FEMALE', 'el regalo de'],
+      ['swith', 'FEMALE', 'la fuerza de'],
+      ['burg', 'FEMALE', 'la defensora de']
+    ]
+  },
+  CELESTIAL: {
+    roots: [
+      ['Aura', 'la esencia luminosa'],
+      ['Seraph', 'el fuego divino'],
+      ['Lumin', 'el destello puro'],
+      ['Cael', 'la bóveda estrellada'],
+      ['Aether', 'el cosmos incorruptible'],
+      ['Sol', 'la estrella radiante'],
+      ['Val', 'el coraje celestial'],
+      ['Lux', 'el resplandor infinito'],
+      ['Eon', 'la eternidad'],
+      ['Iri', 'el arco iris sagrado'],
+      ['Astra', 'las estrellas'],
+      ['Numen', 'el espíritu divino'],
+      ['Lyr', 'la canción de las esferas'],
+      ['Thal', 'la pureza absoluta'],
+      ['Vesper', 'el atardecer dorado'],
+      ['Pyra', 'el fuego sagrado'],
+      ['Chryso', 'el oro celestial'],
+      ['Nova', 'la explosión de luz'],
+      ['Elys', 'el paraíso pacífico'],
+      ['Myrr', 'la fragancia divina']
+    ],
+    simpleConnectors: [
+      ['i', 'y'],
+      ['ae', 'de'],
+      ['ea', 'y'],
+      ['io', 'de']
+    ],
+    complexInfixes: [
+      ['thi', 'puro'],
+      ['vi', 'sagrado'],
+      ['pha', 'resplandeciente'],
+      ['ly', 'armonioso'],
+      ['za', 'eterno']
+    ],
+    suffixes: [
+      ['el', 'NEUTER', 'la deidad de'],
+      ['ion', 'MALE', 'el heredero de'],
+      ['a', 'FEMALE', 'la cantora de'],
+      ['us', 'MALE', 'el portador de'],
+      ['is', 'FEMALE', 'la estrella de'],
+      ['ar', 'MALE', 'el guardián de'],
+      ['ia', 'FEMALE', 'la gracia de'],
+      ['en', 'NEUTER', 'la voz de'],
+      ['os', 'MALE', 'el trono de'],
+      ['iel', 'FEMALE', 'la luz de']
+    ]
+  },
+  ABYSSAL: {
+    roots: [
+      ['Gorg', 'la pesadilla'],
+      ['Mor', 'la muerte oscura'],
+      ['Bael', 'la condenación'],
+      ['Vaal', 'el abismo devorador'],
+      ['Kael', 'la sangre derramada'],
+      ['Thar', 'el dolor eterno'],
+      ['Zar', 'el fuego negro'],
+      ['Az', 'la ira infinita'],
+      ['Uruk', 'la bestia cruel'],
+      ['Xar', 'la oscuridad eterna'],
+      ['Nul', 'el vacío'],
+      ['Vex', 'el tormento'],
+      ['Draug', 'el espectro'],
+      ['Zath', 'las sombras oscuras'],
+      ['Ryl', 'la sangre hirviente'],
+      ['Orox', 'la piedra negra'],
+      ['Kruz', 'la crueldad'],
+      ['Vile', 'la corrupción'],
+      ['Nyx', 'la noche eterna'],
+      ['Goth', 'la ruina absoluta']
+    ],
+    simpleConnectors: [
+      ['u', 'de'],
+      ['o', 'de'],
+      ['i', 'y'],
+      ['a', 'y']
+    ],
+    complexInfixes: [
+      ['gash', 'profano'],
+      ['rok', 'destructor'],
+      ['vok', 'aterrador'],
+      ['thul', 'implacable'],
+      ['zul', 'maldito']
+    ],
+    suffixes: [
+      ['oth', 'NEUTER', 'el demonio de'],
+      ['uz', 'MALE', 'el señor oscuro de'],
+      ['ith', 'FEMALE', 'la madre de'],
+      ['ar', 'NEUTER', 'la abominación de'],
+      ['ok', 'MALE', 'el destructor de'],
+      ['gol', 'NEUTER', 'el horror de'],
+      ['zak', 'MALE', 'el torturador de'],
+      ['ish', 'FEMALE', 'la sombra de'],
+      ['or', 'MALE', 'el devorador de'],
+      ['ux', 'NEUTER', 'el veneno de']
+    ]
+  },
   GREEK: {
     roots: [
       ['Theo', 'la divinidad'],
@@ -1451,7 +1704,7 @@ const toSuffix = ([text, gender, meaning], style) => ({ text, gender, meaning, s
 
 export function getLocalComponents(style = 'GREEK') {
   if (style === 'RANDOM') {
-    return mergeComponents(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN']);
+    return mergeComponents(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'ARAMAIC', 'PERSIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']);
   }
 
   const source = DATA[style] || DATA.GREEK;
@@ -1486,9 +1739,9 @@ export function generateLocalNames(params) {
     let finalStyle = params.style || 'GREEK';
 
     if (isMix && params.mixOrigins) {
-      const rootStyle = params.mixOrigins.root || pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN']);
-      const infixStyle = params.mixOrigins.infix || pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN']);
-      const suffixStyle = params.mixOrigins.suffix || pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN']);
+      const rootStyle = params.mixOrigins.root || pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'ARAMAIC', 'PERSIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']);
+      const infixStyle = params.mixOrigins.infix || pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'ARAMAIC', 'PERSIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']);
+      const suffixStyle = params.mixOrigins.suffix || pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'ARAMAIC', 'PERSIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']);
       
       const roots = getLocalComponents(rootStyle).roots;
       const infixes = getLocalComponents(infixStyle).complexInfixes;
@@ -1506,7 +1759,7 @@ export function generateLocalNames(params) {
       
       finalStyle = rootStyle;
     } else {
-      const style = isRandom ? pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN']) : params.style || 'GREEK';
+      const style = isRandom ? pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'ARAMAIC', 'PERSIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']) : params.style || 'GREEK';
       const components = getLocalComponents(style);
       let formulaComps = components;
       if (isRandom) {
@@ -1583,6 +1836,11 @@ function generateCustomNames(params) {
 }
 
 const STYLE_LABELS = {
+  ARAMAIC: 'Arameo Antiguo',
+  PERSIAN: 'Persa Antiguo',
+  OLD_ENGLISH: 'Anglosajón',
+  CELESTIAL: 'Celestial',
+  ABYSSAL: 'Abisal',
   GREEK: 'Griego Antiguo',
   NORDIC: 'Nórdico Antiguo',
   LATIN: 'Latín',
@@ -1611,7 +1869,7 @@ function buildName(parts) {
 
   const name = capitalize(formulaParts.reduce((result, item) => combine(result, item?.text || ''), ''));
   
-  let meaning = [parts.suffix?.meaning, parts.infix?.meaning, parts.connector1?.meaning, parts.root?.meaning]
+  let meaning = [parts.suffix?.meaning, parts.connector2?.meaning, parts.infix?.meaning, parts.connector1?.meaning, parts.root?.meaning]
     .filter(Boolean)
     .join(' ')
     .replace(/\s+/g, ' ')
@@ -1652,7 +1910,7 @@ function findOrPick(items, text, type) {
   if (selected) return selected;
   
   // Si no está en este idioma (ej: style=NORDIC pero el usuario forzó una raíz LATIN), buscamos en el resto
-  for (const s of ['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN']) {
+  for (const s of ['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN', 'ARAMAIC', 'PERSIAN', 'OLD_ENGLISH', 'CELESTIAL', 'ABYSSAL']) {
     const comps = getLocalComponents(s);
     for (const key in comps) {
       const found = comps[key].find((item) => item.text.toLowerCase() === String(text).toLowerCase());
@@ -1878,7 +2136,36 @@ function generateIPA(name, style) {
       .replace(/zh/g, 'ʒ')
       .replace(/sh/g, 'ʃ')
       .replace(/z/g, 'z');
-} else {
+  } else if (style === 'ARAMAIC') {
+    ipa = ipa
+      .replace(/sh/g, 'ʃ')
+      .replace(/kh/g, 'x')
+      .replace(/q/g, 'q');
+  } else if (style === 'PERSIAN') {
+    ipa = ipa
+      .replace(/sh/g, 'ʃ')
+      .replace(/kh/g, 'x')
+      .replace(/zh/g, 'ʒ');
+  } else if (style === 'OLD_ENGLISH') {
+    ipa = ipa
+      .replace(/ae/g, 'æ')
+      .replace(/cg/g, 'd͡ʒ')
+      .replace(/sc/g, 'ʃ')
+      .replace(/w/g, 'w')
+      .replace(/y/g, 'y');
+  } else if (style === 'CELESTIAL') {
+    ipa = ipa
+      .replace(/ae/g, 'æ')
+      .replace(/ph/g, 'f')
+      .replace(/th/g, 'θ');
+  } else if (style === 'ABYSSAL') {
+    ipa = ipa
+      .replace(/gh/g, 'ʁ')
+      .replace(/sh/g, 'ʃ')
+      .replace(/kh/g, 'x')
+      .replace(/x/g, 'z')
+      .replace(/z/g, 'z');
+  } else {
     ipa = ipa
       .replace(/ai/g, 'e')
       .replace(/ou/g, 'u')
