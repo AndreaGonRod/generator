@@ -1768,11 +1768,11 @@ export function generateLocalNames(params) {
       formula = useCustomFormula ? (params.formula || ['ROOT', 'SUFFIX']) : getRandomStructure(formulaComps);
       const suffixPool = params.suffix ? components.suffixes : components.suffixes.filter((item) => item.gender === gender);
       
-      rootComp = findOrPick(components.roots, params.root);
-      suffixComp = findOrPick(suffixPool, params.suffix);
-      c1Comp = findOrPick(components.simpleConnectors, params.connector1);
-      infixComp = findOrPick(components.complexInfixes, params.infix);
-      c2Comp = findOrPick(components.simpleConnectors, params.connector2);
+      rootComp = formula.includes('ROOT') ? findOrPick(components.roots, params.root) : undefined;
+      suffixComp = formula.includes('SUFFIX') ? findOrPick(suffixPool, params.suffix) : undefined;
+      c1Comp = formula.includes('CONNECTOR1') ? findOrPick(components.simpleConnectors, params.connector1) : undefined;
+      infixComp = formula.includes('INFIX') ? findOrPick(components.complexInfixes, params.infix) : undefined;
+      c2Comp = formula.includes('CONNECTOR2') ? findOrPick(components.simpleConnectors, params.connector2) : undefined;
       
       finalStyle = style;
     }
@@ -1874,6 +1874,15 @@ function buildName(parts) {
     .join(' ')
     .replace(/\s+/g, ' ')
     .replace(/\bde el\b/g, 'del')
+    .replace(/\bde de\b/g, 'de')
+    .replace(/\by y\b/g, 'y')
+    .replace(/\by de\b/g, 'y')
+    .replace(/\bde y\b/g, 'y')
+    .replace(/\bde del\b/g, 'del')
+    .replace(/\bde ([a-záéíóúñ]+) (el|la|los|las|del|y)\b/gi, '$1 de $2')
+    .replace(/\bde de\b/g, 'de')
+    .replace(/\bde del\b/g, 'del')
+    .replace(/\bde y\b/g, 'y')
     .trim();
 
   let originMix = null;

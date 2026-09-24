@@ -615,13 +615,13 @@ function App() {
                     className="card"
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
-                    <div className="copy-action" style={{ position: 'absolute', top: '12px', left: '12px' }}>
+                    <div className="copy-action" style={{ position: 'absolute', top: '8px', left: '8px' }}>
                       <button 
-                        className="copy-btn" 
+                        className={`copy-btn ${copiedId === (item.id || item.name) ? 'active' : ''}`} 
                         onClick={() => copyToClipboard(item)}
                         title="Copiar al portapapeles"
                       >
-                        {copiedId === (item.id || item.name) ? '✅' : '📋'}
+                        {copiedId === (item.id || item.name) ? '✓' : '📋'}
                       </button>
                     </div>
                     <div className="card-actions">

@@ -330,8 +330,8 @@ input:focus {
 
 .card-actions {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 8px;
+  right: 8px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -418,4 +418,9 @@ input:focus {
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.2);
+}
+
+.copy-btn.active {
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
