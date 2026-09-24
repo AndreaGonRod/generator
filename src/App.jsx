@@ -331,10 +331,18 @@ function App() {
             <ChipGroup 
               label="Estructura" 
               value={formula} 
-              options={formulaShapeOptions.filter(opt => 
-                (opt.value !== 'CONNECTOR1' && opt.value !== 'CONNECTOR2') || 
-                (availableConnectors.simpleConnectors && availableConnectors.simpleConnectors.length > 0)
-              )} 
+              options={formulaShapeOptions.filter(opt => {
+                if (opt.value === 'CONNECTOR1' || opt.value === 'CONNECTOR2') {
+                  return style === 'CUSTOM' || style === 'MIX' || (availableConnectors.simpleConnectors && availableConnectors.simpleConnectors.length > 0);
+                }
+                if (opt.value === 'INFIX') {
+                  return style === 'CUSTOM' || style === 'MIX' || (availableConnectors.complexInfixes && availableConnectors.complexInfixes.length > 0);
+                }
+                if (opt.value === 'SUFFIX') {
+                  return style === 'CUSTOM' || style === 'MIX' || (availableConnectors.suffixes && availableConnectors.suffixes.some(s => gender === 'RANDOM' || (s.gender?.name ?? s.gender) === gender));
+                }
+                return true;
+              })} 
               multiple={true}
               mandatory={['ROOT', 'SUFFIX']}
               onChange={(val) => {
@@ -553,7 +561,7 @@ function App() {
               ]} />
             </div>
 
-            {formula.includes('CONNECTOR1') && (
+            {formula.includes('CONNECTOR1') && (style === 'CUSTOM' || style === 'MIX' || (availableConnectors.simpleConnectors && availableConnectors.simpleConnectors.length > 0)) && (
               <div className="control-group">
                 <label>Conector 1</label>
                 <CustomSelect value={connector1} onChange={(e) => setConnector1(e.target.value)} options={[
@@ -563,7 +571,7 @@ function App() {
               </div>
             )}
 
-            {formula.includes('INFIX') && (
+            {formula.includes('INFIX') && (style === 'CUSTOM' || style === 'MIX' || (availableConnectors.complexInfixes && availableConnectors.complexInfixes.length > 0)) && (
               <div className="control-group">
                 <label>Infijo</label>
                 <CustomSelect value={infix} onChange={(e) => setInfix(e.target.value)} options={[
@@ -573,7 +581,7 @@ function App() {
               </div>
             )}
 
-            {formula.includes('CONNECTOR2') && (
+            {formula.includes('CONNECTOR2') && (style === 'CUSTOM' || style === 'MIX' || (availableConnectors.simpleConnectors && availableConnectors.simpleConnectors.length > 0)) && (
               <div className="control-group">
                 <label>Conector 2</label>
                 <CustomSelect value={connector2} onChange={(e) => setConnector2(e.target.value)} options={[
@@ -583,18 +591,20 @@ function App() {
               </div>
             )}
 
-            <div className="control-group">
-              <label>Sufijo</label>
-              <CustomSelect value={suffix} onChange={(e) => setSuffix(e.target.value)} options={[
-                { value: '', label: 'Aleatorio' },
-                ...availableConnectors.suffixes
-                  .filter((item) => {
-                    const suffixGender = item.gender?.name ?? item.gender;
-                    return gender === 'RANDOM' || suffixGender === gender;
-                  })
-                  .map((item) => ({ value: item.text, label: item.text }))
-              ]} />
-            </div>
+            {formula.includes('SUFFIX') && (style === 'CUSTOM' || style === 'MIX' || (availableConnectors.suffixes && availableConnectors.suffixes.some(s => gender === 'RANDOM' || (s.gender?.name ?? s.gender) === gender))) && (
+              <div className="control-group">
+                <label>Sufijo</label>
+                <CustomSelect value={suffix} onChange={(e) => setSuffix(e.target.value)} options={[
+                  { value: '', label: 'Aleatorio' },
+                  ...availableConnectors.suffixes
+                    .filter((item) => {
+                      const suffixGender = item.gender?.name ?? item.gender;
+                      return gender === 'RANDOM' || suffixGender === gender;
+                    })
+                    .map((item) => ({ value: item.text, label: item.text }))
+                ]} />
+              </div>
+            )}
           </div>
         )}
 
