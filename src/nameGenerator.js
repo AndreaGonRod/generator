@@ -1474,26 +1474,66 @@ export function generateLocalNames(params) {
   const seenNames = new Set();
   let attempts = 0;
   const maxAttempts = count * 10;
+  const isMix = params.style === 'MIX';
+  const isRandom = params.style === 'RANDOM';
 
   while (results.length < count && attempts < maxAttempts) {
     attempts++;
-    const style = params.style === 'RANDOM' ? pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN']) : params.style || 'GREEK';
     const gender = params.gender === 'RANDOM' || !params.gender ? pick(GENDERS) : params.gender;
-    const components = getLocalComponents(style);
-    const formula = useCustomFormula ? (params.formula || ['ROOT', 'SUFFIX']) : getRandomStructure(components);
-    const suffixPool = params.suffix
-      ? components.suffixes
-      : components.suffixes.filter((item) => item.gender === gender);
+    
+    let rootComp, suffixComp, c1Comp, infixComp, c2Comp;
+    let formula;
+    let finalStyle = params.style || 'GREEK';
+
+    if (isMix && params.mixOrigins) {
+      const rootStyle = params.mixOrigins.root || pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN']);
+      const infixStyle = params.mixOrigins.infix || pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN']);
+      const suffixStyle = params.mixOrigins.suffix || pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN']);
       
+      const roots = getLocalComponents(rootStyle).roots;
+      const infixes = getLocalComponents(infixStyle).complexInfixes;
+      const suffixes = getLocalComponents(suffixStyle).suffixes;
+      
+      formula = useCustomFormula ? (params.formula || ['ROOT', 'SUFFIX']) : getRandomStructure({ roots, complexInfixes: infixes, suffixes, simpleConnectors: [] });
+      
+      const suffixPool = params.suffix ? suffixes : suffixes.filter((item) => item.gender === gender);
+      
+      rootComp = findOrPick(roots, params.root);
+      infixComp = findOrPick(infixes, params.infix);
+      suffixComp = findOrPick(suffixPool, params.suffix);
+      c1Comp = undefined; 
+      c2Comp = undefined;
+      
+      finalStyle = rootStyle;
+    } else {
+      const style = isRandom ? pick(['GREEK', 'NORDIC', 'LATIN', 'JAPANESE', 'CELTIC', 'SANSKRIT', 'SLAVIC', 'EGYPTIAN', 'SUMERIAN', 'ARABIC', 'POLYNESIAN', 'SWAHILI', 'KHUZDUL', 'ELVISH', 'VALYRIAN']) : params.style || 'GREEK';
+      const components = getLocalComponents(style);
+      let formulaComps = components;
+      if (isRandom) {
+        formulaComps = { ...components, simpleConnectors: [] };
+      }
+      formula = useCustomFormula ? (params.formula || ['ROOT', 'SUFFIX']) : getRandomStructure(formulaComps);
+      const suffixPool = params.suffix ? components.suffixes : components.suffixes.filter((item) => item.gender === gender);
+      
+      rootComp = findOrPick(components.roots, params.root);
+      suffixComp = findOrPick(suffixPool, params.suffix);
+      c1Comp = findOrPick(components.simpleConnectors, params.connector1);
+      infixComp = findOrPick(components.complexInfixes, params.infix);
+      c2Comp = findOrPick(components.simpleConnectors, params.connector2);
+      
+      finalStyle = style;
+    }
+
     const newName = buildName({
-      style,
+      style: finalStyle,
+      showOriginInsteadOfMeaning: isRandom || (isMix && !useCustomFormula),
       gender,
       formula,
-      root: findOrPick(components.roots, params.root),
-      suffix: findOrPick(suffixPool, params.suffix),
-      connector1: findOrPick(components.simpleConnectors, params.connector1),
-      infix: findOrPick(components.complexInfixes, params.infix),
-      connector2: findOrPick(components.simpleConnectors, params.connector2),
+      root: rootComp,
+      suffix: suffixComp,
+      connector1: c1Comp,
+      infix: infixComp,
+      connector2: c2Comp,
       index: results.length
     });
 
@@ -1571,18 +1611,18 @@ function buildName(parts) {
 
   const name = capitalize(formulaParts.reduce((result, item) => combine(result, item?.text || ''), ''));
   
-  let meaning = '';
-  if (parts.isRandomOrMix) {
+  let meaning = [parts.suffix?.meaning, parts.infix?.meaning, parts.connector1?.meaning, parts.root?.meaning]
+    .filter(Boolean)
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .replace(/\bde el\b/g, 'del')
+    .trim();
+
+  let originMix = null;
+  if (parts.showOriginInsteadOfMeaning) {
     const origins = [parts.root?.style, parts.connector1?.style, parts.infix?.style, parts.connector2?.style, parts.suffix?.style].filter(Boolean);
     const uniqueOrigins = Array.from(new Set(origins));
-    meaning = 'Origen: ' + uniqueOrigins.map(o => STYLE_LABELS[o] || o).join(' + ');
-  } else {
-    meaning = [parts.suffix?.meaning, parts.infix?.meaning, parts.connector1?.meaning, parts.root?.meaning]
-      .filter(Boolean)
-      .join(' ')
-      .replace(/\s+/g, ' ')
-      .replace(/\bde el\b/g, 'del')
-      .trim();
+    originMix = uniqueOrigins.map(o => STYLE_LABELS[o] || o).join(' + ');
   }
 
   return {
@@ -1591,6 +1631,7 @@ function buildName(parts) {
     ipa: generateIPA(name, parts.style),
     gender: parts.gender || 'NEUTER',
     meaning,
+    originMix,
     formula: formulaLabel(parts.formula),
     style: parts.style
   };

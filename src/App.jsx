@@ -171,7 +171,11 @@ function App() {
       return { roots: [], simpleConnectors: [], complexInfixes: [], suffixes: [] };
     }
     const styleQuery = style === 'RANDOM' ? 'RANDOM' : style;
-    return getLocalComponents(styleQuery);
+    const comps = getLocalComponents(styleQuery);
+    if (style === 'RANDOM') {
+      comps.simpleConnectors = [];
+    }
+    return comps;
   }, [style]);
 
   const buildGenerationParams = () => {
@@ -627,6 +631,7 @@ function App() {
                     <h2>{item.name}</h2>
                     {item.ipa && <span className="ipa">/{item.ipa}/</span>}
                     {item.meaning && <p>{item.meaning}</p>}
+                    {item.originMix && <p className="origin-mix" style={{ fontSize: '0.8em', color: 'var(--text-muted)', marginTop: '0.5rem', fontStyle: 'italic' }}>{item.originMix}</p>}
                   </div>
                 );
               })}
